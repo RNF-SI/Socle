@@ -1,0 +1,7 @@
+{% extends "@theme/master.twig" %}
+
+{% block content %}
+	{% for view, params in views %}
+		{% include view with params %}
+	{% endfor %}
+{% endblock %}

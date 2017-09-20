@@ -1,0 +1,18 @@
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-7">
+    <ul>
+    {% for pdv in ep.pointsDeVue %}
+        <li>
+          <p>Point de vue : {{ pdv.nom }}</p>
+        </li>
+    {% endfor %}
+  </ul>
+  </div>
+  <div class="col-sm-5">
+    <div id="map-{{ id_rubrique }}"></div>
+  </div>
+</div>
+<button id="button-ajout-point-de-vue" class="btn btn-default btn-sm">Ajouter un point de vue</button>
+{% endblock %}

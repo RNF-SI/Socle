@@ -1,0 +1,9 @@
+.DS_Store
+/vendor/
+.sass-cache/
+_site/
+/composer.lock
+/tests/_application/
+/tests/_output/*
+.coveralls.yml
+.coveralls-upload.json

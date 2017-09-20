@@ -1,0 +1,52 @@
+{
+    "name": "dsv/attire",
+    "description": "Attire Driver is an implementation of Twig template engine combined with Sprockets-PHP asset pipeline manager for CodeIgniter v3.0.x",
+    "type": "codeigniter-library",
+     "keywords": [
+        "twig",
+        "pipeline",
+        "sprockets",
+        "codeigniter",
+        "template-engine",
+        "asset-management",
+        "attire"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.2.4",
+        "composer/installers": "*",
+        "twig/twig": "^1.18",
+        "nami-doc/sprockets-php": "^2.1"
+    }, 
+    "homepage": "https://github.com/davidsosavaldes/Attire",
+    "authors": [
+        {
+            "name": "David Sosa Valdes",
+            "email": "david.sosa.valdes@gmail.com"
+        }
+    ],
+    "support":{
+        "issues": "https://github.com/davidsosavaldes/Attire/issues",
+        "wiki": "http://davidsosavaldes.github.io/Attire",
+        "email": "david.sosa.valdes@gmail.com"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.0.x-dev"
+        },
+        "installer-name": "Attire"
+    },
+    "suggest": {
+        "dsv/attire-theme-bootstrap": "Use Bootstrap with Attire for a solid base on custom theme development."
+    },
+    "require-dev": {
+        "codeigniter/framework": "~3.0",
+        "codeception/codeception": "^2.1",
+        "satooshi/php-coveralls": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Attire\\": "src/"
+        }
+    }
+}
