@@ -1,10 +1,10 @@
 // fonctions de chargement des composants RubriquesController
 
 $(function() {
-  $(".rubrique .collapse").on("show.bs.collapse", function() { // à modifier pour ne pas tout charger
+  $(".rubrique .collapse").on("show.bs.collapse", function() {
     var id_rubrique = $(this).parents(".rubrique").attr('id');
     var container  = $(this).find(".rubrique-content");
-    $.get(site_url("site/rubrique_content/" + espace_protege.id + "/" + id_rubrique), function(data) {
+    $.get(site_url("site/rubrique_content/" + entite_id + "/" + id_rubrique + '/' + type_rubrique), function(data) {
       container.html(data);
     });
   });
@@ -30,7 +30,7 @@ $(function() {
 
   $(".button-edit-form").click(function(evt) {
     var id_rubrique = $(evt.target).parents(".rubrique").first().attr('id');
-    $.get(site_url("site/rubrique_form/" + espace_protege.id + "/" + id_rubrique), function(data) {
+    $.get(site_url("site/rubrique_form/" + entite_id + "/" + id_rubrique + '/' + type_rubrique), function(data) {
       var form = $(data);
       $(".rubrique#" + id_rubrique + " .rubrique-content").empty().append(form);
     });

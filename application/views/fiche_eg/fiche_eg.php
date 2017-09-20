@@ -1,3 +1,7 @@
+<script>
+  var entite_id = <?= $eg->id ?>;
+  var type_rubrique = 'EG';
+</script>
 <p>
   <a href="<?= site_url('site/ajout_eg/'.$eg->espace_protege_id.'/'.$eg->id) ?>" class="btn btn-primary">Modifier</a>
 </p>

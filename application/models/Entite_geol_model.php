@@ -1,30 +1,27 @@
 <?php
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Entite_geol_model extends CI_Model {
-  private $tableName = 'entite_geol';
+class Entite_geol_model extends Entite_abstract_model {
+  protected $tableName = 'entite_geol';
+  protected $qcmLinkTable = 'entite_geol_qcm';
 
-  public function __construct() {
-    $this->load->database();
-  }
+  protected $commentTableName = 'commentaire_eg';
+  protected $complementTableName = 'complement_eg';
 
-  public function getEntiteGeol($id_eg) {
+
+  public function get($id_eg) {
     if (is_null($id_eg)) return;
     return $this->db
       ->join('echelle_geol', 'echelle_geol.id = id_ere_geol', 'left')
       ->select([$this->tableName.'.*', 'echelle_geol.label AS ere_geol_label'])
-      ->get_where($this->tableName, array($this->tableName.'.id'=>$id_eg))->row();
+      ->get_where($this->tableName, array($this->tableName.'.id'=>$id_eg))
+      ->row();
   }
 
   public function add($data) {
-    var_dump($data);
     unset($data['coords']);
     $this->db->insert($this->tableName, $data);
     return $this->db->insert_id();
-  }
-
-  public function update($id_eg, $data) {
-    $this->db->where('id', $id_eg)->update($this->tableName);
   }
 
   // retourne l'échelle géol sous forme d'arbre

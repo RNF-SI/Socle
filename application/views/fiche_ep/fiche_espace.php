@@ -1,5 +1,7 @@
 <script>
   var espace_protege = <?= json_encode($ep) ?>;
+  var entite_id = <?= $ep->id ?>;
+  var type_rubrique = 'EP';
 </script>
 <div id="entete">
   <h1><?= $ep->nom_ep ?></h1>

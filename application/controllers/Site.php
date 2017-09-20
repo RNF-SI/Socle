@@ -11,7 +11,7 @@ class Site extends CI_Controller {
 
   public function fiche_site($id_ep) {
     $data = array();
-    $data['ep'] = $this->espace_protege_model->getEspace_protege($id_ep);
+    $data['ep'] = $this->espace_protege_model->get($id_ep);
     $data['entites_geol'] = $this->espace_protege_model->getEntitesGeol($id_ep);
 
     $this->load->view('default/header', ['scripts' => ['fiche_projet.js']]);
@@ -19,29 +19,43 @@ class Site extends CI_Controller {
     $this->load->view('default/footer');
   }
 
-  public function rubrique_content($id_ep, $rubrique) {
+  public function rubrique_content($id, $rubrique, $type = 'EP') {
     // chargement asynchrone du contenu du panel
     $this->load->helper('caracteristiques_helper');
 
-    $data = array('ep' => $this->espace_protege_model->getEspace_protege($id_ep));
-    $data['caracteristiques'] = $this->espace_protege_model->getCaracteristiques($id_ep, $rubrique);
-    $data['complements'] = $this->espace_protege_model->getComplements($id_ep, array_keys($data['caracteristiques']));
-    $comment = $this->espace_protege_model->getCommentaire($id_ep, $rubrique);
+    if ($type == 'EP') {
+      $model = $this->espace_protege_model;
+      $data = array('ep' => $model->get($id));
+    } elseif ($type == 'EG') {
+      $this->load->model('entite_geol_model');
+      $model = $this->entite_geol_model;
+    }
+
+    $data['caracteristiques'] = $model->getCaracteristiques($id, $rubrique);
+    $data['complements'] = $model->getComplements($id, array_keys($data['caracteristiques']));
+    $comment = $model->getCommentaire($id, $rubrique);
     $data['commentaire'] = empty($comment) ? (object)array('commentaire' => '') : $comment;
 
     if ($rubrique == 'infos_preliminaires') {
-      $data['ep']->feuilles_cartes = $this->espace_protege_model->getFeuillesCartes($id_ep);
+      $data['ep']->feuilles_cartes = $this->espace_protege_model->getFeuillesCartes($id);
     }
 
     $this->output->set_output($this->load->view('fiche_ep/rubriques/' . $rubrique . '.php', $data, TRUE));
   }
 
 
-  public function rubrique_form($id_ep, $rubrique) {
+  public function rubrique_form($id, $rubrique, $type = 'EP') {
     $this->load->helper('caracteristiques_helper');
     $this->load->helper('form_helper');
     $this->load->model('qcm_model');
     $this->load->library('form_validation');
+
+    if ($type == 'EP') {
+      $model = $this->espace_protege_model;
+    } elseif ($type == 'EG') {
+      $this->load->model('entite_geol_model');
+      $model = $this->entite_geol_model;
+    }
 
     // traitement du formulaire
     if ($this->input->post()) {
@@ -52,9 +66,9 @@ class Site extends CI_Controller {
 
       $this->form_validation->set_rules(element($rubrique, $config));
       if (!isset($config[$rubrique]) || $this->form_validation->run()) {
-        $this->espace_protege_model->update_rubrique($id_ep, $this->input->post(), $rubrique);
+        $model->update_rubrique($id, $this->input->post(), $rubrique);
 
-        $this->rubrique_content($id_ep, $rubrique);
+        $this->rubrique_content($id, $rubrique, $type);
         return;
       } else { // non validation du formulaire (renvoie les messages en ajax)
         $this->output->set_content_type('application/json')
@@ -63,20 +77,18 @@ class Site extends CI_Controller {
       }
     }
 
-    $data = array(
-      'ep' => $this->espace_protege_model->getEspace_protege($id_ep),
-      'rubrique' => $rubrique
-    );
+    $data = array('rubrique' => $rubrique);
+    $data['ep'] = $model->get($id); // TODO : modifier le nom de variable
     $carIds = array();
     $questions = array();
     $getId = function($elt) { return $elt->id; };
-    foreach($this->espace_protege_model->getCaracteristiques($id_ep, $rubrique) as $question => $cars) {
+    foreach($model->getCaracteristiques($id, $rubrique) as $question => $cars) {
       $carIds[$question] = array_map($getId, $cars);
       array_push($questions, $question);
     }
     $data['ep']->caracteristiques = $carIds;
-    $data['ep']->complements = $this->espace_protege_model->getComplements($id_ep, $questions);
-    $comment = $this->espace_protege_model->getCommentaire($id_ep, $rubrique);
+    $data['ep']->complements = $model->getComplements($id, $questions);
+    $comment = $model->getCommentaire($id, $rubrique);
     $data['ep']->commentaire = empty($comment) ? (object)array('commentaire' => '') : $comment;
 
     $data['qcms'] = $this->qcm_model->getChoicesByRubrique($rubrique);
@@ -142,9 +154,9 @@ class Site extends CI_Controller {
     }
 
     $data = array(
-      'ep' => $this->espace_protege_model->getEspace_protege($id_ep),
+      'ep' => $this->espace_protege_model->get($id_ep),
       'id_eg' => $id_eg,
-      'eg' => $this->entite_geol_model->getEntiteGeol($id_eg)
+      'eg' => $this->entite_geol_model->get($id_eg)
     );
     $data['echelle_geol'] = $this->entite_geol_model->echelle_geol();
 
@@ -156,9 +168,9 @@ class Site extends CI_Controller {
   public function fiche_entite_geol($id_eg) {
     $this->load->model('entite_geol_model');
     $data = array();
-    $eg = $this->entite_geol_model->getEntiteGeol($id_eg);
+    $eg = $this->entite_geol_model->get($id_eg);
     $data['eg'] = $eg;
-    $data['ep'] = $this->espace_protege_model->getEspace_protege($eg->espace_protege_id);
+    $data['ep'] = $this->espace_protege_model->get($eg->espace_protege_id);
 
     $this->load->view('default/header', ['scripts' => ['fiche_projet.js']]);
     $this->load->view('fiche_eg/fiche_eg', $data);

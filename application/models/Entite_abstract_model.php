@@ -7,10 +7,17 @@ Modèle servant de mère aux autres modèles pouvant utiliser des QCMi.e. EP et 
 class Entite_abstract_model extends CI_Model {
   protected $tableName;
   protected $qcmLinkTable;
-  protected $qcmLinkColumn;
+
+  protected $commentTableName = 'commentaire';
+  protected $complementTableName = 'complement';
+
 
   public function __construct() {
     $this->load->database();
+  }
+
+  protected function linkColumnName() {
+    return $this->tableName . '_id';
   }
 
   public function get($id) {
@@ -27,7 +34,7 @@ class Entite_abstract_model extends CI_Model {
     // caractéristiques, groupé par question
     $this->db->from('qcm')
       ->join($this->qcmLinkTable, 'qcm_id = qcm.id')
-      ->where($this->qcmLinkColumn, $id);
+      ->where($this->linkColumnName(), $id);
     if (! is_null($rubrique)) {
       $this->db->where('rubrique', $rubrique);
     }
@@ -45,6 +52,95 @@ class Entite_abstract_model extends CI_Model {
     return $data;
   }
 
-  
+  public function getComplements($id, $questionIds) {
+    if (count($questionIds) == 0) return array();
+
+    $query = $this->db->where($this->linkColumnName(), $id)
+      ->where_in('question', $questionIds)
+      ->get($this->complementTableName);
+    $res = array();
+    foreach ($query->result() as $comp) {
+      $res[$comp->question] = $comp;
+    }
+    return $res;
+  }
+
+  public function getCommentaire($id, $rubrique) {
+    $query = $this->db->get_where($this->commentTableName, [$this->linkColumnName() => $id, 'rubrique' => $rubrique]);
+    return $query->row();
+  }
+
+  public function update($id, $data) {
+    $this->db->where('id', $id)->update($this->tableName);
+  }
+
+  public function update_rubrique($id, $data, $rubrique) {
+    $this->db->trans_start();
+    if (isset($data['caracteristiques'])) {
+      $cars = $data['caracteristiques'];
+      unset($data['caracteristiques']);
+    }
+
+    // complements
+    if (isset($data['complements_question'])) {
+      $toinsert = array();
+      $questionIds = array();
+      foreach ($data['complements_question'] as $key => $id_question) {
+        $val = $data['complements'][$key];
+        if (! empty($val)) {
+          array_push($toinsert, array('question' => $id_question, $this->linkColumnName() => $id, 'elements' => $val));
+          array_push($questionIds, $id_question);
+        }
+      }
+      if (count($questionIds) > 0) {
+        $this->db->where($this->linkColumnName(), $id)
+          ->where_in('question', $questionIds)
+          ->delete($this->complementTableName);
+        $this->db->insert_batch($this->complementTableName, $toinsert);
+      }
+      unset($data['complements_question']);
+      unset($data['complements']);
+    }
+
+    // commentaires
+    if (!empty(element('commentaire', $data))) {
+      $this->db->where([$this->linkColumnName() => $id, 'rubrique' => $rubrique])
+        ->delete($this->commentTableName);
+      $toinsert = [
+        $this->linkColumnName() => $id_ep,
+        'commentaire' => $data['commentaire'],
+        'rubrique' => $rubrique
+      ];
+      $this->db->insert($this->commentTableName, $toinsert);
+    }
+    unset($data['commentaire']);
+
+    if(!empty($data))
+      $this->db->where('id', $id)->update($this->tableName, $data);
+
+    // traitement des QCM
+    if (isset($rubrique)) {
+      $subquery = $this->db->select('id')
+        ->where('rubrique', $rubrique)
+        ->get_compiled_select('qcm');
+      $this->db->where("qcm_id IN ($subquery)", NULL, FALSE)
+        ->where($this->linkColumnName(), $id)
+        ->delete($this->qcmLinkTable);
+
+      if (isset($cars)) {
+        $this->db->insert_batch($this->qcmLinkTable,
+          array_map(function($elt) use ($id) {
+            return array($this->linkColumnName() => $id, 'qcm_id' => $elt);
+          }, $cars));
+      }
+    }
+    $this->db->trans_complete();
+  }
+
+  // ajout d'une entité
+  public function add($data) {
+    $this->db->insert($this->tableName, $data);
+    return $this->db->insert_id();
+  }
 
 }
