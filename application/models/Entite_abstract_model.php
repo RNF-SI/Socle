@@ -87,7 +87,8 @@ class Entite_abstract_model extends CI_Model {
   }
 
   public function update($id, $data) {
-    $this->db->where('id', $id)->update($this->tableName);
+    $this->db->set($data)
+      ->where('id', $id)->update($this->tableName);
   }
 
   public function update_rubrique($id, $data, $rubrique) {
@@ -123,7 +124,7 @@ class Entite_abstract_model extends CI_Model {
       $this->db->where([$this->linkColumnName() => $id, 'rubrique' => $rubrique])
         ->delete($this->commentTableName);
       $toinsert = [
-        $this->linkColumnName() => $id_ep,
+        $this->linkColumnName() => $id,
         'commentaire' => $data['commentaire'],
         'rubrique' => $rubrique
       ];

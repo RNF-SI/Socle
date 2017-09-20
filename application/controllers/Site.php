@@ -140,14 +140,14 @@ class Site extends CI_Controller {
         $data = $this->input->post();
         $data['espace_protege_id'] = $id_ep;
         if (is_null($id_eg)) { // insert
-          $this->entite_geol_model->add($data);
+          $id_eg = $this->entite_geol_model->add($data);
         } else { // update
           $this->entite_geol_model->update($id_eg, $data);
         }
 
         $this->load->library('session');
         $this->session->set_flashdata('message_success', "Espace correctement entegistré");
-        redirect('site/fiche_entite_geol/'.$id_ep);
+        redirect('site/fiche_entite_geol/'.$id_eg);
       } else {
         log_message('ERROR', validation_errors());
       }

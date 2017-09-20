@@ -20,8 +20,12 @@ class Entite_geol_model extends Entite_abstract_model {
 
   public function add($data) {
     unset($data['coords']);
-    $this->db->insert($this->tableName, $data);
-    return $this->db->insert_id();
+    return parent::insert($data);
+  }
+
+  public function update($id_eg, $data) {
+    unset($data['coords']);
+    return parent::update($id_eg, $data);
   }
 
   // retourne l'échelle géol sous forme d'arbre

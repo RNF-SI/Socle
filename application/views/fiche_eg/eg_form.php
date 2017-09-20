@@ -6,10 +6,14 @@
   <div class="row">
     <div class="col-sm-7">
         <?php
-        echo form_hidden('coords');
-        echo form_input('intitule', 'Nom de l\'entité (libre)');
-        echo form_input('code_eg', 'code de l\'entité sur la carte géologique');
-        echo form_input('intitule_eg', 'nom de l\'entité sur la légende de la carte');
+        function set_value_obj($label, $obj) {
+          return set_value($label, isset($obj->$label) ? $obj->$label : NULL);
+        }
+
+        echo form_hidden('coords', set_value_obj('coords', $eg));
+        echo form_input('intitule', 'Nom de l\'entité (libre)', set_value_obj('intitule', $eg));
+        echo form_input('code_eg', 'code de l\'entité sur la carte géologique', set_value_obj('code_eg', $eg));
+        echo form_input('intitule_eg', 'nom de l\'entité sur la légende de la carte', set_value_obj('intitule_eg', $eg));
         ?>
     </div>
     <div class="col-sm-5">
@@ -18,7 +22,7 @@
   </div>
 
   <h3>Ere géologique</h3>
-  <ol id="echelle_geol" data-name="id_ere_geol">
+  <ol id="echelle_geol" data-name="id_ere_geol" data-value="<?= set_value_obj('id_ere_geol',  $eg) ?>">
   <?php
   // structure arborescente de l'échelle géologique
   function makeTree($elt) {
@@ -45,8 +49,8 @@
    'un seul' => 'un seul',
    'nombreux' => 'nombreux affleurements',
    'surfaces' => 'grandes surfaces d\'affleurements'
- ]) ?>
-<?= form_checkbox('affleurements_accessibles', 'Affleurements accessibles') ?>
+ ], set_value_obj('quantite_affleurements', $eg)) ?>
+<?= form_checkbox('affleurements_accessibles', 'Affleurements accessibles', set_value_obj('affleurements_accessibles', $eg)) ?>
 <div id="affleurements" class="jumbotron">
 Liste des affleurements <br />
   [ A FAIRE ]
@@ -60,7 +64,7 @@ complémentaires importantes à connaître :<ul>
 documentations, etc.)</li>
 <li>Informations complémentaires, etc.</li>
 </ul></p>
-<?= form_text('complements', 'informations complémentaires') ?>
+<?= form_text('complements', 'informations complémentaires', set_value_obj('complements', $eg)) ?>
 
  <?= form_submit() ?>
 </form>
