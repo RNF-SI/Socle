@@ -38,27 +38,8 @@ $(function() {
 
 
   // carto
-  if ($('#map-main').count > 0) {
-    var mainMap = L.map('map-main').setView([46, 1], 7);
-    var osmLayer = L.tileLayer('http://tile-{s}.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-        maxZoom: 18
-    }).addTo(mainMap);
-    var baseLayers = {"OpenstreetMap": osmLayer};
-
-    // contours de la réserve
-    $.get(site_url("carto/espace_protege_geom/" + espace_protege.code_national_ep), function(data) {
-      var wmsGeolLayer = L.tileLayer.wms("http://geoservices.brgm.fr/geologie", {
-        layers: "GEOLOGIE",
-        format: "image/png",
-        attribution: "&copy; BRGM"
-      }).addTo(mainMap);
-      baseLayers["Carte géologique"] = wmsGeolLayer;
-      L.control.layers(baseLayers).addTo(mainMap);
-
-      var vectLayer = L.geoJSON(data).addTo(mainMap);
-      mainMap.fitBounds(vectLayer.getBounds());
-    });
+  if ($('#map-main').length > 0) {
+    var map = base_map('map-main');
   }
 
 });
