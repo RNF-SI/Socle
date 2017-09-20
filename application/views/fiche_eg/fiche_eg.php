@@ -30,6 +30,16 @@ $this->load->view('fiche_ep/base_rubrique', [
   'ep' => $ep,
   'id_rubrique' => 'nature_roches']);
 
+$this->load->view('fiche_ep/base_rubrique', [
+  'titre' => 'Minéraux et cristaux',
+  'ep' => $ep,
+  'id_rubrique' => 'mineraux']);
+
+$this->load->view('fiche_ep/base_rubrique', [
+  'titre' => 'Fossiles et fossilisation',
+  'ep' => $ep,
+  'id_rubrique' => 'fossiles']);
+
 ?>
 
 <h3>Perméabilité des terrains</h3>

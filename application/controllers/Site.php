@@ -32,7 +32,7 @@ class Site extends CI_Controller {
     }
 
     $data['caracteristiques'] = $model->getCaracteristiques($id, $rubrique);
-    $data['complements'] = $model->getComplements($id, array_keys($data['caracteristiques']));
+    $data['complements'] = $model->getComplementsRubrique($id, $rubrique);
     $comment = $model->getCommentaire($id, $rubrique);
     $data['commentaire'] = empty($comment) ? (object)array('commentaire' => '') : $comment;
 
@@ -77,17 +77,17 @@ class Site extends CI_Controller {
       }
     }
 
-    $data = array('rubrique' => $rubrique);
+    $data = array('rubrique' => $rubrique, 'type_rubrique' => $type);
     $data['ep'] = $model->get($id); // TODO : modifier le nom de variable
     $carIds = array();
-    $questions = array();
+    //$questions = array();
     $getId = function($elt) { return $elt->id; };
     foreach($model->getCaracteristiques($id, $rubrique) as $question => $cars) {
       $carIds[$question] = array_map($getId, $cars);
-      array_push($questions, $question);
+      //array_push($questions, $question);
     }
     $data['ep']->caracteristiques = $carIds;
-    $data['ep']->complements = $model->getComplements($id, $questions);
+    $data['ep']->complements = $model->getComplementsRubrique($id, $rubrique);
     $comment = $model->getCommentaire($id, $rubrique);
     $data['ep']->commentaire = empty($comment) ? (object)array('commentaire' => '') : $comment;
 

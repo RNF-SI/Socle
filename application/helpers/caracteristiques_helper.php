@@ -71,3 +71,43 @@ function commentaire($commentaire) {
   }
   return '';
 }
+
+// récursion pour niveaux hiérarchiques dans QCMS
+function structReponses($key, $val, $level, $caracteristiques, $complements) {
+  if (is_array($val)) {
+    $text = '';
+    foreach ($val as $k => $v) {
+      $text .= structReponses($k, $v, $level+1, $caracteristiques, $complements);
+    }
+    return $text;
+  } else {
+    if (empty($caracteristiques[$val]) && empty($complements[$val]))
+      return '';
+
+    $txt = '<h' . $level . '>' . $key . '</h' . $level . '>';
+    $txt .= liste_caracteristiques($caracteristiques, $val);
+    $txt .= complement($complements, $val);
+    return $txt;
+  }
+}
+
+
+// récursion pour niveaux hiérarchiques dans QCMS
+function structReponsesForm($key, $val, $level, $caracteristiques, $complements, $qcms) {
+  if (is_array($val)) {
+    $txt = '';
+    foreach ($val as $k => $v) {
+      $txt .= structReponsesForm($k, $v, $level+1, $caracteristiques, $complements, $qcms);
+    }
+    return $txt;
+  } else {
+    $txt = '<h' . $level . '>' . $key . '</h' . $level . '>';
+    $choices = $qcms[$val];
+    $cars = element($val, $caracteristiques);
+    $txt .= qcm_caracteristiques($choices, $cars);
+
+    $txt .= liste_complement($val, isset($complements[$val]) ? $complements[$val]->elements : '');
+    return $txt;
+  }
+
+}

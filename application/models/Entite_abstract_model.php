@@ -65,6 +65,22 @@ class Entite_abstract_model extends CI_Model {
     return $res;
   }
 
+  public function getComplementsRubrique($id, $rubrique) {
+
+    $query = $this->db
+      ->select($this->complementTableName . '.*')
+      ->distinct()
+      ->join('qcm', $this->complementTableName . '.question = qcm.question')
+      ->where($this->linkColumnName(), $id)
+      ->where('rubrique', $rubrique)
+      ->get($this->complementTableName);
+    $res = array();
+    foreach ($query->result() as $comp) {
+      $res[$comp->question] = $comp;
+    }
+    return $res;
+  }
+
   public function getCommentaire($id, $rubrique) {
     $query = $this->db->get_where($this->commentTableName, [$this->linkColumnName() => $id, 'rubrique' => $rubrique]);
     return $query->row();
