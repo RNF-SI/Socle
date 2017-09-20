@@ -1,4 +1,4 @@
-<?= form_open('site/rubrique_form/' . $ep->id . '/' . $rubrique,
+<?= form_open('site/rubrique_form/' . $ep->id . '/' . $rubrique . '/' . $type_rubrique,
 ['class' => 'form-horizontal']) ?>
 <p>Quels figurés rocheux particuliers (sédimentaires ou autres) sont-ils observables
 sur votre territoire&nbsp;? Ce questionnement est repris en Q-3, associé à chaque entité

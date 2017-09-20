@@ -40,6 +40,11 @@ $this->load->view('fiche_ep/base_rubrique', [
   'ep' => $ep,
   'id_rubrique' => 'fossiles']);
 
+$this->load->view('fiche_ep/base_rubrique', [
+  'titre' => 'Structures et figurés rocheux particuliers',
+  'ep' => $ep,
+  'id_rubrique' => 'structures_rocheuses_particulieres']);
+
 ?>
 
 <h3>Perméabilité des terrains</h3>
