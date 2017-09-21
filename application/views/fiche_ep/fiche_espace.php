@@ -9,6 +9,41 @@
 <div id="carto">
   <div id="map-main" style="height: 400px;"></div>
 </div>
+<div class="panel panel-info" id="tdm">
+  <div class="panel-heading"><h2>Sommaire</h2></div>
+  <div class="panel-body">
+    <ul>
+      <li><a href="#Q-1">Q-1 / Approche géographique du territoire</a>
+        <ul>
+          <li><a href="#points_de_vue">Q-1 /0 Points de vue / Panoramas</a></li>
+          <li><a href="#contexte_general">Q-1 /1 Contexte général</a></li>
+          <li><a href="#contexte_hydro">Q-1 /2 Contexte hydrographique général</a></li>
+          <li><a href="#contexte_littoral">Q-1 /3 Contexte général littoral et marin</a></li>
+          <li><a href="#contexte_anthropique">Q-1 /4 Contexte anthropique général - Aménagements</a></li>
+        </ul>
+      </li>
+      <li><a href="#Q-2">Q-2 / Aspects morphologiques et structuraux des terrains</a>
+        <ul>
+          <li><a href="#contexte_geol_regional">Q-2 /0 Contexte géologique régional et local</a></li>
+          <li><a href="#structures_geol_regionales">Q-2 /1 Grandes structures géologiques régionales</a></li>
+          <li><a href="#structures_geol_territoire">Q2 /2 Structures géologiques à l’échelle du territoire</a></li>
+          <li><a href="#contexte_sismique">Q-2 /3 Contexte sismique</a></li>
+          <li><a href="#volcanisme">Q-2 /4 Structures et morphologies liées au volcanisme</a></li>
+          <li><a href="#morpho_erosive">Q-2 /5 Morphologies liées à l’érosion générale</a></li>
+          <li><a href="#morpho_karstique">Q-2 /6 Morphologies karstiques</a></li>
+          <li><a href="#morpho_glaciaire">Q-2 /7 Morphologies glaciaires</a></li>
+          <li><a href="#morpho_alluvionnaire">Q-2 /8 Morphologies alluvionnaires des cours d’eau</a></li>
+          <li><a href="#plages_littorales">Q-2 /9 Plages littorales : sable, galets et vase</a></li>
+          <li><a href="#dunes_littorales">Q-2 /10 Systèmes dunaires littoraux</a></li>
+          <li><a href="#cotes_rocheuses">Q-2 /11 Côtes rocheuses</a></li>
+          <li><a href="#structures_rocheuses_particulieres">Q-2 /12 Structures et figurés rocheux particuliers à petite et moyenne échelle</a></li>
+        </ul>
+      </li>
+      <li> [A continuer...]</li>
+    </ul>
+
+  </div>
+</div>
 <div id="rubriques" class="panel-group">
   <h2>Q-1 / Approche géographique du territoire</h2>
   <div class="explication">
@@ -51,32 +86,32 @@ chaque territoire.</p>
 
   <?php
     $this->load->view('fiche_ep/base_rubrique', [
-      'titre' => 'Q1 /0 Points de vue / Panoramas',
+      'titre' => 'Q-1 /0 Points de vue / Panoramas',
       'ep' => $ep,
       'id_rubrique' => 'points_de_vue']);
 
     $this->load->view('fiche_ep/base_rubrique', [
-      'titre' => 'Q1 /1 Contexte général',
+      'titre' => 'Q-1 /1 Contexte général',
       'ep' => $ep,
       'id_rubrique' => 'contexte_general']);
 
     $this->load->view('fiche_ep/base_rubrique', [
-      'titre' => 'Q1 /2 Contexte hydrographique général',
+      'titre' => 'Q-1 /2 Contexte hydrographique général',
       'ep' => $ep,
       'id_rubrique' => 'contexte_hydro']);
 
     $this->load->view('fiche_ep/base_rubrique', [
-      'titre' => 'Q1 /3 Contexte général littoral et marin',
+      'titre' => 'Q-1 /3 Contexte général littoral et marin',
       'ep' => $ep,
       'id_rubrique' => 'contexte_littoral']);
 
     $this->load->view('fiche_ep/base_rubrique', [
-      'titre' => 'Q1 /4 Contexte anthropique général - Aménagements',
+      'titre' => 'Q-1 /4 Contexte anthropique général - Aménagements',
       'ep' => $ep,
       'id_rubrique' => 'contexte_anthropique']);
    ?>
 
-<h2>Q-2 / Aspects morphologiques et structuraux des terrains</h2>
+<h2 id="Q-2">Q-2 / Aspects morphologiques et structuraux des terrains</h2>
 <div class="explication">
    <p>Ce qui crée, ce qui déforme et ce qui use !</p>
    <p>Après avoir proposé une première découverte d’un territoire au travers de ses
@@ -126,12 +161,12 @@ chaque territoire.</p>
 
 <?php
  $this->load->view('fiche_ep/base_rubrique', [
-   'titre' => 'Q2 /0 Contexte géologique régional et local',
+   'titre' => 'Q-2 /0 Contexte géologique régional et local',
    'ep' => $ep,
    'id_rubrique' => 'contexte_geol_regional']);
 
  $this->load->view('fiche_ep/base_rubrique', [
-   'titre' => 'Q2 /1 Grandes structures géologiques régionales',
+   'titre' => 'Q-2 /1 Grandes structures géologiques régionales',
    'ep' => $ep,
    'id_rubrique' => 'structures_geol_regionales']);
 
@@ -141,52 +176,52 @@ chaque territoire.</p>
    'id_rubrique' => 'structures_geol_territoire']);
 
  $this->load->view('fiche_ep/base_rubrique', [
-   'titre' => 'Q2 /3 Contexte sismique',
+   'titre' => 'Q-2 /3 Contexte sismique',
    'ep' => $ep,
    'id_rubrique' => 'contexte_sismique']);
 
  $this->load->view('fiche_ep/base_rubrique', [
-   'titre' => 'Q2 /4 Structures et morphologies liées au volcanisme',
+   'titre' => 'Q-2 /4 Structures et morphologies liées au volcanisme',
    'ep' => $ep,
    'id_rubrique' => 'volcanisme']);
 
  $this->load->view('fiche_ep/base_rubrique', [
-   'titre' => 'Q2 /5 Morphologies liées à l’érosion générale',
+   'titre' => 'Q-2 /5 Morphologies liées à l’érosion générale',
    'ep' => $ep,
    'id_rubrique' => 'morpho_erosive']);
 
  $this->load->view('fiche_ep/base_rubrique', [
-   'titre' => 'Q2 /6 Morphologies karstiques',
+   'titre' => 'Q-2 /6 Morphologies karstiques',
    'ep' => $ep,
    'id_rubrique' => 'morpho_karstique']);
 
  $this->load->view('fiche_ep/base_rubrique', [
-   'titre' => 'Q2 /7 Morphologies glaciaires',
+   'titre' => 'Q-2 /7 Morphologies glaciaires',
    'ep' => $ep,
    'id_rubrique' => 'morpho_glaciaire']);
 
  $this->load->view('fiche_ep/base_rubrique', [
-   'titre' => 'Q2 /8 Morphologies alluvionnaires des cours d’eau',
+   'titre' => 'Q-2 /8 Morphologies alluvionnaires des cours d’eau',
    'ep' => $ep,
    'id_rubrique' => 'morpho_alluvionnaire']);
 
  $this->load->view('fiche_ep/base_rubrique', [
-   'titre' => 'Q2 /9 Plages littorales&nbsp;: sable, galets et vase',
+   'titre' => 'Q-2 /9 Plages littorales&nbsp;: sable, galets et vase',
    'ep' => $ep,
    'id_rubrique' => 'plages_littorales']);
 
  $this->load->view('fiche_ep/base_rubrique', [
-   'titre' => 'Q2 /10 Systèmes dunaires littoraux',
+   'titre' => 'Q-2 /10 Systèmes dunaires littoraux',
    'ep' => $ep,
    'id_rubrique' => 'dunes_littorales']);
 
  $this->load->view('fiche_ep/base_rubrique', [
-   'titre' => 'Q2 /11 Côtes rocheuses',
+   'titre' => 'Q-2 /11 Côtes rocheuses',
    'ep' => $ep,
    'id_rubrique' => 'cotes_rocheuses']);
 
  $this->load->view('fiche_ep/base_rubrique', [
-   'titre' => 'Q2 /12 Structures et figurés rocheux particuliers à petite et moyenne échelle',
+   'titre' => 'Q-2 /12 Structures et figurés rocheux particuliers à petite et moyenne échelle',
    'ep' => $ep,
    'id_rubrique' => 'structures_rocheuses_particulieres']);
 ?>
@@ -267,5 +302,8 @@ $this->load->view('fiche_ep/base_rubrique', [
   </div>
 <?php endif; ?>
 <a href="<?= site_url('site/ajout_eg/' . $ep->id) ?>" class="btn btn-primary">Ajouter une entité</a>
+
+<h2>Q-4 / Objets géologiques remarquables</h2>
+[A FAIRE]
 
 </div>
