@@ -259,11 +259,12 @@ $this->load->view('fiche_ep/base_rubrique', [
 <?php if (empty($entites_geol)): ?>
   <p>Aucune entité enregistrée.</p>
 <?php else: ?>
-  <ul>
+  <p>Cliquez sur une entité pour voir le détail.</p>
+  <div class="list-group">
     <?php foreach ($entites_geol as $eg) {
-      echo '<li><a href="' . site_url('site/fiche_entite_geol/' . $eg->id) .'">' . $eg->intitule . '</a></li>';
+      echo '<a href="' . site_url('site/fiche_entite_geol/' . $eg->id) .'" class="list-group-item">' . $eg->intitule . '</a>';
     } ?>
-  </ul>
+  </div>
 <?php endif; ?>
 <a href="<?= site_url('site/ajout_eg/' . $ep->id) ?>" class="btn btn-primary">Ajouter une entité</a>
 
