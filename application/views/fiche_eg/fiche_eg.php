@@ -1,6 +1,8 @@
 <script>
   var entite_id = <?= $eg->id ?>;
+  var id_ep_ref = '<?= $ep->code_national_ep ?>';
   var type_rubrique = 'EG';
+  var point_coords = '<?= $eg->coords ?>';
 </script>
 <p>
   <a href="<?= site_url('site/ajout_eg/'.$eg->espace_protege_id.'/'.$eg->id) ?>" class="btn btn-primary">Modifier</a>

@@ -30,6 +30,28 @@ class Entite_abstract_model extends CI_Model {
     return $query->result();
   }
 
+  public function update($id, $data) {
+    if (isset($data['geom'])) {
+      $this->db->set('geom', $data['geom'], FALSE);
+      unset($data['geom']);
+    }
+    $this->db->set($data)
+      ->where('id', $id)->update($this->tableName);
+  }
+
+  // ajout d'une entité
+  public function add($data) {
+    if (isset($data['geom'])) {
+      $this->db->set('geom', $data['geom'], FALSE);
+      unset($data['geom']);
+    }
+    $this->db->set($data);
+    $this->db->insert($this->tableName);
+    return $this->db->insert_id();
+  }
+
+
+
   public function getCaracteristiques($id, $rubrique = NULL) {
     // caractéristiques, groupé par question
     $this->db->from('qcm')
@@ -84,11 +106,6 @@ class Entite_abstract_model extends CI_Model {
   public function getCommentaire($id, $rubrique) {
     $query = $this->db->get_where($this->commentTableName, [$this->linkColumnName() => $id, 'rubrique' => $rubrique]);
     return $query->row();
-  }
-
-  public function update($id, $data) {
-    $this->db->set($data)
-      ->where('id', $id)->update($this->tableName);
   }
 
   public function update_rubrique($id, $data, $rubrique) {
@@ -152,12 +169,6 @@ class Entite_abstract_model extends CI_Model {
       }
     }
     $this->db->trans_complete();
-  }
-
-  // ajout d'une entité
-  public function add($data) {
-    $this->db->insert($this->tableName, $data);
-    return $this->db->insert_id();
   }
 
 }

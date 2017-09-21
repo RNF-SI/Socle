@@ -37,4 +37,28 @@ class Carto extends CI_Controller {
     $this->output->set_output($this->_create_geoJson(array($data)));
 
   }
+
+  // proxy pour contourner le cross-origin avec le BRGM
+  // et simplifier le traitement
+  public function featureInfoProxy() {
+    $params = $this->input->get();
+    // params: height, width, x, y, bbox
+    $params += [
+      'SERVICE' => 'WMS',
+      'VERSION'=> '1.1.1',
+      'REQUEST' => 'GetFeatureInfo',
+      'LAYERS' => 'SCAN_GEOL50',
+      'SRS' => 'EPSG:4326',
+      'QUERY_LAYERS' => 'SCAN_GEOL50',
+      'FEATURE_COUNT' => 100
+    ];
+    $base_url = 'http://infoterre.brgm.fr/services/gfi';
+    $url = $base_url . '?' . http_build_query($params);
+    $cont = file_get_contents($url);
+
+    $xml = new SimpleXMLElement($cont);
+    $struct = $xml->SCAN_GEOL50_layer->SCAN_GEOL50_feature;
+
+    $this->output->set_output(json_encode($struct));
+  }
 }

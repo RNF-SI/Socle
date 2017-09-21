@@ -5,6 +5,8 @@
 <form class="form-horizontal" action="<?= site_url('site/ajout_eg/'.$ep->id.($id_eg ? '/' . $id_eg : '')) ?>" method="POST">
   <div class="row">
     <div class="col-sm-7">
+      <p>Cliquez sur la carte pour localiser le point et remplir automatiquement les références de l'entité cartographiée.
+        (ne fonctionne que sur la France métropolitaine)</p>
         <?php
         function set_value_obj($label, $obj) {
           return set_value($label, isset($obj->$label) ? $obj->$label : NULL);
@@ -68,3 +70,6 @@ documentations, etc.)</li>
 
  <?= form_submit() ?>
 </form>
+<script>
+  var ep = <?= json_encode($ep) ?>;
+</script>

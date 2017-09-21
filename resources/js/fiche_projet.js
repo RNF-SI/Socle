@@ -39,7 +39,7 @@ $(function() {
 
   // carto
   if ($('#map-main').length > 0) {
-    var map = base_map('map-main');
+    var map = base_map('map-main', espace_protege.code_national_ep);
   }
 
 });
