@@ -36,7 +36,19 @@
             <div class="col-sm-2" id="logo">
               <img src="<?= base_url('resources/images/logo1.png') ?>" />
             </div>
-            <div class="col-sm-10"><h1>Géologie</h1></div>
+            <div class="col-sm-8"><h1>Géologie</h1></div>
+            <div class="col-sm-2">
+              <div id="user-info">
+                <?php
+                $user = $this->auth->user()->row();
+                if (is_null($user)): ?>
+                <a href="#" id="login-link">s'identifier</a>
+                <?php else: ?>
+                  connecté en tant que <a href="<?= site_url('utilisateurs/utilisateur/' . $user->id ) ?>">
+                    <?= $user->username ?></a> / <a href="#" id="logout-link">déconnecter</a>
+                <?php endif; ?>
+              </div>
+            </div>
           </div>
 
         </header>

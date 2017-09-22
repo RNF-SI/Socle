@@ -29,3 +29,35 @@ function base_map(id_map, id_ep_ref) {
 
   return mainMap;
 }
+
+
+$(function() {
+    // identification
+    $("#login-link").click(function(e) {
+      $.get(site_url('utilisateurs/login'), function (response) {
+        var msgbox = $(response);
+        $("#login-form-modal").remove();
+        $("body").append(msgbox);
+        msgbox.find("#login-form").on('submit', function(evt) {
+          evt.preventDefault();
+          $.post(site_url('utilisateurs/login'), $(this).serialize(), function(response) {
+            if (response.success) {
+              location.reload();
+            } else {
+              $("#login-message").addClass('alert alert-danger').html(response.message);
+            }
+          });
+        });
+        msgbox.modal("show");
+      });
+      return false;
+    });
+
+    // logout
+    $("#logout-link").click(function() {
+      $.get(site_url('utilisateurs/logout'), function() {
+        location.reload();
+      });
+      return false;
+    });
+});

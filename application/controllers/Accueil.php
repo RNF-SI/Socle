@@ -22,7 +22,7 @@ class Accueil extends CI_Controller {
 	{
 		$data = array();
 		$this->load->model('espace_protege_model');
-		$data['espaces'] = $this->espace_protege_model->getAllEspaces();
+		$data['espaces'] = $this->espace_protege_model->getAll();
 
 		$this->load->view('default/header');
 		$this->load->view('accueil', $data);
