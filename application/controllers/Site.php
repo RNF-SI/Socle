@@ -172,7 +172,7 @@ class Site extends CI_Controller {
     $data['eg'] = $eg;
     $data['ep'] = $this->espace_protege_model->get($eg->espace_protege_id);
 
-    $this->load->view('default/header', ['scripts' => ['fiche_eg.js']]);
+    $this->load->view('default/header', ['scripts' => ['fiche_projet.js', 'fiche_eg.js']]);
     $this->load->view('fiche_eg/fiche_eg', $data);
     $this->load->view('default/footer');
   }

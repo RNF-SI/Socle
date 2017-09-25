@@ -40,6 +40,16 @@ $(function() {
   // carto
   if ($('#map-main').length > 0) {
     var map = base_map('map-main', espace_protege.code_national_ep);
+    var popup = L.popup();
+    map.on("click", function(evt) {
+      if (map.getZoom() < 11) return false;
+      popup.setLatLng(evt.latlng);
+      getGeolInfo(map, evt, function(data) {
+        var cont = '<p><b>Entité géologique :</b><br />' + data.notation + ' : <i>'
+          + data.description + '</i></p>';
+        popup.setContent(cont).openOn(map);
+      });
+    })
   }
 
 });

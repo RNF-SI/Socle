@@ -61,3 +61,17 @@ $(function() {
       return false;
     });
 });
+
+// téléchargement des infos BRGM sur un point cliqué
+function getGeolInfo(map, evt, callback) {
+  var url = site_url('carto/featureInfoProxy');
+  var size = map.getSize();
+  var params = {
+    BBOX: map.getBounds().toBBoxString(),
+    WIDTH: size.x,
+    HEIGHT: size.y,
+    X: Math.round(evt.containerPoint.x),
+    Y: Math.round(evt.containerPoint.y)
+  };
+  $.get(url, params, callback);
+}
