@@ -4,7 +4,9 @@
   </div>
   <div id="collapse-<?=$id_rubrique ?>" class="panel-collapse collapse">
     <div class="panel-body">
-      <button class="btn btn-default button-edit-form"><span class="glyphicon glyphicon-edit"></span></button>
+      <?php if ($editable): ?>
+      <button class="btn btn-default button-edit-form"><span class="glyphicon glyphicon-edit"></span> Editer</button>
+    <?php endif; ?>
       <div class="message">
         <?php if (function_exists('validation_errors')) echo validation_errors('<div class="alert alert-warning">', '</div>'); ?>
       </div>

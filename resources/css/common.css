@@ -1,0 +1,24 @@
+
+h2, h3 {
+  color: #0c8da6;
+}
+
+header h1 {
+  color: #ca7b3e;
+  font-weight: bold;
+
+}
+
+header .subtitle {
+  font-size: 120%;
+  font-style: italic;
+  color: #ca7b3e;
+}
+
+li::marker {
+  color: #0c8da6;
+}
+
+.qcm input[type=checkbox] {
+  border-color: #0c8da6;
+}

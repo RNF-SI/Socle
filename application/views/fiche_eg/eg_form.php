@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <h3>Ere géologique</h3>
+  <h3>Âge des roches</h3>
   <ol id="echelle_geol" data-name="id_ere_geol" data-value="<?= set_value_obj('id_ere_geol',  $eg) ?>">
   <?php
   // structure arborescente de l'échelle géologique

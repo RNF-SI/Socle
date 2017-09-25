@@ -15,7 +15,7 @@
   <div class="col-sm-7">
     <h3>Identification sur la carte géologique</h3>
     <p>code <?= $eg->code_eg ?> : <?= $eg->intitule_eg ?></p>
-    <p>Ere géologique : <?= $eg->ere_geol_label ?></p>
+    <p>Âge des roches : <?= $eg->ere_geol_label ?></p>
   </div>
   <div class="col-sm-5">
     <div id="map" style="height:300px"></div>
