@@ -20,9 +20,9 @@ class Entite_geol_model extends Entite_abstract_model {
   }
 
   public function add($data) {
-    $data['geom'] = 'st_geometryAsText(st_Point(' . $data['coords'] . '))';
+    $data['geom'] = 'st_setSRID(st_Point(' . $data['coords'] . '), 4326)';
     unset($data['coords']);
-    return parent::insert($data);
+    return parent::add($data);
   }
 
   public function update($id_eg, $data) {
