@@ -11,6 +11,8 @@ class Entite_abstract_model extends CI_Model {
   protected $commentTableName = 'commentaire';
   protected $complementTableName = 'complement';
 
+  protected $entity;
+
 
   public function __construct() {
     $this->load->database();
@@ -21,8 +23,11 @@ class Entite_abstract_model extends CI_Model {
   }
 
   public function get($id) {
-    $query = $this->db->get_where($this->tableName, array('id' => $id));
-    return $query->row();
+    if (empty($this->entity) || $id != $this->entity->id) {
+      $query = $this->db->get_where($this->tableName, array('id' => $id));
+      $this->entity = $query->row();
+    }
+    return $this->entity;
   }
 
   public function getAll() {

@@ -23,6 +23,8 @@
       'RNC' => 'Réseve naturelle de Corse'
     ]) ?>
   <?= form_input('surface_ep', 'Superficie :') ?>
+  <?= form_select('group_id', 'Groupe d\'utilisateur à associer à l\'entité :', $groupes, min(array_keys($groupes))) ?>
+  <p><a href="<?= site_url('utilisateurs/creation_groupe') ?>">Créer un nouveau groupe</a></p>
   <?= form_submit() ?>
 </form>
 

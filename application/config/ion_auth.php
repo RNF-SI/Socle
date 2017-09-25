@@ -87,10 +87,10 @@ $config['admin_email']                = "admin@example.com"; // Admin Email, adm
 $config['default_group']              = 'members';           // Default group, use name
 $config['admin_group']                = 'admin';             // Default administrators group, use name
 $config['identity']                   = 'email';             // You can use any unique column in your table as identity column. The values in this column, alongside password, will be used for login purposes
-$config['min_password_length']        = 8;                   // Minimum Required Length of Password
+$config['min_password_length']        = 6;                   // Minimum Required Length of Password
 $config['max_password_length']        = 20;                  // Maximum Allowed Length of Password
 $config['email_activation']           = FALSE;               // Email Activation for registration
-$config['manual_activation']          = FALSE;               // Manual Activation for registration
+$config['manual_activation']          = TRUE;               // Manual Activation for registration
 $config['remember_users']             = TRUE;                // Allow users to be remembered and enable auto-login
 $config['user_expire']                = 86500;               // How long to remember the user (seconds). Set to zero for no expiration
 $config['user_extend_on_login']       = FALSE;               // Extend the users cookies every time they auto-login
@@ -103,7 +103,7 @@ $config['forgot_password_expiration'] = 0;                   // The number of mi
 $config['recheck_timer']              = 0;                   /* The number of seconds after which the session is checked again against database to see if the user still exists and is active.
 							           Leave 0 if you don't want session recheck. if you really think you need to recheck the session against database, we would
 								   recommend a higher value, as this would affect performance */
-								
+
 
 /*
  | -------------------------------------------------------------------------

@@ -11,7 +11,22 @@ class Site extends CI_Controller {
 
   public function fiche_site($id_ep) {
     $data = array();
-    $data['ep'] = $this->espace_protege_model->get($id_ep);
+    $ep = $this->espace_protege_model->get($id_ep);
+
+    // validation des droits d'affichage selon statut
+    if ($ep->statut_validation == 'attente') {
+      $groups = ['admin', $ep->group_id];
+    } elseif ( $ep->statut_validation == 'validation') {
+      $groups = ['admin', 'validators', $ep->group_id];
+    }
+
+    if ($ep->statut_validation != 'publié' && !$this->auth->in_group($groups)) {
+      $this->session->set_flashdata('message', 'Vous n\'avez pas les droits pour voir cette page.');
+      redirect('accueil/index');
+    }
+
+    $data['ep'] = $ep;
+    $data['editable'] = $this->espace_protege_model->is_editable($id_ep);
     $data['entites_geol'] = $this->espace_protege_model->getEntitesGeol($id_ep);
 
     $this->load->view('default/header', ['scripts' => ['fiche_projet.js']]);
@@ -63,7 +78,6 @@ class Site extends CI_Controller {
       $config = array(
       );
 
-
       $this->form_validation->set_rules(element($rubrique, $config));
       if (!isset($config[$rubrique]) || $this->form_validation->run()) {
         $model->update_rubrique($id, $this->input->post(), $rubrique);
@@ -109,7 +123,9 @@ class Site extends CI_Controller {
       $this->form_validation->set_rules('nom_ep', 'nom', 'required');
       //$this->form_validation->set_rules('code_national_ep', '' 'required');
       if ($this->form_validation->run()) {
-        $id_ep = $this->espace_protege_model->add($this->input->post());
+        $data = $this->input->post();
+        $data['statut_validation'] = 'attente';
+        $id_ep = $this->espace_protege_model->add($data);
         $this->load->library('session');
         $this->session->set_flashdata('message_success', "Espace correctement entegistré");
         redirect('site/fiche_site/'.$id_ep);
@@ -121,6 +137,17 @@ class Site extends CI_Controller {
     $data = array();
 
     $data['espaces_ref'] = $this->espace_ref_model->getEspacesRefAvailable();
+    $data['groupes'] = array();
+    if ($this->auth->in_group(['admin', 'validators'])) {
+      $groups = $this->auth->groups()->result();
+    } else {
+      $groups = $this->auth->get_users_groups();
+    }
+    foreach($groups as $g) {
+      if ($g->id > 4) {
+        $data['groupes'][$g->id] = $g->name;
+      }
+    }
 
     $this->load->view('default/header');
     $this->load->view('ajout_ep', $data);

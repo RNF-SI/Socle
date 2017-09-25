@@ -15,6 +15,7 @@
          <link rel="stylesheet" href="<?php echo base_url("resources/css/" . $style) ?>" />
        <?php endforeach;
      endif; ?>
+     <link rel="stylesheet" href="<?php echo base_url("resources/css/common.css") ?>" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
@@ -36,7 +37,9 @@
             <div class="col-sm-2" id="logo">
               <img src="<?= base_url('resources/images/logo1.png') ?>" />
             </div>
-            <div class="col-sm-8"><h1>Géologie</h1></div>
+            <div class="col-sm-8"><h1>Base de données géologiques</h1>
+              <span class="subtitle">Réserves Naturelles de France</span>
+            </div>
             <div class="col-sm-2">
               <div id="user-info">
                 <?php
@@ -46,7 +49,12 @@
                 <?php else: ?>
                   connecté en tant que <a href="<?= site_url('utilisateurs/utilisateur/' . $user->id ) ?>">
                     <?= $user->username ?></a> / <a href="#" id="logout-link">déconnecter</a>
-                <?php endif; ?>
+                <?php endif;
+                  if ($this->auth->is_admin()):
+                ?>
+                <a href="<?= site_url('utilisateurs/gestion') ?>">Gestion des utilisateurs</a>
+              <?php endif; ?>
+
               </div>
             </div>
           </div>

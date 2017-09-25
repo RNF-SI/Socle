@@ -19,4 +19,11 @@ class Espace_protege_model extends Entite_abstract_model {
   public function getEntitesGeol($id_ep) {
     return $this->db->get_where('entite_geol', array('espace_protege_id' => $id_ep))->result();
   }
+
+  public function is_editable($id) {
+    $res = $this->get($id);
+    return $this->auth->in_group(['admin', $res->group_id]);
+  }
+
+
 }
