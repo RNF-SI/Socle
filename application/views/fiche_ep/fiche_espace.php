@@ -6,6 +6,23 @@
 <div id="entete">
   <h1><?= $ep->nom_ep ?></h1>
 </div>
+<?php if ($ep->statut_validation == 'attente' || $ep->statut_validation == 'validation'): ?>
+  <div class="alert alert-warning"><strong>Attention</strong><br />
+    <p>Cet espace est
+    <?php if ($ep->statut_validation == 'attente') {
+      echo 'au stade de brouillon. Cliquez ci-dessous pour le soumettre à validation.</p>';
+      echo '<a href="'. site_url('site/soumission_validation/' . $ep->id) . '" class="btn btn-success">Soumettre à validation</a>';
+    } else {
+      echo 'en attente de validation.</p><div class="btn-group">' ;
+      if ($this->auth->in_group('validators')) {
+        echo '<a href="' . site_url('site/validation/' . $id->ep) . '" class="btn btn-primary">Valider les données</a>';
+        echo '<a href="' . site_url('site/invalidation/' . $id->ep) . '" class="btn btn-primary">Invalider les données</a>';
+      }
+      echo '</div>';
+    }
+    ?>
+  </div>
+<?php endif; ?>
 <div id="carto">
   <div id="map-main" style="height: 400px;"></div>
 </div>

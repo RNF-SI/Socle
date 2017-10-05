@@ -13,8 +13,8 @@
     <tr>
       <td><?= $user->username ?></td>
       <td><?= $user->email ?></td>
-      <td><?= $user->active ? 'oui' : 'non' ?></td>
-      <td><a href="<?= site_url('utilisateurs/modif_utilisateur/' . $user->id) ?>">modifier</a></td>
+      <td class="col-active"><?= $user->active ? 'oui' : 'non' ?></td>
+      <td><a href="#" data-user-id="<?= $user->id ?>" class="action-activate"><?= $user->active ? 'désactiver' : 'activer' ?></a></td>
     </tr>
   <?php endforeach; ?>
 </tbody>

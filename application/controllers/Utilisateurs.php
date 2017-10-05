@@ -22,7 +22,7 @@ class Utilisateurs extends CI_Controller {
     $data = array();
     $data['users'] = $this->auth->users()->result();
 
-    $this->load->view('default/header');
+    $this->load->view('default/header', ['scripts' => ['gestion_utilisateurs.js']]);
     $this->load->view('utilisateurs/liste_utilisateurs', $data);
     $this->load->view('default/footer');
   }
@@ -43,7 +43,7 @@ class Utilisateurs extends CI_Controller {
       $this->form_validation->set_rules('email', 'email', 'required|valid_email');
       $this->form_validation->set_rules('password', 'mot de passe', 'required');
       if ($this->form_validation->run()) {
-        $success = $this->auth->login($this->input->post('email'), $this->input->post('password'));
+        $success = $this->auth->login($this->input->post('email'), $this->input->post('password'), TRUE);
         $data = array('success' => $success);
         if (!$success)
           $data["message"] = "Email ou mot de passe incorrect.";
@@ -112,13 +112,21 @@ class Utilisateurs extends CI_Controller {
     $this->load->view('default/footer');
   }
 
-  // active un utilisateur (pour ajax)
-  public function activate($id) {
+  // active / désactive un utilisateur (pour ajax)
+  public function toggle_activate($id) {
     if (!$this->auth->is_admin())	{
       $data = array('success' => FALSE, 'message' => 'seul un administrateur peut effectuer cette action');
 		} else {
-      $this->auth->update($id, array('active' => 1));
-      $data = array('success' => TRUE);
+      $user = $this->auth->user($id)->row();
+      if ($user->active) {
+        $res = $this->auth->deactivate($id);
+        $data['action'] = 'deactivated';
+      } else {
+        $res = $this->auth->activate($id);
+        $data['action'] = 'activated';
+      }
+      $data['success'] = $res;
+      $data['message'] = $this->auth->errors();
     }
 
     $this->output->set_content_type('application/json');
@@ -140,6 +148,8 @@ class Utilisateurs extends CI_Controller {
     $this->load->view('utilisateurs/creation_groupe', $data);
     $this->load->view('default/footer');
   }
+
+
 
 
 }

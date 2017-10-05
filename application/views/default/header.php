@@ -62,3 +62,4 @@
         </header>
         <div class="container">
           <a href="<?= site_url() ?>">Accueil</a>
+          <div id="messages-global"></div>

@@ -113,6 +113,11 @@ class Site extends CI_Controller {
 
   // enregistrement d'un nouvel EP
   public function creation() {
+    if (! $this->auth->logged_in()) {
+      $this->session->set_flashdata('message', 'Connectez-vous pour pouvoir accéder à cette page.');
+      redirect('accueil/index');
+    }
+
     $this->load->model('espace_ref_model');
     $this->load->helper('form_helper');
     $this->load->library('form_validation');
@@ -141,7 +146,7 @@ class Site extends CI_Controller {
     if ($this->auth->in_group(['admin', 'validators'])) {
       $groups = $this->auth->groups()->result();
     } else {
-      $groups = $this->auth->get_users_groups();
+      $groups = $this->auth->get_users_groups()->result();
     }
     foreach($groups as $g) {
       if ($g->id > 4) {
@@ -198,6 +203,14 @@ class Site extends CI_Controller {
     $eg = $this->entite_geol_model->get($id_eg);
     $data['eg'] = $eg;
     $data['ep'] = $this->espace_protege_model->get($eg->espace_protege_id);
+
+    $this->load->view('default/header', ['scripts' => ['fiche_projet.js', 'fiche_eg.js']]);
+    $this->load->view('fiche_eg/fiche_eg', $data);
+    $this->load->view('default/footer');
+  }
+
+  public function soumission_validation($id_ep) {
+    $this->espace_protege_model->change_status($id_ep, 'validation');
 
     $this->load->view('default/header', ['scripts' => ['fiche_projet.js', 'fiche_eg.js']]);
     $this->load->view('fiche_eg/fiche_eg', $data);

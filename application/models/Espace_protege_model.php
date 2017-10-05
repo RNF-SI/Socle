@@ -25,5 +25,10 @@ class Espace_protege_model extends Entite_abstract_model {
     return $this->auth->in_group(['admin', $res->group_id]);
   }
 
+  public function change_status($id_ep, $status) {
+    $this->db->where('id', $id_ep)
+      ->update('espace_protege', array('statut_validation' => $status));
+  }
+
 
 }
