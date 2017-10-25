@@ -5,7 +5,12 @@
   var point_coords = '<?= $eg->coords ?>';
 </script>
 <p>
-  <a href="<?= site_url('site/ajout_eg/'.$eg->espace_protege_id.'/'.$eg->id) ?>" class="btn btn-primary">Modifier</a>
+	<div class="btn-group">
+		<a href="<?= site_url('site/ajout_eg/'.$eg->espace_protege_id.'/'.$eg->id) ?>" class="btn btn-primary">
+			<span class="glyphicon glyphicon-pencil"></span> Modifier</a>
+		<a href="<?= site_url('site/ajout_eg/'.$eg->espace_protege_id) ?>" class="btn btn-primary">
+			<span class="glyphicon glyphicon-plus"></span> Créer une nouvelle entité</a>
+	</div>
 </p>
 <h1><?= $eg->intitule ?></h1>
 <p>Pour l'espace naturel <strong>
