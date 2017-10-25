@@ -203,6 +203,7 @@ class Site extends CI_Controller {
     $eg = $this->entite_geol_model->get($id_eg);
     $data['eg'] = $eg;
     $data['ep'] = $this->espace_protege_model->get($eg->espace_protege_id);
+	$data['editable'] = $this->espace_protege_model->is_editable($eg->espace_protege_id);
 
     $this->load->view('default/header', ['scripts' => ['fiche_projet.js', 'fiche_eg.js']]);
     $this->load->view('fiche_eg/fiche_eg', $data);
