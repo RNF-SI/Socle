@@ -321,6 +321,42 @@ $this->load->view('fiche_ep/base_rubrique', [
 <a href="<?= site_url('site/ajout_eg/' . $ep->id) ?>" class="btn btn-primary">Ajouter une entité</a>
 
 <h2>Q-4 / Objets géologiques remarquables</h2>
-[A FAIRE]
+<p>Pour chaque <em>paysage, structure, site, roche, minéral ou fossile, toute formation
+ou entité rocheuse</em>, à une échelle ou à une autre, il est important de se poser la
+question de son intérêt spécifique à un titre ou à un autre.<br />
+Pensez-vous que tel objet ou telle entité géologique possède un intérêt particulier,
+même minime, à titre scientifique, pédagogique, esthétique, historique,
+culturel, autre ?<br />
+En un mot se poser la question et identifier ce qui vous semble remarquable !
+<quote>Cet objet géologique vous semble-t-il intéressant ?<br />
+Est-il qualifiable d’ « objet géologique remarquable » ?</quote></p>
+
+<p>Au-delà de la subtilité des qualificatifs, la démarche est importante car elle permet
+de pointer et de nommer les particularités et les richesses géologiques d’un
+territoire, si besoin de les protéger et de les valoriser. Il est alors nécessaire, après
+avoir repéré et identifié un objet, de le décrire et d’en faire <em>valider l’importance !</em></p>
+
+<strong>Faites-vous aider si besoin !</strong>
+<p>Comme pour les autres disciplines des sciences de la nature, la chose n’est pas
+toujours facile pour une personne non spécialiste. Il est alors nécessaire de faire
+appel au <em>géologue</em>.</p>
+
+<p>Repérer les objets géologiques remarquables est aussi fondamental pour les intégrer
+à votre <em>plan de gestion</em>&nbsp;:
+<ul><li>premièrement dans la phase de diagnostic du territoire pour avoir un état
+des lieux le plus complet possible,</li>
+<li>et ensuite dans la définition des objectifs de gestion, en termes d’études, de
+conservation, de protection et de valorisation auprès de différents publics.</li></ul>
+
+<p>Parmi les objets géologiques, certains, par leur richesse spécifique ou leur rareté,
+ont une valeur exceptionnelle. Ils entrent alors dans le domaine du patrimoine
+géologique, à connaitre et impérativement conserver et protéger. Un
+<a href="https://inpn.mnhn.fr/programme/patrimoine-geologique/presentation">Inventaire
+National du Patrimoine Géologique (INPG)</a> est aujourd’hui en cours. Savoir si
+votre territoire est concerné par cet inventaire est aussi chose importante ! Pour
+en savoir plus et connaitre le patrimoine identifié dans votre région, n’hésitez
+pas à vous rapprocher de votre DREAL.</p>
+<p><a class="btn btn-primary" href="https://inpn.mnhn.fr/accueil/recherche-de-donnees/inpg/" target="_blank">Faire une recherche sur l'INPG</a></p>
+[A CONTINUER]
 
 </div>
