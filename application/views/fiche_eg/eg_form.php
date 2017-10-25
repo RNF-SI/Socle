@@ -7,12 +7,13 @@
     <div class="col-sm-7">
       <p>Cliquez sur la carte pour localiser le point et remplir automatiquement les références de l'entité cartographiée.
         (ne fonctionne que sur la France métropolitaine)</p>
+      <p>Pour une entité fractionnée, plusieurs points peuvent être positionnés.</p>
         <?php
-        function set_value_obj($label, $obj) {
-          return set_value($label, isset($obj->$label) ? $obj->$label : NULL);
+        function set_value_obj($label, $obj, $html_escape=TRUE) {
+          return set_value($label, isset($obj->$label) ? $obj->$label : NULL, $html_escape);
         }
 
-        echo form_hidden('coords', set_value_obj('coords', $eg));
+        echo form_hidden('geojson', set_value_obj('geojson', $eg, FALSE));
         echo form_input('intitule', 'Nom de l\'entité (libre)', set_value_obj('intitule', $eg));
         echo form_input('code_eg', 'code de l\'entité sur la carte géologique', set_value_obj('code_eg', $eg));
         echo form_input('intitule_eg', 'nom de l\'entité sur la légende de la carte', set_value_obj('intitule_eg', $eg));

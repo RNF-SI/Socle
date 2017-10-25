@@ -2,7 +2,7 @@
   var entite_id = <?= $eg->id ?>;
   var id_ep_ref = '<?= $ep->code_national_ep ?>';
   var type_rubrique = 'EG';
-  var point_coords = '<?= $eg->coords ?>';
+  var point_coords = <?= $eg->geojson ?>;
 </script>
 <p>
 	<div class="btn-group">

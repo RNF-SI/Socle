@@ -14,20 +14,20 @@ class Entite_geol_model extends Entite_abstract_model {
     return $this->db
       ->join('echelle_geol', 'echelle_geol.id = id_ere_geol', 'left')
       ->select([$this->tableName.'.*', 'echelle_geol.label AS ere_geol_label'])
-      ->select('st_x(geom) || \',\' || st_y(geom) AS coords')
+      ->select('st_asGeoJson(geom) AS geojson')
       ->get_where($this->tableName, array($this->tableName.'.id'=>$id_eg))
       ->row();
   }
 
   public function add($data) {
-    $data['geom'] = 'st_setSRID(st_Point(' . $data['coords'] . '), 4326)';
-    unset($data['coords']);
+    $data['geom'] = 'st_setSRID(st_geomFromGeoJson(\'' .$data['geojson'] . '\'), 4326)';
+    unset($data['geojson']);
     return parent::add($data);
   }
 
   public function update($id_eg, $data) {
-    $data['geom'] = 'st_setSRID(st_Point(' . $data['coords'] . '), 4326)';
-    unset($data['coords']);
+    $data['geom'] = 'st_setSRID(st_geomFromGeoJson(\'' .$data['geojson'] . '\'), 4326)';
+    unset($data['geojson']);
     return parent::update($id_eg, $data);
   }
 

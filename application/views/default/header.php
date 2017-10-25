@@ -12,7 +12,7 @@
    <?php
        if (isset($styles)):
           foreach ($styles as $style): ?>
-         <link rel="stylesheet" href="<?php echo base_url("resources/css/" . $style) ?>" />
+         <link rel="stylesheet" href="<?php echo substr($style, 0, 4) == 'http' ? $style :  base_url("resources/css/" . $style) ?>" />
        <?php endforeach;
      endif; ?>
      <link rel="stylesheet" href="<?php echo base_url("resources/css/common.css") ?>" />
@@ -27,7 +27,7 @@
         <?php
         if (isset($scripts)):
            foreach ($scripts as $script): ?>
-          <script src="<?php echo base_url("resources/js/" . $script) ?>"></script>
+          <script src="<?php echo substr($script, 0, 4) == 'http' ? $script : base_url("resources/js/" . $script) ?>"></script>
         <?php endforeach;
       endif; ?>
     </head>

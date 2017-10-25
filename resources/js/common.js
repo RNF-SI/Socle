@@ -13,17 +13,17 @@ function base_map(id_map, id_ep_ref) {
   }).addTo(mainMap);
   var baseLayers = {"OpenstreetMap": osmLayer};
 
+  var wmsGeolLayer = L.tileLayer.wms("http://geoservices.brgm.fr/geologie", {
+    layers: "GEOLOGIE",
+    format: "image/png",
+    attribution: "&copy; BRGM"
+  }).addTo(mainMap);
+  baseLayers["Carte géologique"] = wmsGeolLayer;
+  L.control.layers(baseLayers).addTo(mainMap);
+
   // contours de la réserve
   $.get(site_url("carto/espace_protege_geom/" + id_ep_ref), function(data) {
-    var wmsGeolLayer = L.tileLayer.wms("http://geoservices.brgm.fr/geologie", {
-      layers: "GEOLOGIE",
-      format: "image/png",
-      attribution: "&copy; BRGM"
-    }).addTo(mainMap);
-    baseLayers["Carte géologique"] = wmsGeolLayer;
-    L.control.layers(baseLayers).addTo(mainMap);
-
-    var vectLayer = L.geoJSON(data).addTo(mainMap);
+    var vectLayer = L.geoJSON(data).addTo(mainMap).bringToBack();
     mainMap.fitBounds(vectLayer.getBounds());
   });
 
