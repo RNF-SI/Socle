@@ -19,7 +19,9 @@ function base_map(id_map, id_ep_ref) {
     attribution: "&copy; BRGM"
   }).addTo(mainMap);
   baseLayers["Carte géologique"] = wmsGeolLayer;
+
   L.control.layers(baseLayers).addTo(mainMap);
+  L.control.scale({imperial: false}).addTo(mainMap);
 
   // contours de la réserve
   $.get(site_url("carto/espace_protege_geom/" + id_ep_ref), function(data) {
