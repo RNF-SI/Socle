@@ -16,7 +16,8 @@ function base_map(id_map, id_ep_ref) {
   var wmsGeolLayer = L.tileLayer.wms("http://geoservices.brgm.fr/geologie", {
     layers: "GEOLOGIE",
     format: "image/png",
-    attribution: "&copy; BRGM"
+    attribution: "&copy; BRGM",
+    maxZoom: 15
   }).addTo(mainMap);
   baseLayers["Carte géologique"] = wmsGeolLayer;
 
