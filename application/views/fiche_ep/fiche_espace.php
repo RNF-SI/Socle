@@ -56,7 +56,13 @@
           <li><a href="#structures_rocheuses_particulieres">Q-2 /12 Structures et figurés rocheux particuliers à petite et moyenne échelle</a></li>
         </ul>
       </li>
-      <li> [A continuer...]</li>
+      <li><a href="#Q-3">Q-3 / Identification des terrains, des roches et des fossiles</a>
+        <ul>
+          <li><a href="#infos_preliminaires">Q3 /00 Informations préliminaires</a></li>
+          <li><a href="#Q3-1">Q3 /1 Recensement des différentes entités géologiques constituant le sous-sol du territoire</a></li>
+        </ul>
+      </li>
+      <li><a href="#Q-4">Q-4 / Objets géologiques remarquables</a></li>
     </ul>
 
   </div>
@@ -243,7 +249,7 @@ chaque territoire.</p>
    'id_rubrique' => 'structures_rocheuses_particulieres']);
 ?>
 
-<h2>Q-3 / Identification des terrains, des roches et des fossiles</h2>
+<h2 id="Q-3">Q-3 / Identification des terrains, des roches et des fossiles</h2>
 <div class="explication">
 <p>Après avoir décrypté la géographie, les morphologies et l’aspect structural d’un
 territoire, son étude géologique passe par l’identification précise de la nature
@@ -307,7 +313,7 @@ $this->load->view('fiche_ep/base_rubrique', [
   'ep' => $ep,
   'id_rubrique' => 'liste_entites_geol']); */
  ?>
-<h3>Q3 /1 Recensement des différentes entités géologiques constituant le sous-sol du territoire</h3>
+<h3 id="Q3-1">Q3 /1 Recensement des différentes entités géologiques constituant le sous-sol du territoire</h3>
 <?php if (empty($entites_geol)): ?>
   <p>Aucune entité enregistrée.</p>
 <?php else: ?>
@@ -320,7 +326,7 @@ $this->load->view('fiche_ep/base_rubrique', [
 <?php endif; ?>
 <a href="<?= site_url('site/ajout_eg/' . $ep->id) ?>" class="btn btn-primary">Ajouter une entité</a>
 
-<h2>Q-4 / Objets géologiques remarquables</h2>
+<h2 id="Q-4">Q-4 / Objets géologiques remarquables</h2>
 <p>Pour chaque <em>paysage, structure, site, roche, minéral ou fossile, toute formation
 ou entité rocheuse</em>, à une échelle ou à une autre, il est important de se poser la
 question de son intérêt spécifique à un titre ou à un autre.<br />
