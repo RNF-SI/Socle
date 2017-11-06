@@ -30,7 +30,7 @@ class Site extends CI_Controller {
     $data['editable'] = $this->espace_protege_model->is_editable($id_ep);
     $data['entites_geol'] = $this->espace_protege_model->getEntitesGeol($id_ep);
 
-    $this->load->view('default/header', ['scripts' => ['fiche_projet.js']]);
+    $this->load->view('default/header', ['scripts' => ['fiche_projet.js'], 'title' => $ep->nom_ep]);
     $this->load->view('fiche_ep/fiche_espace', $data);
     $this->load->view('default/footer');
   }
@@ -208,7 +208,8 @@ class Site extends CI_Controller {
     $data['ep'] = $this->espace_protege_model->get($eg->espace_protege_id);
 	$data['editable'] = $this->espace_protege_model->is_editable($eg->espace_protege_id);
 
-    $this->load->view('default/header', ['scripts' => ['fiche_projet.js', 'fiche_eg.js']]);
+    $this->load->view('default/header', ['scripts' => ['fiche_projet.js', 'fiche_eg.js'],
+      'title' => 'Entité géologique "' . $eg->intitule . '"']);
     $this->load->view('fiche_eg/fiche_eg', $data);
     $this->load->view('default/footer');
   }

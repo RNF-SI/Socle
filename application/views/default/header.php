@@ -2,8 +2,8 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>BD Geol - Titre</title>
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <title>RNF - Géologie <?= isset($title) ? ' - '.$title : '' ?></title>
+        <link rel="icon" type="image/x-icon" href="<?= base_url('resources/images/icone_RNF.png') ?>" />
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
