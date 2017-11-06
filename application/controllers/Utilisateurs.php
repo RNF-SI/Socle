@@ -15,7 +15,8 @@ class Utilisateurs extends CI_Controller {
   public function gestion() {
 
     if (!$this->auth->is_admin())	{
-			$this->session->set_flashdata('messages', 'Vous devez être administrateur pour voir cette page');
+			$this->session->set_flashdata('message', 'Vous devez être administrateur pour voir cette page');
+      $this->session->set_flashdata('message-class', 'danger');
 			redirect('accueil/index');
 		}
 
@@ -71,6 +72,7 @@ class Utilisateurs extends CI_Controller {
   // ajout d'un utilisateur
   public function creation() {
     $this->load->library('form_validation');
+    $data_head = array();
     if ($this->input->post()) {
 
       $this->form_validation->set_rules('username', 'nom d\'utilisateur', 'required');
@@ -92,9 +94,11 @@ class Utilisateurs extends CI_Controller {
         );
         if ($res) {
           $this->session->set_flashdata('message', 'utilisateur créé avec succès');
+          $this->session->set_flashdata('message-class', 'success');
           redirect('utilisateurs/gestion');
         } else {
-          $data['message'] = $this->auth->errors();
+          $data_head['message'] = $this->auth->errors();
+          $data_head['message_class'] = 'danger';
         }
       }
     }
@@ -107,7 +111,7 @@ class Utilisateurs extends CI_Controller {
         $data['groups'][$grp->id] = $grp->name;
     }
 
-    $this->load->view('default/header');
+    $this->load->view('default/header', $data_head);
     $this->load->view('utilisateurs/creation', $data);
     $this->load->view('default/footer');
   }

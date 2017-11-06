@@ -62,4 +62,15 @@
         </header>
         <div class="container">
           <a href="<?= site_url() ?>">Accueil</a>
-          <div id="messages-global"></div>
+          <div id="messages-global">
+            <?php // gestion des messages
+            if (isset($message)) { // message dans les données
+              echo '<div class="alert alert-' . (isset($message_class) ? $message_class : 'info');
+              echo '" >' . $message . '</div>';
+            }
+            if ($this->session->flashdata('message')) { // message en session
+              echo '<div class="alert alert-' . ($this->session->flashdata('message-class') ? $this->session->flashdata('message-class') : 'info');
+              echo '" >' . $this->session->flashdata('message') . '</div>';
+            }
+            ?>
+          </div>

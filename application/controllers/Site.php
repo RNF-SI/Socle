@@ -21,7 +21,8 @@ class Site extends CI_Controller {
     }
 
     if ($ep->statut_validation != 'publié' && !$this->auth->in_group($groups)) {
-      $this->session->set_flashdata('message', 'Vous n\'avez pas les droits pour voir cette page.');
+      $this->session->set_flashdata('message', 'Vous n\'avez pas les droits pour voir cette page.<br />Veuillez vous identifier.');
+      $this->session->set_flashdata('message-class', 'danger');
       redirect('accueil/index');
     }
 
@@ -94,11 +95,9 @@ class Site extends CI_Controller {
     $data = array('rubrique' => $rubrique, 'type_rubrique' => $type);
     $data['ep'] = $model->get($id); // TODO : modifier le nom de variable
     $carIds = array();
-    //$questions = array();
     $getId = function($elt) { return $elt->id; };
     foreach($model->getCaracteristiques($id, $rubrique) as $question => $cars) {
       $carIds[$question] = array_map($getId, $cars);
-      //array_push($questions, $question);
     }
     $data['ep']->caracteristiques = $carIds;
     $data['ep']->complements = $model->getComplementsRubrique($id, $rubrique);
@@ -115,6 +114,7 @@ class Site extends CI_Controller {
   public function creation() {
     if (! $this->auth->logged_in()) {
       $this->session->set_flashdata('message', 'Connectez-vous pour pouvoir accéder à cette page.');
+      $this->session->set_flashdata('message-class', 'warning');
       redirect('accueil/index');
     }
 
@@ -132,7 +132,8 @@ class Site extends CI_Controller {
         $data['statut_validation'] = 'attente';
         $id_ep = $this->espace_protege_model->add($data);
         $this->load->library('session');
-        $this->session->set_flashdata('message_success', "Espace correctement entegistré");
+        $this->session->set_flashdata('message', "Espace correctement entegistré");
+        $this->session->set_flashdata('message-class', 'success');
         redirect('site/fiche_site/'.$id_ep);
       } else {
         log_message('ERROR', validation_errors());
@@ -178,7 +179,8 @@ class Site extends CI_Controller {
         }
 
         $this->load->library('session');
-        $this->session->set_flashdata('message_success', "Espace correctement entegistré");
+        $this->session->set_flashdata('message', "Espace correctement entegistré");
+        $this->session->set_flashdata('message-class', 'success');
         redirect('site/fiche_entite_geol/'.$id_eg);
       } else {
         log_message('ERROR', validation_errors());
@@ -192,7 +194,7 @@ class Site extends CI_Controller {
     );
     $data['echelle_geol'] = $this->entite_geol_model->echelle_geol();
 
-    $this->load->view('default/header', ['scripts' => ['jquery.bonsai.js', 'https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js', 'form_eg.js'], 
+    $this->load->view('default/header', ['scripts' => ['jquery.bonsai.js', 'https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js', 'form_eg.js'],
       'styles' => ['jquery.bonsai.css', 'https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css']]);
     $this->load->view('fiche_eg/eg_form', $data);
     $this->load->view('default/footer');
@@ -214,9 +216,7 @@ class Site extends CI_Controller {
   public function soumission_validation($id_ep) {
     $this->espace_protege_model->change_status($id_ep, 'validation');
 
-    $this->load->view('default/header', ['scripts' => ['fiche_projet.js', 'fiche_eg.js']]);
-    $this->load->view('fiche_eg/fiche_eg', $data);
-    $this->load->view('default/footer');
+
   }
 
 
