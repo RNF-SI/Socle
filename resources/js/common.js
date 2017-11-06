@@ -6,16 +6,28 @@ function site_url(path) {
 
 // crée une carte de base avec les couches qu'il faut
 function base_map(id_map, id_ep_ref) {
-  var mainMap = L.map(id_map).setView([46, 1], 7);
-  var osmLayer = L.tileLayer('http://tile-{s}.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-      maxZoom: 18
+  var mainMap = L.map(id_map);
+
+  var baseLayers = {};
+
+  var ignLayer = L.tileLayer("http://wxs.ign.fr/qi0jtcvtmn01lkt0621p5yci/geoportail/wmts?" +
+        "REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0" +
+        "&STYLE=normal" +
+        "&TILEMATRIXSET=PM" +
+        "&FORMAT=image/jpeg"+
+        "&LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS"+
+	       "&TILEMATRIX={z}" +
+        "&TILEROW={y}" +
+        "&TILECOL={x}", {
+      attribution: 'IGN-F/Geoportail',
+      maxZoom: 18,
+      tileSize: 256
   }).addTo(mainMap);
-  var baseLayers = {"OpenstreetMap": osmLayer};
+  baseLayers['IGN'] = ignLayer;
 
   var wmsGeolLayer = L.tileLayer.wms("http://geoservices.brgm.fr/geologie", {
     layers: "GEOLOGIE",
-    format: "image/png",
+    format: "image/jpeg",
     attribution: "&copy; BRGM",
     maxZoom: 15
   }).addTo(mainMap);
