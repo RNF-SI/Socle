@@ -23,7 +23,7 @@ class Utilisateurs extends CI_Controller {
     $data = array();
     $data['users'] = $this->auth->users()->result();
 
-    $this->load->view('default/header', ['scripts' => ['gestion_utilisateurs.js']]);
+    $this->load->view('default/header', ['scripts' => ['js/gestion_utilisateurs.js']]);
     $this->load->view('utilisateurs/liste_utilisateurs', $data);
     $this->load->view('default/footer');
   }

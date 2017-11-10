@@ -30,7 +30,7 @@ class Site extends CI_Controller {
     $data['editable'] = $this->espace_protege_model->is_editable($id_ep);
     $data['entites_geol'] = $this->espace_protege_model->getEntitesGeol($id_ep);
 
-    $this->load->view('default/header', ['scripts' => ['fiche_projet.js'], 'title' => $ep->nom_ep]);
+    $this->load->view('default/header', ['scripts' => ['js/fiche_projet.js'], 'title' => $ep->nom_ep]);
     $this->load->view('fiche_ep/fiche_espace', $data);
     $this->load->view('default/footer');
   }
@@ -194,8 +194,8 @@ class Site extends CI_Controller {
     );
     $data['echelle_geol'] = $this->entite_geol_model->echelle_geol();
 
-    $this->load->view('default/header', ['scripts' => ['jquery.bonsai.js', 'https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js', 'form_eg.js'],
-      'styles' => ['jquery.bonsai.css', 'https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css']]);
+    $this->load->view('default/header', ['scripts' => ['lib/jquery.bonsai/jquery.bonsai.js', 'https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js', 'js/form_eg.js'],
+      'styles' => ['lib/jquery.bonsai/jquery.bonsai.css', 'https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css']]);
     $this->load->view('fiche_eg/eg_form', $data);
     $this->load->view('default/footer');
   }
@@ -206,9 +206,9 @@ class Site extends CI_Controller {
     $eg = $this->entite_geol_model->get($id_eg);
     $data['eg'] = $eg;
     $data['ep'] = $this->espace_protege_model->get($eg->espace_protege_id);
-	$data['editable'] = $this->espace_protege_model->is_editable($eg->espace_protege_id);
+	  $data['editable'] = $this->espace_protege_model->is_editable($eg->espace_protege_id);
 
-    $this->load->view('default/header', ['scripts' => ['fiche_projet.js', 'fiche_eg.js'],
+    $this->load->view('default/header', ['scripts' => ['js/fiche_projet.js', 'js/fiche_eg.js'],
       'title' => 'Entité géologique "' . $eg->intitule . '"']);
     $this->load->view('fiche_eg/fiche_eg', $data);
     $this->load->view('default/footer');
@@ -217,7 +217,19 @@ class Site extends CI_Controller {
   public function soumission_validation($id_ep) {
     $this->espace_protege_model->change_status($id_ep, 'validation');
 
+  }
 
+  // Fiche de synthèse d'un EP
+  public function resume($id_ep) {
+    $ep = $this->espace_protege_model->get($id_ep);
+
+    $data = new stdClass();
+    $data->ep = $ep;
+    $data->caract = $this->espace_protege_model->getCaracteristiques($id_ep);
+
+    $this->load->view('default/header', ['title' => 'Synthèse ' . $ep->nom_ep]);
+    $this->load->view('fiche_ep/synthese_ep', $data);
+    $this->load->view('default/footer');
   }
 
 

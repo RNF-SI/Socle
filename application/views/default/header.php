@@ -5,29 +5,25 @@
         <title>RNF - Géologie <?= isset($title) ? ' - '.$title : '' ?></title>
         <link rel="icon" type="image/x-icon" href="<?= base_url('resources/images/icone_RNF.png') ?>" />
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
-   integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
-   crossorigin=""/>
+        <link rel="stylesheet" href="<?= base_url('resources/lib/bootstrap/css/bootstrap.min.css') ?>" />
+        <link rel="stylesheet" href="<?= base_url('resources/lib/leaflet/leaflet.css') ?>" />
    <?php
        if (isset($styles)):
           foreach ($styles as $style): ?>
-         <link rel="stylesheet" href="<?php echo substr($style, 0, 4) == 'http' ? $style :  base_url("resources/css/" . $style) ?>" />
+         <link rel="stylesheet" href="<?php echo substr($style, 0, 4) == 'http' ? $style :  base_url("resources/" . $style) ?>" />
        <?php endforeach;
      endif; ?>
      <link rel="stylesheet" href="<?php echo base_url("resources/css/common.css") ?>" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
-   integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
-   crossorigin=""></script>
+        <script src="<?= base_url('resources/lib/jquery-3.2.1.min.js') ?>"></script>
+        <script src="<?= base_url('resources/lib/bootstrap/js/bootstrap.min.js') ?>"></script>
+        <script src="<?= base_url('resources/lib/leaflet/leaflet.js') ?>"></script>
         <script>var base_url = '<?= base_url() ?>';</script>
 
         <script src="<?php echo base_url("resources/js/common.js") ?>"></script>
         <?php
         if (isset($scripts)):
            foreach ($scripts as $script): ?>
-          <script src="<?php echo substr($script, 0, 4) == 'http' ? $script : base_url("resources/js/" . $script) ?>"></script>
+          <script src="<?php echo substr($script, 0, 4) == 'http' ? $script : base_url("resources/" . $script) ?>"></script>
         <?php endforeach;
       endif; ?>
     </head>
