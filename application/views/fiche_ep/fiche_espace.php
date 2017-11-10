@@ -326,6 +326,14 @@ $this->load->view('fiche_ep/base_rubrique', [
 <?php endif; ?>
 <a href="<?= site_url('site/ajout_eg/' . $ep->id) ?>" class="btn btn-primary">Ajouter une entité</a>
 
+<?php
+$this->load->view('fiche_ep/base_rubrique', [
+  'titre' => 'Q3 /2 Le patrimoine géologique des réserves naturelles conservé hors site',
+  'ep' => $ep,
+  'id_rubrique' => 'collections']);
+?>
+
+
 <h2 id="Q-4">Q-4 / Objets géologiques remarquables</h2>
 <p>Pour chaque <em>paysage, structure, site, roche, minéral ou fossile, toute formation
 ou entité rocheuse</em>, à une échelle ou à une autre, il est important de se poser la
