@@ -61,7 +61,8 @@ class Entite_abstract_model extends CI_Model {
     // caractéristiques, groupé par question
     $this->db->from('qcm')
       ->join($this->qcmLinkTable, 'qcm_id = qcm.id')
-      ->where($this->linkColumnName(), $id);
+      ->where($this->linkColumnName(), $id)
+      ->order_by('question, ordre_par_question');
     if (! is_null($rubrique)) {
       $this->db->where('rubrique', $rubrique);
     }
@@ -76,6 +77,32 @@ class Entite_abstract_model extends CI_Model {
       array_push($data[$car->question], $car);
     }
 
+    return $data;
+  }
+
+
+  // recupère toutes les caractéristiques pour une rubriques
+  // et précise si elles sont sélectionnées
+  public function getCaracteristiquesForm($id, $rubrique = NULL) {
+    $sousreq = $this->db->where($this->linkColumnName(), $id)
+      ->get_compiled_select($this->qcmLinkTable);
+    $this->db->from('qcm')
+      ->join('(' . $sousreq . ') AS sreq', 'qcm_id = qcm.id', 'left')
+      ->order_by('question, ordre_par_question');
+    if (! is_null($rubrique)) {
+      $this->db->where('rubrique', $rubrique);
+    }
+    $query = $this->db->get();
+
+    $res = $query->result();
+
+    $data = array();
+    foreach ($res as $car) {
+        $car->checked = (! empty($car->qcm_id));
+      if (!isset($data[$car->question]))
+        $data[$car->question] = array();
+      $data[$car->question][$car->id] = $car;
+    }
     return $data;
   }
 
@@ -114,9 +141,26 @@ class Entite_abstract_model extends CI_Model {
   }
 
   public function update_rubrique($id, $data, $rubrique) {
+    $colname = $this->linkColumnName();
+
     $this->db->trans_start();
     if (isset($data['caracteristiques'])) {
-      $cars = $data['caracteristiques'];
+      $cars = array();
+      if (isset($data['info_complement'])) {
+        $complement_item = array_combine($data['info_complement_id'], $data['info_complement']);
+        unset($data['info_complement']);
+        unset($data['info_complement_id']);
+      }
+
+      foreach ($data['caracteristiques'] as $item) {
+        $li =  [
+          $colname => $id,
+          'qcm_id' => $item,
+          'info_complement' => (empty($complement_item[$item]) ? NULL : $complement_item[$item])
+         ];
+
+        array_push($cars, $li);
+      }
       unset($data['caracteristiques']);
     }
 
@@ -127,12 +171,12 @@ class Entite_abstract_model extends CI_Model {
       foreach ($data['complements_question'] as $key => $id_question) {
         $val = $data['complements'][$key];
         if (! empty($val)) {
-          array_push($toinsert, array('question' => $id_question, $this->linkColumnName() => $id, 'elements' => $val));
+          array_push($toinsert, array('question' => $id_question, $colname => $id, 'elements' => $val));
           array_push($questionIds, $id_question);
         }
       }
       if (count($questionIds) > 0) {
-        $this->db->where($this->linkColumnName(), $id)
+        $this->db->where($colname, $id)
           ->where_in('question', $questionIds)
           ->delete($this->complementTableName);
         $this->db->insert_batch($this->complementTableName, $toinsert);
@@ -143,10 +187,10 @@ class Entite_abstract_model extends CI_Model {
 
     // commentaires
     if (!empty(element('commentaire', $data))) {
-      $this->db->where([$this->linkColumnName() => $id, 'rubrique' => $rubrique])
+      $this->db->where([$colname => $id, 'rubrique' => $rubrique])
         ->delete($this->commentTableName);
       $toinsert = [
-        $this->linkColumnName() => $id,
+        $colname => $id,
         'commentaire' => $data['commentaire'],
         'rubrique' => $rubrique
       ];
@@ -163,14 +207,11 @@ class Entite_abstract_model extends CI_Model {
         ->where('rubrique', $rubrique)
         ->get_compiled_select('qcm');
       $this->db->where("qcm_id IN ($subquery)", NULL, FALSE)
-        ->where($this->linkColumnName(), $id)
+        ->where($colname, $id)
         ->delete($this->qcmLinkTable);
 
       if (isset($cars)) {
-        $this->db->insert_batch($this->qcmLinkTable,
-          array_map(function($elt) use ($id) {
-            return array($this->linkColumnName() => $id, 'qcm_id' => $elt);
-          }, $cars));
+        $this->db->insert_batch($this->qcmLinkTable, $cars);
       }
     }
     $this->db->trans_complete();

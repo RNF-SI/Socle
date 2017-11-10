@@ -94,17 +94,13 @@ class Site extends CI_Controller {
 
     $data = array('rubrique' => $rubrique, 'type_rubrique' => $type);
     $data['ep'] = $model->get($id); // TODO : modifier le nom de variable
-    $carIds = array();
-    $getId = function($elt) { return $elt->id; };
-    foreach($model->getCaracteristiques($id, $rubrique) as $question => $cars) {
-      $carIds[$question] = array_map($getId, $cars);
-    }
-    $data['ep']->caracteristiques = $carIds;
+
+    $qcms = $model->getCaracteristiquesForm($id, $rubrique);
+
+    $data['ep']->caracteristiques = $qcms;
     $data['ep']->complements = $model->getComplementsRubrique($id, $rubrique);
     $comment = $model->getCommentaire($id, $rubrique);
     $data['ep']->commentaire = empty($comment) ? (object)array('commentaire' => '') : $comment;
-
-    $data['qcms'] = $this->qcm_model->getChoicesByRubrique($rubrique);
 
     $this->output->set_output($this->load->view('fiche_ep/rubriques/' . $rubrique . '_form.php', $data, TRUE));
   }

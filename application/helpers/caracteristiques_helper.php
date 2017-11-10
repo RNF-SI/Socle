@@ -14,16 +14,21 @@ function liste_caracteristiques($list, $question) {
 
 
 // construit une série de checkbox avec le choix QCM
-function qcm_caracteristiques($choices, $checked_items = NULL) {
+function qcm_caracteristiques($choices) {
   $txt = '<div class="qcm form-group">';
   foreach ($choices as $choice) {
     //$id  = $choice->rubrique . '-' . $choice->id;
     $li = '<div class="col-sm-4">
       <div class="checkbox"><label>
         <input type="checkbox" name="caracteristiques[]" value="'. $choice->id . '"';
-    if (! is_null($checked_items) && in_array($choice->id, $checked_items))
+    if ($choice->checked)
       $li .= ' checked';
-    $li .= '>' . $choice->label . '</label></div></div>';
+    $li .= '>' . $choice->label . '</label></div>';
+    if (! is_null($choice->intitule_complement))
+      $li .= '<div class="coche-complement"><label for="info_complement[]">' . $choice->intitule_complement
+        . '</label><input type="text" name="info_complement[]" value="' . $choice->info_complement . '" />
+        <input type="hidden" name="info_complement_id[]" value="' . $choice->id . '" /></div>';
+    $li .= '</div>';
     $txt .= $li;
   }
   $txt .= '</div>';
