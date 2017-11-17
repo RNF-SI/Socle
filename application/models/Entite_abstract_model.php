@@ -146,17 +146,33 @@ class Entite_abstract_model extends CI_Model {
     $this->db->trans_start();
     if (isset($data['caracteristiques'])) {
       $cars = array();
+      $complement_item = array();
       if (isset($data['info_complement'])) {
-        $complement_item = array_combine($data['info_complement_id'], $data['info_complement']);
+        foreach ($data['info_complement_id'] as $n => $iid) {
+          if (! empty($data['info_complement'][$n]))
+            $complement_item[$iid] = array('info_complement' => $data['info_complement'][$n]);
+        }
         unset($data['info_complement']);
         unset($data['info_complement_id']);
       }
+
+      if (isset($data['info_patrimonial'])) {
+        foreach ($data['info_patrimonial'] as $iid) {
+          if (! isset($complement_item[$iid])) {
+            $complement_item[$iid] = array();
+          }
+          $complement_item[$iid]['patrimonial'] = TRUE;
+        }
+        unset($data['info_patrimonial']);
+      }
+
 
       foreach ($data['caracteristiques'] as $item) {
         $li =  [
           $colname => $id,
           'qcm_id' => $item,
-          'info_complement' => (empty($complement_item[$item]) ? NULL : $complement_item[$item])
+          'info_complement' => (empty($complement_item[$item]['info_complement']) ? NULL : $complement_item[$item]['info_complement']),
+          'patrimonial' => (! empty($complement_item[$item]['patrimonial']))
          ];
 
         array_push($cars, $li);

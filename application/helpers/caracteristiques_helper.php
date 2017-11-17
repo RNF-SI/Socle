@@ -6,7 +6,12 @@ function liste_caracteristiques($list, $question) {
     return '<i>&lt;Aucun élément&gt;</i>';
   $txt = '<ul>';
   foreach ($list[$question] as $car) {
-    $txt .= '<li>' . $car->label . '</li>';
+    $txt .= '<li';
+    if ($car->patrimonial == 't')
+      $txt .= ' class="qcm-patrimonial" title="élément d\'intérêt patrimonial"';
+    $txt .= '>' . $car->label .
+      ($car->info_complement ? ' (' . $car->intitule_complement . '&nbsp;: ' . $car->info_complement . ')' : '')
+      . '</li>';
   }
   $txt .= '</ul>';
   return $txt;
@@ -24,11 +29,14 @@ function qcm_caracteristiques($choices) {
     if ($choice->checked)
       $li .= ' checked';
     $li .= '>' . $choice->label . '</label></div>';
+    $li .= '<div class="coche-complement well well-sm collapse' . ($choice->checked ? ' in' : '') . '" id="coche-complement-' . $choice->id . '">
+      <div class="checkbox"><label><input type="checkbox" name="info_patrimonial[]" value="' . $choice->id . '" '
+      . ($choice->patrimonial ? ' checked' : '') . ' /> élément d\'intérêt patrimonial</label></div>';
     if (! is_null($choice->intitule_complement))
-      $li .= '<div class="coche-complement"><label for="info_complement[]">' . $choice->intitule_complement
+      $li .= '<label for="info_complement[]">' . $choice->intitule_complement
         . '</label><input type="text" name="info_complement[]" value="' . $choice->info_complement . '" />
-        <input type="hidden" name="info_complement_id[]" value="' . $choice->id . '" /></div>';
-    $li .= '</div>';
+        <input type="hidden" name="info_complement_id[]" value="' . $choice->id . '" />';
+    $li .= '</div></div>';
     $txt .= $li;
   }
   $txt .= '</div>';

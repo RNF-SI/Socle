@@ -22,3 +22,12 @@ li::marker {
 .qcm input[type=checkbox] {
   border-color: #0c8da6;
 }
+
+.qcm .well.coche-complement {
+  margin: 0px;
+}
+
+li .qcm-patrimonial {
+  color: #0c8da6;
+  text-decoration: underline;
+}
