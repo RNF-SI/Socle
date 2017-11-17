@@ -11,7 +11,7 @@ $struct = array(
     'Spongiaires' => 'Q3.D.3',
     'Cnidaires' => 'Q3.D.4',
     'Graptolites' => 'Q3.D.5',
-    'Pistes d’ helminthoïdes' => 'Q3.D.6',
+    'Pistes d’helminthoïdes' => 'Q3.D.6',
     'Mollusques' => array(
       'Lamellibranches (bivalves)' => 'Q3.D.7',
       'Gastéropodes' => 'Q3.D.8',
@@ -37,7 +37,7 @@ $struct = array(
 
 
   foreach ($struct as $k => $v) {
-    echo structReponsesForm($k, $v, 3, $ep->caracteristiques, $ep->complements, $qcms);
+    echo structReponsesForm($k, $v, 3, $ep->caracteristiques, $ep->complements);
   }
 
   echo field_commentaires($rubrique, set_value('commentaire', empty($ep->commentaire) ? $ep->commentaire->commentaire : ''));

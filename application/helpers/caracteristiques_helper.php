@@ -6,7 +6,12 @@ function liste_caracteristiques($list, $question) {
     return '<i>&lt;Aucun élément&gt;</i>';
   $txt = '<ul>';
   foreach ($list[$question] as $car) {
-    $txt .= '<li>' . $car->label . '</li>';
+    $txt .= '<li';
+    if ($car->patrimonial == 't')
+      $txt .= ' class="qcm-patrimonial" title="élément d\'intérêt patrimonial"';
+    $txt .= '>' . $car->label .
+      ($car->info_complement ? ' (' . $car->intitule_complement . '&nbsp;: ' . $car->info_complement . ')' : '')
+      . '</li>';
   }
   $txt .= '</ul>';
   return $txt;
@@ -14,16 +19,24 @@ function liste_caracteristiques($list, $question) {
 
 
 // construit une série de checkbox avec le choix QCM
-function qcm_caracteristiques($choices, $checked_items = NULL) {
+function qcm_caracteristiques($choices) {
   $txt = '<div class="qcm form-group">';
   foreach ($choices as $choice) {
     //$id  = $choice->rubrique . '-' . $choice->id;
     $li = '<div class="col-sm-4">
       <div class="checkbox"><label>
         <input type="checkbox" name="caracteristiques[]" value="'. $choice->id . '"';
-    if (! is_null($checked_items) && in_array($choice->id, $checked_items))
+    if ($choice->checked)
       $li .= ' checked';
-    $li .= '>' . $choice->label . '</label></div></div>';
+    $li .= '>' . $choice->label . '</label></div>';
+    $li .= '<div class="coche-complement well well-sm collapse' . ($choice->checked ? ' in' : '') . '" id="coche-complement-' . $choice->id . '">
+      <div class="checkbox"><label><input type="checkbox" name="info_patrimonial[]" value="' . $choice->id . '" '
+      . ($choice->patrimonial ? ' checked' : '') . ' /> élément d\'intérêt patrimonial</label></div>';
+    if (! is_null($choice->intitule_complement))
+      $li .= '<label for="info_complement[]">' . $choice->intitule_complement
+        . '</label><input type="text" name="info_complement[]" value="' . $choice->info_complement . '" />
+        <input type="hidden" name="info_complement_id[]" value="' . $choice->id . '" />';
+    $li .= '</div></div>';
     $txt .= $li;
   }
   $txt .= '</div>';
@@ -93,18 +106,18 @@ function structReponses($key, $val, $level, $caracteristiques, $complements) {
 
 
 // récursion pour niveaux hiérarchiques dans QCMS
-function structReponsesForm($key, $val, $level, $caracteristiques, $complements, $qcms) {
+function structReponsesForm($key, $val, $level, $caracteristiques, $complements) {
   if (is_array($val)) {
     $txt = '';
     foreach ($val as $k => $v) {
-      $txt .= structReponsesForm($k, $v, $level+1, $caracteristiques, $complements, $qcms);
+      $txt .= structReponsesForm($k, $v, $level+1, $caracteristiques, $complements);
     }
     return $txt;
   } else {
     $txt = '<h' . $level . '>' . $key . '</h' . $level . '>';
-    $choices = $qcms[$val];
-    $cars = element($val, $caracteristiques);
-    $txt .= qcm_caracteristiques($choices, $cars);
+    //$choices = $caracteristiques[$val];
+    $choices = element($val, $caracteristiques);
+    $txt .= qcm_caracteristiques($choices);
 
     $txt .= liste_complement($val, isset($complements[$val]) ? $complements[$val]->elements : '');
     return $txt;

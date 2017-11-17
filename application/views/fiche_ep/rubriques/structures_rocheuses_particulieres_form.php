@@ -5,7 +5,7 @@ sur votre territoire&nbsp;? Ce questionnement est repris en Q-3, associé à cha
 géologique précise du territoire.</p>
 <?php
   $question = 'Q2.12';
-  echo qcm_caracteristiques($qcms[$question], set_value('caracteristiques', element($question, $ep->caracteristiques)));
+  echo qcm_caracteristiques($ep->caracteristiques[$question]);
   echo liste_complement($question, set_value('complements', isset($ep->complements[$question]) ? $ep->complements[$question]->elements : ''),
     'Autres éléments descriptifs des structures et figurés rocheux observables sur votre territoire, non mentionnés dans la liste ci-dessus. Nommer et décrire si besoin&nbsp;?');
   echo field_commentaires($rubrique, set_value('commentaire', empty($ep->commentaire) ? $ep->commentaire->commentaire : ''));

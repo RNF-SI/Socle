@@ -2,7 +2,7 @@
   <div class="panel-heading">
     <h3><a data-toggle="collapse" data-parent="#rubriques" href="#collapse-<?=$id_rubrique ?>"><?= $titre ?></a></h3>
   </div>
-  <div id="collapse-<?=$id_rubrique ?>" class="panel-collapse collapse">
+  <div id="collapse-<?=$id_rubrique ?>" class="rubrique-collapse panel-collapse collapse">
     <div class="panel-body">
       <?php if ($editable): ?>
       <button class="btn btn-default button-edit-form"><span class="glyphicon glyphicon-edit"></span> Editer</button>

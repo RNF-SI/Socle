@@ -1,12 +1,15 @@
 // fonctions de chargement des composants RubriquesController
 
 $(function() {
-  $(".rubrique .collapse").on("show.bs.collapse", function() {
+  $(".rubrique-collapse").on("show.bs.collapse", function(evt) {
     var id_rubrique = $(this).parents(".rubrique").attr('id');
     var container  = $(this).find(".rubrique-content");
     $.get(site_url("site/rubrique_content/" + entite_id + "/" + id_rubrique + '/' + type_rubrique), function(data) {
       container.html(data);
     });
+  }).on("change", "input[name='caracteristiques[]']", function(evt) {
+    var id = $(this).val();
+    $("#coche-complement-" + id).toggle(this.checked);
   });
 
   // TODO : doit-on supprimer le contenu quand ça collapse ?
