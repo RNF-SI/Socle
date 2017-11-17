@@ -18,7 +18,7 @@ s’additionneront au fur et à mesure de l’analyse des différents terrains.<
   );
 
   foreach ($struct as $k => $v) {
-    echo structReponsesForm($k, $v, 3, $ep->caracteristiques, $ep->complements, $qcms);
+    echo structReponsesForm($k, $v, 3, $ep->caracteristiques, $ep->complements);
   }
 
   echo field_commentaires($rubrique, set_value('commentaire', empty($ep->commentaire) ? $ep->commentaire->commentaire : ''));

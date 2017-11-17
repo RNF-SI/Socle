@@ -14,7 +14,7 @@
 <h3>Votre territoire montre-t-il&nbsp;:</h3>
 <?php
   $question = 'Q1.1.2';
-  echo qcm_caracteristiques($qcms[$question], set_value('caracteristiques', element( $question, $ep->caracteristiques)));
+  echo qcm_caracteristiques($ep->caracteristiques[$question]);
   echo liste_complement($question, set_value('complements', isset($ep->complements[$question]) ? $ep->complements[$question]->elements : ''));
   echo field_commentaires($rubrique, set_value('commentaire', empty($ep->commentaire) ? $ep->commentaire->commentaire : ''));
   echo form_submit();

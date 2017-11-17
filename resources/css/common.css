@@ -27,7 +27,7 @@ li::marker {
   margin: 0px;
 }
 
-li .qcm-patrimonial {
+li.qcm-patrimonial {
   color: #0c8da6;
   text-decoration: underline;
 }

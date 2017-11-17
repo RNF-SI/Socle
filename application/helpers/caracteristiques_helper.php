@@ -106,18 +106,18 @@ function structReponses($key, $val, $level, $caracteristiques, $complements) {
 
 
 // récursion pour niveaux hiérarchiques dans QCMS
-function structReponsesForm($key, $val, $level, $caracteristiques, $complements, $qcms) {
+function structReponsesForm($key, $val, $level, $caracteristiques, $complements) {
   if (is_array($val)) {
     $txt = '';
     foreach ($val as $k => $v) {
-      $txt .= structReponsesForm($k, $v, $level+1, $caracteristiques, $complements, $qcms);
+      $txt .= structReponsesForm($k, $v, $level+1, $caracteristiques, $complements);
     }
     return $txt;
   } else {
     $txt = '<h' . $level . '>' . $key . '</h' . $level . '>';
-    $choices = $qcms[$val];
-    $cars = element($val, $caracteristiques);
-    $txt .= qcm_caracteristiques($choices, $cars);
+    //$choices = $caracteristiques[$val];
+    $choices = element($val, $caracteristiques);
+    $txt .= qcm_caracteristiques($choices);
 
     $txt .= liste_complement($val, isset($complements[$val]) ? $complements[$val]->elements : '');
     return $txt;
