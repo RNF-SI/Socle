@@ -5,7 +5,10 @@
   } else {
     echo '<ul>';
     foreach ($ep->feuilles_cartes as $feuille) {
-      echo '<li>Feuille n°' . $feuille->numero . '&nbsp;: ' . $feuille->nom . '</li>';
+
+      echo '<li><strong>Feuille n°' . $feuille->numero . '</strong>&nbsp;: ' . $feuille->nom
+        . '&nbsp;<a href="http://ficheinfoterre.brgm.fr/Notices/' . str_pad($feuille->numero, 4, '0', STR_PAD_LEFT)
+        . 'N.pdf" target="_blank">consulter la notice</a></li>';
     }
     echo '</ul>';
   }
