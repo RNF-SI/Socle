@@ -190,8 +190,8 @@ class Site extends CI_Controller {
     );
     $data['echelle_geol'] = $this->entite_geol_model->echelle_geol();
 
-    $this->load->view('default/header', ['scripts' => ['lib/jquery.bonsai/jquery.bonsai.js', 'https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js', 'js/form_eg.js'],
-      'styles' => ['lib/jquery.bonsai/jquery.bonsai.css', 'https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css']]);
+    $this->load->view('default/header', ['scripts' => ['lib/jquery.bonsai/jquery.bonsai.js', 'js/form_eg.js'],
+      'styles' => ['lib/jquery.bonsai/jquery.bonsai.css']]);
     $this->load->view('fiche_eg/eg_form', $data);
     $this->load->view('default/footer');
   }

@@ -1,4 +1,9 @@
 <div class="rubrique-description">
+    <div class="thumbnail illustration">
+      <img src="<?=base_url("resources/images/illustrations/img2.jpg") ?>">
+      <div class="caption">Réserve naturelle de Val de Loire (Cher/Nièvre)<br />
+        © Nicolas Pointecouteau</div>
+    </div>
     <p>Ce contexte recoupe l’ensemble des structures géographiques et des aspects
 paysagers liés à la présence de l’eau : l’eau qui coule et l’eau qui stagne, ainsi que
 les morphologies qui en sont directement héritées, en particulier celles dues

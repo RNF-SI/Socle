@@ -3,70 +3,74 @@
   var entite_id = <?= $ep->id ?>;
   var type_rubrique = 'EP';
 </script>
-<div id="entete">
-  <h1><?= $ep->nom_ep ?></h1>
-</div>
-<?php if ($ep->statut_validation == 'attente' || $ep->statut_validation == 'validation'): ?>
-  <div class="alert alert-warning"><strong>Attention</strong><br />
-    <p>Cet espace est
-    <?php if ($ep->statut_validation == 'attente') {
-      echo 'au stade de brouillon. Cliquez ci-dessous pour le soumettre à validation.</p>';
-      echo '<a href="'. site_url('site/soumission_validation/' . $ep->id) . '" class="btn btn-success">Soumettre à validation</a>';
-    } else {
-      echo 'en attente de validation.</p><div class="btn-group">' ;
-      if ($this->auth->in_group('validators')) {
-        echo '<a href="' . site_url('site/validation/' . $id->ep) . '" class="btn btn-primary">Valider les données</a>';
-        echo '<a href="' . site_url('site/invalidation/' . $id->ep) . '" class="btn btn-primary">Invalider les données</a>';
-      }
-      echo '</div>';
-    }
-    ?>
-  </div>
-<?php endif; ?>
-<div id="carto">
-  <div id="map-main" style="height: 400px;"></div>
-</div>
-<div class="panel panel-info" id="tdm">
-  <div class="panel-heading"><h2>Sommaire</h2></div>
-  <div class="panel-body">
-    <ul>
-      <li><a href="#Q-1">Q-1 / Approche géographique du territoire</a>
-        <ul>
-          <li><a href="#points_de_vue">Q-1 /0 Points de vue / Panoramas</a></li>
-          <li><a href="#contexte_general">Q-1 /1 Contexte général</a></li>
-          <li><a href="#contexte_hydro">Q-1 /2 Contexte hydrographique général</a></li>
-          <li><a href="#contexte_littoral">Q-1 /3 Contexte général littoral et marin</a></li>
-          <li><a href="#contexte_anthropique">Q-1 /4 Contexte anthropique général - Aménagements</a></li>
-        </ul>
-      </li>
-      <li><a href="#Q-2">Q-2 / Aspects morphologiques et structuraux des terrains</a>
-        <ul>
-          <li><a href="#contexte_geol_regional">Q-2 /0 Contexte géologique régional et local</a></li>
-          <li><a href="#structures_geol_regionales">Q-2 /1 Grandes structures géologiques régionales</a></li>
-          <li><a href="#structures_geol_territoire">Q2 /2 Structures géologiques à l’échelle du territoire</a></li>
-          <li><a href="#contexte_sismique">Q-2 /3 Contexte sismique</a></li>
-          <li><a href="#volcanisme">Q-2 /4 Structures et morphologies liées au volcanisme</a></li>
-          <li><a href="#morpho_erosive">Q-2 /5 Morphologies liées à l’érosion générale</a></li>
-          <li><a href="#morpho_karstique">Q-2 /6 Morphologies karstiques</a></li>
-          <li><a href="#morpho_glaciaire">Q-2 /7 Morphologies glaciaires</a></li>
-          <li><a href="#morpho_alluvionnaire">Q-2 /8 Morphologies alluvionnaires des cours d’eau</a></li>
-          <li><a href="#plages_littorales">Q-2 /9 Plages littorales : sable, galets et vase</a></li>
-          <li><a href="#dunes_littorales">Q-2 /10 Systèmes dunaires littoraux</a></li>
-          <li><a href="#cotes_rocheuses">Q-2 /11 Côtes rocheuses</a></li>
-          <li><a href="#structures_rocheuses_particulieres">Q-2 /12 Structures et figurés rocheux particuliers à petite et moyenne échelle</a></li>
-        </ul>
-      </li>
-      <li><a href="#Q-3">Q-3 / Identification des terrains, des roches et des fossiles</a>
-        <ul>
-          <li><a href="#infos_preliminaires">Q3 /00 Informations préliminaires</a></li>
-          <li><a href="#Q3-1">Q3 /1 Recensement des différentes entités géologiques constituant le sous-sol du territoire</a></li>
-        </ul>
-      </li>
-      <li><a href="#Q-4">Q-4 / Objets géologiques remarquables</a></li>
-    </ul>
+
+<div class="container-fluid col-sm-2" id="col-menu">
+  <div id="carto">
+    <div id="map-main" class="minimap"></div>
 
   </div>
+  <div class="" id="tdm">
+
+      <ul>
+        <li><a href="#Q-1">Q-1 / Approche géographique du territoire</a>
+          <ul>
+            <li><a href="#points_de_vue">Q-1 /0 Points de vue / Panoramas</a></li>
+            <li><a href="#contexte_general">Q-1 /1 Contexte général</a></li>
+            <li><a href="#contexte_hydro">Q-1 /2 Contexte hydrographique général</a></li>
+            <li><a href="#contexte_littoral">Q-1 /3 Contexte général littoral et marin</a></li>
+            <li><a href="#contexte_anthropique">Q-1 /4 Contexte anthropique général - Aménagements</a></li>
+          </ul>
+        </li>
+        <li><a href="#Q-2">Q-2 / Aspects morphologiques et structuraux des terrains</a>
+          <ul>
+            <li><a href="#contexte_geol_regional">Q-2 /0 Contexte géologique régional et local</a></li>
+            <li><a href="#structures_geol_regionales">Q-2 /1 Grandes structures géologiques régionales</a></li>
+            <li><a href="#structures_geol_territoire">Q2 /2 Structures géologiques à l’échelle du territoire</a></li>
+            <li><a href="#contexte_sismique">Q-2 /3 Contexte sismique</a></li>
+            <li><a href="#volcanisme">Q-2 /4 Structures et morphologies liées au volcanisme</a></li>
+            <li><a href="#morpho_erosive">Q-2 /5 Morphologies liées à l’érosion générale</a></li>
+            <li><a href="#morpho_karstique">Q-2 /6 Morphologies karstiques</a></li>
+            <li><a href="#morpho_glaciaire">Q-2 /7 Morphologies glaciaires</a></li>
+            <li><a href="#morpho_alluvionnaire">Q-2 /8 Morphologies alluvionnaires des cours d’eau</a></li>
+            <li><a href="#plages_littorales">Q-2 /9 Plages littorales : sable, galets et vase</a></li>
+            <li><a href="#dunes_littorales">Q-2 /10 Systèmes dunaires littoraux</a></li>
+            <li><a href="#cotes_rocheuses">Q-2 /11 Côtes rocheuses</a></li>
+            <li><a href="#structures_rocheuses_particulieres">Q-2 /12 Structures et figurés rocheux particuliers à petite et moyenne échelle</a></li>
+          </ul>
+        </li>
+        <li><a href="#Q-3">Q-3 / Identification des terrains, des roches et des fossiles</a>
+          <ul>
+            <li><a href="#infos_preliminaires">Q3 /00 Informations préliminaires</a></li>
+            <li><a href="#Q3-1">Q3 /1 Recensement des différentes entités géologiques constituant le sous-sol du territoire</a></li>
+          </ul>
+        </li>
+        <li><a href="#Q-4">Q-4 / Objets géologiques remarquables</a></li>
+      </ul>
+    </div>
 </div>
+
+<div id="page-content" class="container-fluid col-sm-10">
+    <div id="entete">
+      <h1><?= $ep->nom_ep ?></h1>
+    </div>
+    <?php if ($ep->statut_validation == 'attente' || $ep->statut_validation == 'validation'): ?>
+      <div class="alert alert-warning"><strong>Attention</strong><br />
+        <p>Cet espace est
+        <?php if ($ep->statut_validation == 'attente') {
+          echo 'au stade de brouillon. Cliquez ci-dessous pour le soumettre à validation.</p>';
+          echo '<a href="'. site_url('site/soumission_validation/' . $ep->id) . '" class="btn btn-success">Soumettre à validation</a>';
+        } else {
+          echo 'en attente de validation.</p><div class="btn-group">' ;
+          if ($this->auth->in_group('validators')) {
+            echo '<a href="' . site_url('site/validation/' . $id->ep) . '" class="btn btn-primary">Valider les données</a>';
+            echo '<a href="' . site_url('site/invalidation/' . $id->ep) . '" class="btn btn-primary">Invalider les données</a>';
+          }
+          echo '</div>';
+        }
+        ?>
+      </div>
+    <?php endif; ?>
+
 <div id="rubriques" class="panel-group">
   <h2>Q-1 / Approche géographique du territoire</h2>
   <div class="explication">
@@ -372,5 +376,7 @@ en savoir plus et connaitre le patrimoine identifié dans votre région, n’hé
 pas à vous rapprocher de votre DREAL.</p>
 <p><a class="btn btn-primary" href="https://inpn.mnhn.fr/accueil/recherche-de-donnees/inpg/" target="_blank">Faire une recherche sur l'INPG</a></p>
 [A CONTINUER]
+
+</div>
 
 </div>

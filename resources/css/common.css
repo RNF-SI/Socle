@@ -15,6 +15,10 @@ header .subtitle {
   color: #ca7b3e;
 }
 
+.breadcrumb {
+  margin-top: 10px;
+}
+
 li::marker {
   color: #0c8da6;
 }
@@ -30,4 +34,43 @@ li::marker {
 li.qcm-patrimonial {
   color: #0c8da6;
   text-decoration: underline;
+}
+
+#tdm li {
+  font-size: 90%;
+}
+
+#tdm > ul {
+  padding-left: 10px;
+}
+
+.minimap {
+  height: 200px;
+  margin-bottom: 20px;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+
+#carto-full .modal-dialog {
+  width: 80%;
+}
+
+#col-menu {
+  background-color: #f9d69d;
+  padding-top: 10px;
+  height: 100%;
+  z-index: 200;
+}
+
+#col-menu a {
+  color: black;
+}
+
+.illustration {
+  float: right;
+  margin-left: 10px;
+}
+
+.illustration .caption {
+  font-size: 80%;
 }

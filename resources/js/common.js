@@ -42,6 +42,51 @@ function base_map(id_map, id_ep_ref) {
     mainMap.fitBounds(vectLayer.getBounds());
   });
 
+  // traitement de la mini carte agrandissable
+  if ($("#" + id_map).hasClass("minimap")) {
+    var mapcont = $("#" + id_map);
+    var mapParent = mapcont.parent();
+    var mapheight;
+
+    var reduceMap = function(map, btn) {
+      var mapCenter = map.getCenter();
+      mapcont.css({height: mapheight});
+      mapParent.append(mapcont);
+      map.panTo(mapCenter);
+      map.invalidateSize();
+      btn.state('magnify');
+    };
+
+    var reduceButton = L.easyButton({
+      states: [{
+        stateName: 'magnify',
+        icon: 'glyphicon-fullscreen',
+        title: 'aggrandir la carte',
+        onClick: function(btn, map) {
+          mapheight =  mapcont.height();
+          var mapCenter = map.getCenter();
+          $("#carto-full .modal-body").append(mapcont);
+          $("#carto-full").modal("show");
+          mapcont.css({height: '80vh', 'min-height': '300px'});
+          map.panTo(mapCenter);
+          map.invalidateSize();
+          btn.state('minify')
+        }
+      }, {
+        stateName: 'minify',
+        icon: 'glyphicon-resize-small',
+        title: 'réduire',
+        onClick: function(btn, map) {
+          $("#carto-full").modal("hide");
+        }
+      }]
+    }).addTo(mainMap);
+
+    $('#carto-full.modal').on('hide.bs.modal', function() {
+      reduceMap(mainMap, reduceButton);
+    });
+  }
+
   return mainMap;
 }
 

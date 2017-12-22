@@ -7,6 +7,7 @@
 
         <link rel="stylesheet" href="<?= base_url('resources/lib/bootstrap/css/bootstrap.min.css') ?>" />
         <link rel="stylesheet" href="<?= base_url('resources/lib/leaflet/leaflet.css') ?>" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css" />
    <?php
        if (isset($styles)):
           foreach ($styles as $style): ?>
@@ -17,6 +18,7 @@
         <script src="<?= base_url('resources/lib/jquery-3.2.1.min.js') ?>"></script>
         <script src="<?= base_url('resources/lib/bootstrap/js/bootstrap.min.js') ?>"></script>
         <script src="<?= base_url('resources/lib/leaflet/leaflet.js') ?>"></script>
+        <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
         <script>var base_url = '<?= base_url() ?>';</script>
 
         <script src="<?php echo base_url("resources/js/common.js") ?>"></script>
@@ -33,7 +35,7 @@
             <div class="col-sm-2" id="logo">
               <img src="<?= base_url('resources/images/logo1.png') ?>" />
             </div>
-            <div class="col-sm-8"><h1>Base de données géologiques</h1>
+            <div class="col-sm-8"><h1>Géode</h1>
               <span class="subtitle">Réserves Naturelles de France</span>
             </div>
             <div class="col-sm-2">
@@ -56,8 +58,24 @@
           </div>
 
         </header>
-        <div class="container">
-          <a href="<?= site_url() ?>">Accueil</a>
+        <div class="container-fluid">
+
+          <div class="modal" id="carto-full">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Carte</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="breadcrumb">
+            <a href="<?= site_url() ?>">Accueil</a>
+          </div>
           <div id="messages-global">
             <?php // gestion des messages
             if (isset($message)) { // message dans les données

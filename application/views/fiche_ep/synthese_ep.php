@@ -22,12 +22,33 @@ Fiche de synthèse
 <h3>Contexte géographique général</h3>
 <?php
   reponses($caract, 'Q1.1', 'Type de territoire');
-  reponses($caract, 'Q1.1.2', 'Eléments présents');
+  reponses($caract, 'Q1.1.2', 'Éléments présents');
 ?>
 
 <h3>Contexte hydrographique général</h3>
 <?php
-  reponses($caract, 'Q1.2', 'Eléments hydrographiques observables sur le territoire');
+  reponses($caract, 'Q1.2', 'Éléments hydrographiques observables sur le territoire');
  ?>
+
+<h3>Contexte général littoral et marin</h3>
+<?php
+  reponses($caract, 'Q1.3', 'Éléments observables sur le territoire');
+ ?>
+
+<h3>Contexte anthropique général - Aménagements<h3>
+  <?php
+    reponses($caract, 'Q1.4', 'Aménagements observables sur le territoire');
+   ?>
+
+ <h2>Aspects morphologiques et structuraux des terrains</h2>
+ <h3>Contexte géologique régional et local</h3>
+ <?php
+   reponses($caract, 'Q2.0', 'Éléments géologiques observables sur le territoire');
+   ?>
+
+ <h3>Grandes structures géologiques régionales</h3>
+ <?php
+   reponses($caract, 'Q2.1', 'Éléments géologiques observables sur le territoire');
+   ?>
 
 <?php var_dump($caract) ?>
