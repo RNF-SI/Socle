@@ -9,7 +9,7 @@
 ?>
 <h3>Votre territoire se situe-t-il en&nbsp;:</h3>
 <?php
-  echo qcm_caracteristiques($qcms['Q1.1'], set_value('caracteristiques', element( 'Q1.1', $ep->caracteristiques)));
+  echo qcm_caracteristiques($ep->caracteristiques['Q1.1']);
 ?>
 <h3>Votre territoire montre-t-il&nbsp;:</h3>
 <?php
