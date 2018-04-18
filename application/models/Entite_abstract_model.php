@@ -22,6 +22,29 @@ class Entite_abstract_model extends CI_Model {
     return $this->tableName . '_id';
   }
 
+
+  private function _processGeometry($g) {
+    // reconnait les formats textuels de géométrie et retourne la chaine à rentrer
+    if (is_null($g) || $g === '') {
+      $this->db->set('geom', NULL);
+      return;
+    }
+    if (preg_match('/^[A-Z]+\(/', $g) == 1) { // WKT
+      $func = 'st_geomFromText';
+      $s = $g;
+    } elseif (preg_match('/^\{"type":"(\w+)"/', $g, $match) == 1) { // geojson
+      if ($match[1] == 'Feature') {
+        $s = json_encode(json_decode($g)->geometry);
+      } else {
+        $s = $g;
+      }
+      $func = 'st_geomFromGeojson';
+    }
+    $procgeom = 'st_multi(st_setsrid(' . $func . '(' . $this->db->escape($s) . '), 4326))';
+    $this->db->set('geom', $procgeom, FALSE);
+  }
+
+
   public function get($id) {
     if (empty($this->entity) || $id != $this->entity->id) {
       $query = $this->db->get_where($this->tableName, array('id' => $id));
@@ -37,7 +60,7 @@ class Entite_abstract_model extends CI_Model {
 
   public function update($id, $data) {
     if (isset($data['geom'])) {
-      $this->db->set('geom', $data['geom'], FALSE);
+      $this->_processGeometry($data['geom']);
       unset($data['geom']);
     }
     $this->db->set($data)
@@ -47,7 +70,7 @@ class Entite_abstract_model extends CI_Model {
   // ajout d'une entité
   public function add($data) {
     if (isset($data['geom'])) {
-      $this->db->set('geom', $data['geom'], FALSE);
+      $this->_processGeometry($data['geom']);
       unset($data['geom']);
     }
     $this->db->set($data);
@@ -84,7 +107,9 @@ class Entite_abstract_model extends CI_Model {
   // recupère toutes les caractéristiques pour une rubriques
   // et précise si elles sont sélectionnées
   public function getCaracteristiquesForm($id, $rubrique = NULL) {
-    $sousreq = $this->db->where($this->linkColumnName(), $id)
+    $sousreq = $this->db
+      ->select('qcm_id, info_complement, remarquable')
+      ->where($this->linkColumnName(), $id)
       ->get_compiled_select($this->qcmLinkTable);
     $this->db->from('qcm')
       ->join('(' . $sousreq . ') AS sreq', 'qcm_id = qcm.id', 'left')
@@ -98,7 +123,7 @@ class Entite_abstract_model extends CI_Model {
 
     $data = array();
     foreach ($res as $car) {
-        $car->checked = (! empty($car->qcm_id));
+      $car->checked = (! empty($car->qcm_id));
       if (!isset($data[$car->question]))
         $data[$car->question] = array();
       $data[$car->question][$car->id] = $car;
@@ -231,6 +256,13 @@ class Entite_abstract_model extends CI_Model {
       }
     }
     $this->db->trans_complete();
+  }
+
+
+  public function getGeometry($id) {
+    $query = $this->db->select('st_asGeoJson(geom) as geojson')
+      ->get_where($this->tableName, ['id'=>$id]);
+    return $query->row()->geojson;
   }
 
 }

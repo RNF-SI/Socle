@@ -6,9 +6,9 @@
 <h2>Liste des espaces enregistrés</h2>
 <ul>
   <?php foreach($espaces as $ep): ?>
-    <li><a href="<?= site_url('site/fiche_site/'.$ep->id) ?>"><?= $ep->nom_ep ?></a></li>
+    <li><a href="<?= site_url('Espace/fiche_espace/'.$ep->id) ?>"><?= $ep->nom ?></a></li>
   <?php endforeach; ?>
 </ul>
 <?php if ($this->auth->logged_in()): ?>
-<a href="<?=site_url('site/creation') ?>" class="btn btn-primary">Ajouter un espace</a>
+<a href="<?=site_url('espace/creation') ?>" class="btn btn-primary">Ajouter un espace</a>
 <?php endif; ?>

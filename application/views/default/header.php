@@ -35,7 +35,7 @@
             <div class="col-sm-2" id="logo">
               <img src="<?= base_url('resources/images/logo1.png') ?>" />
             </div>
-            <div class="col-sm-8"><h1>Géode</h1>
+            <div class="col-sm-8"><h1>SOCLE</h1>
               <span class="subtitle">Réserves Naturelles de France</span>
             </div>
             <div class="col-sm-2">

@@ -38,7 +38,7 @@ function form_select($name, $label, $options, $value = NULL) {
   return $txt;
 }
 
-function form_text($name, $label, $value = '') {
+function form_text($name, $label='', $value = '') {
   return '<div class="form-group">
   <label class="control-label col-sm-3" for="' . $name . '">' . $label .'</label>
     <div class="col-sm-9">

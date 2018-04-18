@@ -1,7 +1,7 @@
 <script>
-  var espace_protege = <?= json_encode($ep) ?>;
-  var entite_id = <?= $ep->id ?>;
-  var type_rubrique = 'EP';
+  var site = <?= json_encode($site) ?>;
+  var entite_id = <?= $site->id ?>;
+  var type_rubrique = 'Site';
 </script>
 
 <div class="container-fluid col-sm-2" id="col-menu">
@@ -51,21 +51,14 @@
 
 <div id="page-content" class="container-fluid col-sm-10">
     <div id="entete">
-      <h1><?= $ep->nom_ep ?></h1>
+      <h1><?= $site->nom ?></h1>
     </div>
-    <?php if ($ep->statut_validation == 'attente' || $ep->statut_validation == 'validation'): ?>
+    <?php if ($site->statut_validation == 'attente' || $site->statut_validation == 'validation'): ?>
       <div class="alert alert-warning"><strong>Attention</strong><br />
         <p>Cet espace est
-        <?php if ($ep->statut_validation == 'attente') {
-          echo 'au stade de brouillon. Cliquez ci-dessous pour le soumettre à validation.</p>';
-          echo '<a href="'. site_url('site/soumission_validation/' . $ep->id) . '" class="btn btn-success">Soumettre à validation</a>';
-        } else {
-          echo 'en attente de validation.</p><div class="btn-group">' ;
-          if ($this->auth->in_group('validators')) {
-            echo '<a href="' . site_url('site/validation/' . $id->ep) . '" class="btn btn-primary">Valider les données</a>';
-            echo '<a href="' . site_url('site/invalidation/' . $id->ep) . '" class="btn btn-primary">Invalider les données</a>';
-          }
-          echo '</div>';
+        <?php if ($site->statut_validation == 'attente') {
+          echo 'au stade de brouillon. Cliquez ci-dessous pour le publier.</p>';
+          echo '<a href="'. site_url('site/publication/' . $site->id) . '" class="btn btn-success">Publier</a>';
         }
         ?>
       </div>
@@ -112,29 +105,29 @@ chaque territoire.</p>
 </div>
 
   <?php
-    $this->load->view('fiche_ep/base_rubrique', [
+    $this->load->view('fiche_site/base_rubrique', [
       'titre' => 'Q-1 /0 Points de vue / Panoramas',
-      'ep' => $ep,
+      'ep' => $site,
       'id_rubrique' => 'points_de_vue']);
 
-    $this->load->view('fiche_ep/base_rubrique', [
+    $this->load->view('fiche_site/base_rubrique', [
       'titre' => 'Q-1 /1 Contexte général',
-      'ep' => $ep,
+      'ep' => $site,
       'id_rubrique' => 'contexte_general']);
 
-    $this->load->view('fiche_ep/base_rubrique', [
+    $this->load->view('fiche_site/base_rubrique', [
       'titre' => 'Q-1 /2 Contexte hydrographique général',
-      'ep' => $ep,
+      'ep' => $site,
       'id_rubrique' => 'contexte_hydro']);
 
-    $this->load->view('fiche_ep/base_rubrique', [
+    $this->load->view('fiche_site/base_rubrique', [
       'titre' => 'Q-1 /3 Contexte général littoral et marin',
-      'ep' => $ep,
+      'ep' => $site,
       'id_rubrique' => 'contexte_littoral']);
 
-    $this->load->view('fiche_ep/base_rubrique', [
+    $this->load->view('fiche_site/base_rubrique', [
       'titre' => 'Q-1 /4 Contexte anthropique général - Aménagements',
-      'ep' => $ep,
+      'ep' => $site,
       'id_rubrique' => 'contexte_anthropique']);
    ?>
 
@@ -187,69 +180,69 @@ chaque territoire.</p>
  </div>
 
 <?php
- $this->load->view('fiche_ep/base_rubrique', [
+ $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /0 Contexte géologique régional et local',
-   'ep' => $ep,
+   'ep' => $site,
    'id_rubrique' => 'contexte_geol_regional']);
 
- $this->load->view('fiche_ep/base_rubrique', [
+ $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /1 Grandes structures géologiques régionales',
-   'ep' => $ep,
+   'ep' => $site,
    'id_rubrique' => 'structures_geol_regionales']);
 
- $this->load->view('fiche_ep/base_rubrique', [
+ $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q2 /2 Structures géologiques à l’échelle du territoire',
-   'ep' => $ep,
+   'ep' => $site,
    'id_rubrique' => 'structures_geol_territoire']);
 
- $this->load->view('fiche_ep/base_rubrique', [
+ $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /3 Contexte sismique',
-   'ep' => $ep,
+   'ep' => $site,
    'id_rubrique' => 'contexte_sismique']);
 
- $this->load->view('fiche_ep/base_rubrique', [
+ $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /4 Structures et morphologies liées au volcanisme',
-   'ep' => $ep,
+   'ep' => $site,
    'id_rubrique' => 'volcanisme']);
 
- $this->load->view('fiche_ep/base_rubrique', [
+ $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /5 Morphologies liées à l’érosion générale',
-   'ep' => $ep,
+   'ep' => $site,
    'id_rubrique' => 'morpho_erosive']);
 
- $this->load->view('fiche_ep/base_rubrique', [
+ $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /6 Morphologies karstiques',
-   'ep' => $ep,
+   'ep' => $site,
    'id_rubrique' => 'morpho_karstique']);
 
- $this->load->view('fiche_ep/base_rubrique', [
+ $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /7 Morphologies glaciaires',
-   'ep' => $ep,
+   'ep' => $site,
    'id_rubrique' => 'morpho_glaciaire']);
 
- $this->load->view('fiche_ep/base_rubrique', [
+ $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /8 Morphologies alluvionnaires des cours d’eau',
-   'ep' => $ep,
+   'ep' => $site,
    'id_rubrique' => 'morpho_alluvionnaire']);
 
- $this->load->view('fiche_ep/base_rubrique', [
+ $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /9 Plages littorales&nbsp;: sable, galets et vase',
-   'ep' => $ep,
+   'ep' => $site,
    'id_rubrique' => 'plages_littorales']);
 
- $this->load->view('fiche_ep/base_rubrique', [
+ $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /10 Systèmes dunaires littoraux',
-   'ep' => $ep,
+   'ep' => $site,
    'id_rubrique' => 'dunes_littorales']);
 
- $this->load->view('fiche_ep/base_rubrique', [
+ $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /11 Côtes rocheuses',
-   'ep' => $ep,
+   'ep' => $site,
    'id_rubrique' => 'cotes_rocheuses']);
 
- $this->load->view('fiche_ep/base_rubrique', [
+ $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /12 Structures et figurés rocheux particuliers à petite et moyenne échelle',
-   'ep' => $ep,
+   'ep' => $site,
    'id_rubrique' => 'structures_rocheuses_particulieres']);
 ?>
 
@@ -306,15 +299,15 @@ scientifiques traitant de la région, etc.</p>
 <p>Ces différentes approches sont à mener conjointement.</p>
 </div>
 <?php
-$this->load->view('fiche_ep/base_rubrique', [
+$this->load->view('fiche_site/base_rubrique', [
   'titre' => 'Q3 /00 Informations préliminaires',
-  'ep' => $ep,
+  'ep' => $site,
   'id_rubrique' => 'infos_preliminaires']);
 
 /*
-$this->load->view('fiche_ep/base_rubrique', [
+$this->load->view('fiche_site/base_rubrique', [
   'titre' => 'Q3 /1 Recensement des différentes entités géologiques constituant le sous-sol du territoire',
-  'ep' => $ep,
+  'ep' => $site,
   'id_rubrique' => 'liste_entites_geol']); */
  ?>
 <h3 id="Q3-1">Q3 /1 Recensement des différentes entités géologiques constituant le sous-sol du territoire</h3>
@@ -328,12 +321,12 @@ $this->load->view('fiche_ep/base_rubrique', [
     } ?>
   </div>
 <?php endif; ?>
-<a href="<?= site_url('site/ajout_eg/' . $ep->id) ?>" class="btn btn-primary">Ajouter une entité</a>
+<a href="<?= site_url('site/ajout_eg/' . $site->id) ?>" class="btn btn-primary">Ajouter une entité</a>
 
 <?php
-$this->load->view('fiche_ep/base_rubrique', [
+$this->load->view('fiche_site/base_rubrique', [
   'titre' => 'Q3 /2 Le patrimoine géologique des réserves naturelles conservé hors site',
-  'ep' => $ep,
+  'ep' => $site,
   'id_rubrique' => 'collections']);
 ?>
 

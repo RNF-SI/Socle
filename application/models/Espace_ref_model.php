@@ -37,4 +37,11 @@ class Espace_ref_model extends CI_Model {
     return array('properties' => $props, 'geom' => $res['geom']);
   }
 
+  public function getEspaceWkt($code) {
+    $query = $this->db
+      ->select(['id', 'nom_site', 'id_mnhn', 'st_asText(geom) as wkt'])
+      ->get_where('espace_protege_ref', array('id_mnhn' => $code));
+    return $query->row_array();
+  }
+
 }

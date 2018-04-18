@@ -30,8 +30,8 @@ function qcm_caracteristiques($choices) {
       $li .= ' checked';
     $li .= '>' . $choice->label . '</label></div>';
     $li .= '<div class="coche-complement well well-sm collapse' . ($choice->checked ? ' in' : '') . '" id="coche-complement-' . $choice->id . '">
-      <div class="checkbox"><label><input type="checkbox" name="info_patrimonial[]" value="' . $choice->id . '" '
-      . ($choice->patrimonial ? ' checked' : '') . ' /> élément d\'intérêt patrimonial</label></div>';
+      <div class="checkbox"><label><input type="checkbox" name="info_remarquable[]" value="' . $choice->id . '" '
+      . ($choice->remarquable ? ' checked' : '') . ' /> élément remarquable</label></div>';
     if (! is_null($choice->intitule_complement))
       $li .= '<label for="info_complement[]">' . $choice->intitule_complement
         . '</label><input type="text" name="info_complement[]" value="' . $choice->info_complement . '" />

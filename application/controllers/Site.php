@@ -5,43 +5,43 @@ class Site extends CI_Controller {
   public function __construct() {
     parent::__construct();
 
-    $this->load->model('espace_protege_model');
+    $this->load->model('site_model');
   }
 
 
-  public function fiche_site($id_ep) {
+  public function fiche_site($id) {
     $data = array();
-    $ep = $this->espace_protege_model->get($id_ep);
+    $site = $this->site_model->get($id);
 
     // validation des droits d'affichage selon statut
-    if ($ep->statut_validation == 'attente') {
+    /*if ($site->statut_validation == 'attente') {
       $groups = ['admin', $ep->group_id];
-    } elseif ( $ep->statut_validation == 'validation') {
-      $groups = ['admin', 'validators', $ep->group_id];
-    }
+    } elseif ( $site->statut_validation == 'validation') {
+      $groups = ['admin', 'validators', $site->group_id];
+    }*/
 
-    if ($ep->statut_validation != 'publié' && !$this->auth->in_group($groups)) {
+    /* if ($ep->statut_validation != 'publié' && !$this->auth->in_group($groups)) {
       $this->session->set_flashdata('message', 'Vous n\'avez pas les droits pour voir cette page.<br />Veuillez vous identifier.');
       $this->session->set_flashdata('message-class', 'danger');
       redirect('accueil/index');
-    }
+    } */
 
-    $data['ep'] = $ep;
-    $data['editable'] = $this->espace_protege_model->is_editable($id_ep);
-    $data['entites_geol'] = $this->espace_protege_model->getEntitesGeol($id_ep);
+    $data['site'] = $site;
+    $data['editable'] = $this->site_model->is_editable($id);
+    $data['entites_geol'] = $this->site_model->getEntitesGeol($id);
 
-    $this->load->view('default/header', ['scripts' => ['js/fiche_projet.js'], 'title' => $ep->nom_ep]);
-    $this->load->view('fiche_ep/fiche_espace', $data);
+    $this->load->view('default/header', ['scripts' => ['js/fiche_projet.js'], 'title' => $site->nom]);
+    $this->load->view('fiche_site/fiche_site', $data);
     $this->load->view('default/footer');
   }
 
-  public function rubrique_content($id, $rubrique, $type = 'EP') {
+  public function rubrique_content($id, $rubrique, $type = 'Site') {
     // chargement asynchrone du contenu du panel
     $this->load->helper('caracteristiques_helper');
 
-    if ($type == 'EP') {
-      $model = $this->espace_protege_model;
-      $data = array('ep' => $model->get($id));
+    if ($type == 'Site') {
+      $model = $this->site_model;
+      $data = array('site' => $model->get($id));
     } elseif ($type == 'EG') {
       $this->load->model('entite_geol_model');
       $model = $this->entite_geol_model;
@@ -53,21 +53,23 @@ class Site extends CI_Controller {
     $data['commentaire'] = empty($comment) ? (object)array('commentaire' => '') : $comment;
 
     if ($rubrique == 'infos_preliminaires') {
-      $data['ep']->feuilles_cartes = $this->espace_protege_model->getFeuillesCartes($id);
+      $data['site']->feuilles_cartes = $this->espace_protege_model->getFeuillesCartes($id);
     }
+    // hack pas beau pour éviter d'avoir à tout remplacer
+    $data['ep'] = $data['site'];
 
-    $this->output->set_output($this->load->view('fiche_ep/rubriques/' . $rubrique . '.php', $data, TRUE));
+    $this->output->set_output($this->load->view('fiche_site/rubriques/' . $rubrique . '.php', $data, TRUE));
   }
 
 
-  public function rubrique_form($id, $rubrique, $type = 'EP') {
+  public function rubrique_form($id, $rubrique, $type = 'Site') {
     $this->load->helper('caracteristiques_helper');
     $this->load->helper('form_helper');
     $this->load->model('qcm_model');
     $this->load->library('form_validation');
 
-    if ($type == 'EP') {
-      $model = $this->espace_protege_model;
+    if ($type == 'Site') {
+      $model = $this->site_model;
     } elseif ($type == 'EG') {
       $this->load->model('entite_geol_model');
       $model = $this->entite_geol_model;
@@ -76,8 +78,7 @@ class Site extends CI_Controller {
     // traitement du formulaire
     if ($this->input->post()) {
       // règles par formulaire
-      $config = array(
-      );
+      $config = array();
 
       $this->form_validation->set_rules(element($rubrique, $config));
       if (!isset($config[$rubrique]) || $this->form_validation->run()) {
@@ -93,67 +94,70 @@ class Site extends CI_Controller {
     }
 
     $data = array('rubrique' => $rubrique, 'type_rubrique' => $type);
-    $data['ep'] = $model->get($id); // TODO : modifier le nom de variable
+    $data['site'] = $model->get($id); // TODO : modifier le nom de variable
 
     $qcms = $model->getCaracteristiquesForm($id, $rubrique);
 
-    $data['ep']->caracteristiques = $qcms;
-    $data['ep']->complements = $model->getComplementsRubrique($id, $rubrique);
+    $data['site']->caracteristiques = $qcms;
+    $data['site']->complements = $model->getComplementsRubrique($id, $rubrique);
     $comment = $model->getCommentaire($id, $rubrique);
-    $data['ep']->commentaire = empty($comment) ? (object)array('commentaire' => '') : $comment;
+    $data['site']->commentaire = empty($comment) ? (object)array('commentaire' => '') : $comment;
 
-    $this->output->set_output($this->load->view('fiche_ep/rubriques/' . $rubrique . '_form.php', $data, TRUE));
+    // hack pas beau pour éviter d'avoir à tout remplacer
+    $data['ep'] = $data['site'];
+
+    $this->output->set_output($this->load->view('fiche_site/rubriques/' . $rubrique . '_form.php', $data, TRUE));
   }
 
 
-  // enregistrement d'un nouvel EP
-  public function creation() {
+  // enregistrement d'un nouveau site
+  public function creation($id_ep, $id=NULL) {
     if (! $this->auth->logged_in()) {
       $this->session->set_flashdata('message', 'Connectez-vous pour pouvoir accéder à cette page.');
       $this->session->set_flashdata('message-class', 'warning');
       redirect('accueil/index');
     }
 
-    $this->load->model('espace_ref_model');
+    $this->load->model('espace_model');
     $this->load->helper('form_helper');
     $this->load->library('form_validation');
 
-    // enregistrement de l'EP
+    // enregistrement du site
     if ($this->input->post()) {
-      $this->form_validation->set_rules('surface_ep', 'superficie', 'numeric');
-      $this->form_validation->set_rules('nom_ep', 'nom', 'required');
-      //$this->form_validation->set_rules('code_national_ep', '' 'required');
+      $this->form_validation->set_rules('nom', 'nom', 'required');
       if ($this->form_validation->run()) {
         $data = $this->input->post();
         $data['statut_validation'] = 'attente';
-        $id_ep = $this->espace_protege_model->add($data);
+        if ($id) {
+          $this->site_model->update($id, $data);
+        } else {
+          $id = $this->site_model->add($data);
+        }
         $this->load->library('session');
-        $this->session->set_flashdata('message', "Espace correctement entegistré");
+        $this->session->set_flashdata('message', "Site correctement enregistré");
         $this->session->set_flashdata('message-class', 'success');
-        redirect('site/fiche_site/'.$id_ep);
+        redirect('site/fiche_site/'.$id);
       } else {
         log_message('ERROR', validation_errors());
       }
     }
 
     $data = array();
-
-    $data['espaces_ref'] = $this->espace_ref_model->getEspacesRefAvailable();
-    $data['groupes'] = array();
-    if ($this->auth->in_group(['admin', 'validators'])) {
-      $groups = $this->auth->groups()->result();
-    } else {
-      $groups = $this->auth->get_users_groups()->result();
+    if ($id) {
+      $data['site'] = $this->site_model->get($id);
     }
-    foreach($groups as $g) {
-      if ($g->id > 4) {
-        $data['groupes'][$g->id] = $g->name;
-      }
-    }
+    $data['ep'] = $this->espace_model->get($id_ep);
 
-    $this->load->view('default/header');
-    $this->load->view('ajout_ep', $data);
+    $this->load->view('default/header', [
+      'scripts' => ['lib/leaflet/pm/leaflet.pm.min.js', 'js/ajout_site.js'],
+      'styles' => ['lib/leaflet/pm/leaflet.pm.css']
+    ]);
+    $this->load->view('ajout_site', $data);
     $this->load->view('default/footer');
+  }
+
+  public function modification($id, $id_ep) {
+    return $this->creation($id_ep, $id);
   }
 
   // ajout / modif d'entité géol

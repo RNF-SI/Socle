@@ -42,7 +42,7 @@ $(function() {
 
   // carto
   if ($('#map-main').length > 0) {
-    var map = base_map('map-main', espace_protege.code_national_ep);
+    var map = base_map('map-main', site.ep_id);
     var popup = L.popup({maxWidth: 200});
     map.on("click", function(evt) {
       if (map.getZoom() < 11) return false;
@@ -52,7 +52,12 @@ $(function() {
           + data.description + '</i></p>';
         popup.setContent(cont).openOn(map);
       });
-    })
+    });
+
+    $.get(site_url("carto/site_geom/" + site.id), function(data) {
+      var vectLayer = L.geoJSON(data).addTo(map).bringToBack();
+      map.fitBounds(vectLayer.getBounds());
+    });
   }
 
 });

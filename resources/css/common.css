@@ -74,3 +74,9 @@ li.qcm-patrimonial {
 .illustration .caption {
   font-size: 80%;
 }
+
+#map {
+  height: 400px;
+  width: 400px;
+  margin: 10px;
+}

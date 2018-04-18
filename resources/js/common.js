@@ -5,7 +5,7 @@ function site_url(path) {
 
 
 // crée une carte de base avec les couches qu'il faut
-function base_map(id_map, id_ep_ref) {
+function base_map(id_map, id_ep) {
   var mainMap = L.map(id_map);
 
   var baseLayers = {};
@@ -37,8 +37,14 @@ function base_map(id_map, id_ep_ref) {
   L.control.scale({imperial: false}).addTo(mainMap);
 
   // contours de la réserve
-  $.get(site_url("carto/espace_protege_geom/" + id_ep_ref), function(data) {
-    var vectLayer = L.geoJSON(data).addTo(mainMap).bringToBack();
+  $.get(site_url("carto/espace_protege_geom/" + id_ep), function(data) {
+    var options = {
+      color: 'green',
+      weight: 2,
+      fill: false
+    }
+    var vectLayer = L.geoJSON(data, options).addTo(mainMap).bringToBack();
+
     mainMap.fitBounds(vectLayer.getBounds());
   });
 

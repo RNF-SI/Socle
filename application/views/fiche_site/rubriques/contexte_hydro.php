@@ -29,8 +29,8 @@ situe le territoire de la réserve.</li>
   <p>
     Le territoire se situe dans les bassin hydrographiques :
     <ul>
-      <li>général : <?=  $ep->bassin_hydro_general ?></li>
-      <li>raproché : <?= $ep->bassin_hydro_rapproche ?></li>
+      <li>général : <?=  $site->bassin_hydro_general ?></li>
+      <li>raproché : <?= $site->bassin_hydro_rapproche ?></li>
     </ul>
   </p>
   <p> Sur le territoire, on peut observer les éléments suivants&nbsp;:

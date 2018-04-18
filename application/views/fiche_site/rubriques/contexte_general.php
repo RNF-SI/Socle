@@ -11,11 +11,11 @@ rocheux, sans compter quelques marques anthropiques.<br />
 Cette première approche est très générale. Les différents aspects seront précisés
 ultérieurement avec l’ensemble des questionnements Q2.</p>
   </div>
-  <p>Surface couverte par la réserve : <?= $ep->surface_ep ?>&nbsp;Ha <br />
-  Altitude du point le plus haut : <?= $ep->altitude_max_ep ?>&nbsp;m <br />
-  Altitude du point le plus bas : <?= $ep->altitude_min_ep ?>&nbsp;m</p>
-  <p><?php if ($ep->nombre_morcellement == 0): ?>Territoire d'un seul tenant
-  <?php else: ?>Territoire constitué de <?= $ep->nombre_morcellement; ?> parties disjointes<?php endif; ?></p>
+  <p>Surface couverte par la réserve : <?= $site->surface_ep ?>&nbsp;Ha <br />
+  Altitude du point le plus haut : <?= $site->altitude_max_ep ?>&nbsp;m <br />
+  Altitude du point le plus bas : <?= $site->altitude_min_ep ?>&nbsp;m</p>
+  <p><?php if ($site->nombre_morcellement == 0): ?>Territoire d'un seul tenant
+  <?php else: ?>Territoire constitué de <?= $site->nombre_morcellement; ?> parties disjointes<?php endif; ?></p>
   <p>Le territoire est situé en :
     <?= liste_caracteristiques($caracteristiques, 'Q1.1') ?>
   </p>
