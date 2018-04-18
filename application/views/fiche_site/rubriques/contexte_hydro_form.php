@@ -1,4 +1,4 @@
-<?= form_open('site/rubrique_form/' . $ep->id . '/' . $rubrique,
+<?= form_open('site/rubrique_form/' . $site->id . '/' . $rubrique,
 ['class' => 'form-horizontal']) ?>
 <?= validation_errors('<div class="alert alert-warning">', '</div>') ?>
 <h3>Votre territoire se situe dans quel ?</h3>

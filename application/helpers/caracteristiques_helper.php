@@ -7,9 +7,9 @@ function liste_caracteristiques($list, $question) {
   $txt = '<ul>';
   foreach ($list[$question] as $car) {
     $txt .= '<li';
-    if ($car->patrimonial == 't')
-      $txt .= ' class="qcm-patrimonial" title="élément d\'intérêt patrimonial"';
-    $txt .= '>' . $car->label .
+    if ($car->remarquable == 't')
+      $txt .= ' class="qcm-patrimonial" title="élément remarquable"';
+    $txt .= '>' . $car->label . ($car->remarquable == 't' ? '<span class="coche-remarquable active"> &starf;</span>' : '') .
       ($car->info_complement ? ' (' . $car->intitule_complement . '&nbsp;: ' . $car->info_complement . ')' : '')
       . '</li>';
   }
@@ -23,20 +23,20 @@ function qcm_caracteristiques($choices) {
   $txt = '<div class="qcm form-group">';
   foreach ($choices as $choice) {
     //$id  = $choice->rubrique . '-' . $choice->id;
-    $li = '<div class="col-sm-4">
+    $li = '<div class="choix-container col-sm-4">
       <div class="checkbox"><label>
         <input type="checkbox" name="caracteristiques[]" value="'. $choice->id . '"';
     if ($choice->checked)
       $li .= ' checked';
-    $li .= '>' . $choice->label . '</label></div>';
-    $li .= '<div class="coche-complement well well-sm collapse' . ($choice->checked ? ' in' : '') . '" id="coche-complement-' . $choice->id . '">
-      <div class="checkbox"><label><input type="checkbox" name="info_remarquable[]" value="' . $choice->id . '" '
-      . ($choice->remarquable ? ' checked' : '') . ' /> élément remarquable</label></div>';
+    $li .= '>' . $choice->label . '</label> <a href="#" class="coche-remarquable'
+      . ($choice->checked ? '':' hidden').($choice->remarquable == 't' ? ' active': '') .'" title="Signaler cet élément comme remarquable">&starf;</a></div>';
+
+    $li .= '<input type="hidden" name="info_remarquable[]" value="' . ($choice->remarquable == 't' ? $choice->id : '') . '" />';
     if (! is_null($choice->intitule_complement))
-      $li .= '<label for="info_complement[]">' . $choice->intitule_complement
+      $li .= '<div class="choice-complement"><label for="info_complement[]">' . $choice->intitule_complement
         . '</label><input type="text" name="info_complement[]" value="' . $choice->info_complement . '" />
-        <input type="hidden" name="info_complement_id[]" value="' . $choice->id . '" />';
-    $li .= '</div></div>';
+        <input type="hidden" name="info_complement_id[]" value="' . $choice->id . '" /></div>';
+    $li .= '</div>';
     $txt .= $li;
   }
   $txt .= '</div>';

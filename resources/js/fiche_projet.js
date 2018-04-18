@@ -9,7 +9,17 @@ $(function() {
     });
   }).on("change", "input[name='caracteristiques[]']", function(evt) {
     var id = $(this).val();
-    $("#coche-complement-" + id).toggle(this.checked);
+    $(this).parents('.choix-container').find('.coche-remarquable').toggleClass('hidden');
+  }).on('click', '.coche-remarquable', function() {
+    var $star = $(this);
+    $star.toggleClass('active');
+    if ($star.hasClass('active')) {
+      var id = $star.parents('.choix-container').find("input[name='caracteristiques[]']").val();
+      $star.parents('.choix-container').find("input[name='info_remarquable[]']").val(id);
+    } else {
+      $star.parents('.choix-container').find("input[name='info_remarquable[]']").val('');
+    }
+    return false;
   });
 
   // TODO : doit-on supprimer le contenu quand ça collapse ?

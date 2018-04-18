@@ -160,14 +160,16 @@ class Entite_abstract_model extends CI_Model {
     return $res;
   }
 
+
   public function getCommentaire($id, $rubrique) {
     $query = $this->db->get_where($this->commentTableName, [$this->linkColumnName() => $id, 'rubrique' => $rubrique]);
     return $query->row();
   }
 
+
   public function update_rubrique($id, $data, $rubrique) {
     $colname = $this->linkColumnName();
-
+    log_message('debug', print_r($data, TRUE));
     $this->db->trans_start();
     if (isset($data['caracteristiques'])) {
       $cars = array();
@@ -181,14 +183,14 @@ class Entite_abstract_model extends CI_Model {
         unset($data['info_complement_id']);
       }
 
-      if (isset($data['info_patrimonial'])) {
-        foreach ($data['info_patrimonial'] as $iid) {
+      if (isset($data['info_remarquable'])) {
+        foreach ($data['info_remarquable'] as $iid) {
           if (! isset($complement_item[$iid])) {
             $complement_item[$iid] = array();
           }
-          $complement_item[$iid]['patrimonial'] = TRUE;
+          $complement_item[$iid]['remarquable'] = TRUE;
         }
-        unset($data['info_patrimonial']);
+        unset($data['info_remarquable']);
       }
 
 
@@ -197,7 +199,7 @@ class Entite_abstract_model extends CI_Model {
           $colname => $id,
           'qcm_id' => $item,
           'info_complement' => (empty($complement_item[$item]['info_complement']) ? NULL : $complement_item[$item]['info_complement']),
-          'patrimonial' => (! empty($complement_item[$item]['patrimonial']))
+          'remarquable' => (! empty($complement_item[$item]['remarquable']))
          ];
 
         array_push($cars, $li);

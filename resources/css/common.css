@@ -32,8 +32,17 @@ li::marker {
 }
 
 li.qcm-patrimonial {
-  color: #0c8da6;
-  text-decoration: underline;
+  font-weight: bold;
+}
+
+.coche-remarquable {
+  color: #afafaf;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.coche-remarquable.active {
+  color: #ffc700;
 }
 
 #tdm li {
@@ -74,6 +83,8 @@ li.qcm-patrimonial {
 .illustration .caption {
   font-size: 80%;
 }
+
+
 
 #map {
   height: 400px;
