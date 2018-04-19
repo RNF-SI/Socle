@@ -109,12 +109,12 @@ class Entite_abstract_model extends CI_Model {
   // recupère toutes les caractéristiques pour une rubriques
   // et précise si elles sont sélectionnées
   public function getCaracteristiquesForm($id, $rubrique = NULL) {
-    $sousreq = $this->db
-      ->select('qcm_id, info_complement, remarquable')
+    $subquery = $this->db
+      ->select('qcm_id, info_complement, remarquable, interet_esthetique, interet_historique, interet_pedagogique, interet_scientifique, comments')
       ->where($this->linkColumnName(), $id)
       ->get_compiled_select($this->qcmLinkTable);
     $this->db->from('qcm')
-      ->join('(' . $sousreq . ') AS sreq', 'qcm_id = qcm.id', 'left')
+      ->join('(' . $subquery . ') AS sreq', 'qcm_id = qcm.id', 'left')
       ->order_by('question, ordre_par_question');
     if (! is_null($rubrique)) {
       $this->db->where('rubrique', $rubrique);
@@ -168,44 +168,64 @@ class Entite_abstract_model extends CI_Model {
     return $query->row();
   }
 
+  private function log($v) {
+    log_message('debug', print_r($v, TRUE));
+  }
 
   public function update_rubrique($id, $data, $rubrique) {
+    $link_fields = [
+      //'remarquable' => 'b',
+      'interet_scientifique' => 'b',
+      'interet_pedagogique' => 'b',
+      'interet_esthetique' => 'b',
+      'interet_historique' => 'b',
+      'comments' => 't',
+      'info_complement' => 't'
+    ];
     $colname = $this->linkColumnName();
     log_message('debug', print_r($data, TRUE));
     $this->db->trans_start();
+
     if (isset($data['caracteristiques'])) {
       $cars = array();
-      $complement_item = array();
+
+      foreach ($data['caracteristiques'] as $car) {
+        $cars[$car] = array('qcm_id' => $car, $colname => $id);
+      }
+      unset($data['caracteristiques']);
+
       if (isset($data['info_complement'])) {
-        foreach ($data['info_complement_id'] as $n => $iid) {
-          if (! empty($data['info_complement'][$n]))
-            $complement_item[$iid] = array('info_complement' => $data['info_complement'][$n]);
+        foreach ($data['info_complement'] as $pos => $val) {
+          if (! empty($val))
+            $cars[$data['info_complement_id'][$pos]]['info_complement'] = $val;
         }
         unset($data['info_complement']);
         unset($data['info_complement_id']);
       }
 
-      if (isset($data['info_remarquable'])) {
-        foreach ($data['info_remarquable'] as $iid) {
-          if (! isset($complement_item[$iid])) {
-            $complement_item[$iid] = array();
-          }
-          $complement_item[$iid]['remarquable'] = TRUE;
+      $corresp_id = $data['remarquable'];
+      foreach ($data['remarquable'] as $numli => $qcm_id) {
+        if (!empty($qcm_id)) {
+          $cars[$qcm_id]['remarquable'] = TRUE;
         }
-        unset($data['info_remarquable']);
+      }
+      unset($data['remarquable']);
+
+      foreach ($data as $field => $val) {
+        if (is_array($val) && isset($link_fields[$field])) {
+          foreach ($val as $pos => $iid) {
+            if (! empty($iid)) {
+              if ($link_fields[$field] == 'b') {
+                $cars[$iid][$field] = TRUE;
+              } else {
+                $cars[$corresp_id[$pos]][$field] = $iid;
+              }
+            }
+          }
+          unset($data[$field]);
+        }
       }
 
-
-      foreach ($data['caracteristiques'] as $item) {
-        $li =  [
-          $colname => $id,
-          'qcm_id' => $item,
-          'info_complement' => (empty($complement_item[$item]['info_complement']) ? NULL : $complement_item[$item]['info_complement']),
-          'remarquable' => (! empty($complement_item[$item]['remarquable']))
-         ];
-
-        array_push($cars, $li);
-      }
       unset($data['caracteristiques']);
     }
 
@@ -243,10 +263,12 @@ class Entite_abstract_model extends CI_Model {
     }
     unset($data['commentaire']);
 
+    // traitement des QCM
+
+    // enrgistrement des champs specifiques
     if(!empty($data))
       $this->db->where('id', $id)->update($this->tableName, $data);
 
-    // traitement des QCM
     if (isset($rubrique)) {
       $subquery = $this->db->select('id')
         ->where('rubrique', $rubrique)
@@ -256,7 +278,18 @@ class Entite_abstract_model extends CI_Model {
         ->delete($this->qcmLinkTable);
 
       if (isset($cars)) {
-        $this->db->insert_batch($this->qcmLinkTable, $cars);
+        // on s'assure que toutes les lignes ont le memes cles
+        $keys = array();
+        foreach ($cars as $li) {
+          $keys = array_unique(array_merge($keys, array_keys($li)));
+        }
+        $template = array_combine($keys, array_fill(0, count($keys), NULL));
+        $toinsert = array();
+        foreach ($cars as $li) {
+          $toinsert[] = array_merge($template, $li);
+        }
+
+        $this->db->insert_batch($this->qcmLinkTable, $toinsert);
       }
     }
     $this->db->trans_complete();

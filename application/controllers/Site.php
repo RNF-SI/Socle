@@ -126,6 +126,7 @@ class Site extends CI_Controller {
     // enregistrement du site
     if ($this->input->post()) {
       $this->form_validation->set_rules('nom', 'nom', 'required');
+      $this->form_validation->set_rules('geom', 'périmètre', 'required');
       if ($this->form_validation->run()) {
         $data = $this->input->post();
         $data['statut_validation'] = 'attente';

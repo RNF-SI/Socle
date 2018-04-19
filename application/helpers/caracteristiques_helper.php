@@ -5,12 +5,27 @@ function liste_caracteristiques($list, $question) {
   if (! isset($list[$question]))
     return '<i>&lt;Aucun élément&gt;</i>';
   $txt = '<ul>';
+  $interets = [
+    'interet_scientifique' => 'scientifique',
+    'interet_esthetique' => 'esthétique',
+    'interet_pedagogique' => 'pédagogique',
+    'interet_historique' => 'historique/culturel'
+  ];
   foreach ($list[$question] as $car) {
-    $txt .= '<li';
-    if ($car->remarquable == 't')
-      $txt .= ' class="qcm-patrimonial" title="élément remarquable"';
-    $txt .= '>' . $car->label . ($car->remarquable == 't' ? '<span class="coche-remarquable active"> &starf;</span>' : '') .
-      ($car->info_complement ? ' (' . $car->intitule_complement . '&nbsp;: ' . $car->info_complement . ')' : '')
+    $txt .= '<li>' . $car->label;
+
+    if ($car->remarquable == 't') {
+      $txt .= '<span class="coche-remarquable active"> &starf;</span>';
+      $item_interets = array();
+      foreach ($interets as $key => $value) {
+        if (isset($car->$key) && $car->$key == 't')
+          $item_interets[] = $value;
+      }
+      if (count($item_interets) > 0) {
+        $txt .= ' (intérêts identifiés : ' . implode(', ', $item_interets) . ')';
+      }
+    }
+    $txt .=  ($car->info_complement ? ' (' . $car->intitule_complement . '&nbsp;: ' . $car->info_complement . ')' : '')
       . '</li>';
   }
   $txt .= '</ul>';
@@ -20,6 +35,16 @@ function liste_caracteristiques($list, $question) {
 
 // construit une série de checkbox avec le choix QCM
 function qcm_caracteristiques($choices) {
+  $hidden_fields = [
+    'remarquable' => 'b',
+    'interet_scientifique' => 'b',
+    'interet_pedagogique' => 'b',
+    'interet_esthetique' => 'b',
+    'interet_historique' => 'b',
+    'comments' => 't'
+  ];
+  // log_message('debug', print_r($choices, TRUE));
+
   $txt = '<div class="qcm form-group">';
   foreach ($choices as $choice) {
     //$id  = $choice->rubrique . '-' . $choice->id;
@@ -28,10 +53,24 @@ function qcm_caracteristiques($choices) {
         <input type="checkbox" name="caracteristiques[]" value="'. $choice->id . '"';
     if ($choice->checked)
       $li .= ' checked';
-    $li .= '>' . $choice->label . '</label> <a href="#" class="coche-remarquable'
-      . ($choice->checked ? '':' hidden').($choice->remarquable == 't' ? ' active': '') .'" title="Signaler cet élément comme remarquable">&starf;</a></div>';
+    $li .= '>' . $choice->label . '</label> <span class="remarquable-control'
+      . ($choice->checked ? '' : ' hidden') . '"><a href="#" class="coche-remarquable'
+      .($choice->remarquable == 't' ? ' active': '') .'" title="Signaler cet élément comme remarquable">&starf;</a>
+      <a href="#" class="remarquable-edit"><span class="glyphicon glyphicon-edit"> </span></a></span></div>';
 
-    $li .= '<input type="hidden" name="info_remarquable[]" value="' . ($choice->remarquable == 't' ? $choice->id : '') . '" />';
+
+    foreach ($hidden_fields as $hf => $type) {
+      $input = '<input type="hidden" id="'. $hf . '-' . $choice->id . '" name="' . $hf . '[]" ';
+      if ($hf == 'remarquable' && $choice->$hf) {
+        $input .= 'value ="' . $choice->id . '"';
+      } elseif ($choice->$hf == 't') {
+        $input .= 'value ="' . $choice->id . '"';
+      }
+      $input .= ' />';
+      $li .=  $input;
+    }
+    //$li .= '<input type="hidden" name="info_remarquable[]" value="' . ($choice->remarquable == 't' ? $choice->id : '') . '" />';
+
     if (! is_null($choice->intitule_complement))
       $li .= '<div class="choice-complement"><label for="info_complement[]">' . $choice->intitule_complement
         . '</label><input type="text" name="info_complement[]" value="' . $choice->info_complement . '" />
