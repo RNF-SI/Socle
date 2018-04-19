@@ -32,9 +32,10 @@ class Entite_abstract_model extends CI_Model {
     if (preg_match('/^[A-Z]+\(/', $g) == 1) { // WKT
       $func = 'st_geomFromText';
       $s = $g;
-    } elseif (preg_match('/^\{"type":"(\w+)"/', $g, $match) == 1) { // geojson
-      if ($match[1] == 'Feature') {
-        $s = json_encode(json_decode($g)->geometry);
+    } else { // geojson
+      $json = json_decode($g);
+      if ($json->type == 'Feature') {
+        $s = json_encode($json->geometry);
       } else {
         $s = $g;
       }
@@ -69,6 +70,7 @@ class Entite_abstract_model extends CI_Model {
 
   // ajout d'une entité
   public function add($data) {
+    log_message('debug', print_r($data, TRUE));
     if (isset($data['geom'])) {
       $this->_processGeometry($data['geom']);
       unset($data['geom']);

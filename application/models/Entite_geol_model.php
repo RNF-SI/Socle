@@ -12,18 +12,18 @@ class Entite_geol_model extends Entite_abstract_model {
   public function get($id_eg) {
     if (is_null($id_eg)) return;
     return $this->db
-      ->join('echelle_geol', 'echelle_geol.id = id_ere_geol', 'left')
+      ->join('echelle_geol', 'echelle_geol.id = ere_geol_id', 'left')
       ->select([$this->tableName.'.*', 'echelle_geol.label AS ere_geol_label'])
       ->select('st_asGeoJson(geom) AS geojson')
       ->get_where($this->tableName, array($this->tableName.'.id'=>$id_eg))
       ->row();
   }
 
-  public function add($data) {
+  /* public function add($data) {
     $data['geom'] = 'st_setSRID(st_geomFromGeoJson(\'' .$data['geojson'] . '\'), 4326)';
     unset($data['geojson']);
     return parent::add($data);
-  }
+  } */
 
   public function update($id_eg, $data) {
     $data['geom'] = 'st_setSRID(st_geomFromGeoJson(\'' .$data['geojson'] . '\'), 4326)';

@@ -1,8 +1,8 @@
 <div class="eg-head">
   <h2><?= isset($eg) ? $eg->intitule : 'Nouvelle entité géologique' ?></h2>
-  <p>pour le site <em><a href="<?= site_url('site/fiche_site/'.$ep->id) ?>"><?= $ep->nom_ep ?></a></em></p>
+  <p>pour le site <em><a href="<?= site_url('site/fiche_site/'.$site->id) ?>"><?= $site->nom ?></a></em></p>
 </div>
-<form class="form-horizontal" action="<?= site_url('site/ajout_eg/'.$ep->id.($id_eg ? '/' . $id_eg : '')) ?>" method="POST">
+<form class="form-horizontal" action="<?= site_url('site/ajout_eg/'  .$site->id . ($id_eg ? '/' . $id_eg : '')) ?>" method="POST">
   <div class="row">
     <div class="col-sm-7">
       <p>Cliquez sur la carte pour localiser le point et remplir automatiquement les références de l'entité cartographiée.
@@ -13,10 +13,10 @@
           return set_value($label, isset($obj->$label) ? $obj->$label : NULL, $html_escape);
         }
 
-        echo form_hidden('geojson', set_value_obj('geojson', $eg, FALSE));
+        echo form_hidden('geom', set_value_obj('geojson', $eg, FALSE));
         echo form_input('intitule', 'Nom de l\'entité (libre)', set_value_obj('intitule', $eg));
-        echo form_input('code_eg', 'code de l\'entité sur la carte géologique', set_value_obj('code_eg', $eg));
-        echo form_input('intitule_eg', 'nom de l\'entité sur la légende de la carte', set_value_obj('intitule_eg', $eg));
+        echo form_input('code', 'code de l\'entité sur la carte géologique', set_value_obj('code', $eg));
+        echo form_input('intitule', 'nom de l\'entité sur la légende de la carte', set_value_obj('intitule', $eg));
         ?>
     </div>
     <div class="col-sm-5">
@@ -72,5 +72,5 @@ documentations, etc.)</li>
  <?= form_submit() ?>
 </form>
 <script>
-  var ep = <?= json_encode($ep) ?>;
+  var site = <?= json_encode($site) ?>;
 </script>

@@ -24,8 +24,8 @@ class Site_model extends Entite_abstract_model {
     return $query->result();
   }
 
-  public function getEntitesGeol($id_ep) {
-    return $this->db->get_where('entite_geol', array('espace_protege_id' => $id_ep))->result();
+  public function getEntitesGeol($id_site) {
+    return $this->db->get_where('entite_geol', array('site_id' => $id_site))->result();
   }
 
   public function is_editable($id) {
@@ -34,8 +34,8 @@ class Site_model extends Entite_abstract_model {
     //return $this->auth->in_group(['admin', $res->group_id]);
   }
 
-  public function change_status($id_ep, $status) {
-    $this->db->where('id', $id_ep)
+  public function change_status($id_site, $status) {
+    $this->db->where('id', $id_site)
       ->update('espace_protege', array('statut_validation' => $status));
   }
 

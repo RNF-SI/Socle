@@ -1,25 +1,25 @@
 <script>
   var entite_id = <?= $eg->id ?>;
-  var id_ep_ref = '<?= $ep->code_national_ep ?>';
+  var id_site = '<?= $site->id ?>';
   var type_rubrique = 'EG';
   var point_coords = <?= $eg->geojson ?>;
 </script>
 <p>
 	<div class="btn-group">
-		<a href="<?= site_url('site/ajout_eg/'.$eg->espace_protege_id.'/'.$eg->id) ?>" class="btn btn-primary">
+		<a href="<?= site_url('site/ajout_eg/'.$site->id.'/'.$eg->id) ?>" class="btn btn-primary">
 			<span class="glyphicon glyphicon-pencil"></span> Modifier</a>
-		<a href="<?= site_url('site/ajout_eg/'.$eg->espace_protege_id) ?>" class="btn btn-primary">
+		<a href="<?= site_url('site/ajout_eg/'.$site->id) ?>" class="btn btn-primary">
 			<span class="glyphicon glyphicon-plus"></span> Créer une nouvelle entité</a>
 	</div>
 </p>
 <h1><?= $eg->intitule ?></h1>
-<p>Pour l'espace naturel <strong>
-  <a href="<?= site_url('site/fiche_site/' . $ep->id) ?>"><?= $ep->nom_ep ?></a>
+<p>Pour le site <strong>
+  <a href="<?= site_url('site/fiche_site/' . $site->id) ?>"><?= $site->nom ?></a>
 </strong></p>
 <div class="row">
   <div class="col-sm-7">
     <h3>Identification sur la carte géologique</h3>
-    <p>code <?= $eg->code_eg ?> : <?= $eg->intitule_eg ?></p>
+    <p>code <?= $eg->code ?> : <?= $eg->intitule ?></p>
     <p>Âge des roches : <?= $eg->ere_geol_label ?></p>
   </div>
   <div class="col-sm-5">
@@ -32,24 +32,24 @@
 </p>
 <?php
 
-$this->load->view('fiche_ep/base_rubrique', [
+$this->load->view('fiche_site/base_rubrique', [
   'titre' => 'Nature des roches',
-  'ep' => $ep,
+  'ep' => $site,
   'id_rubrique' => 'nature_roches']);
 
-$this->load->view('fiche_ep/base_rubrique', [
+$this->load->view('fiche_site/base_rubrique', [
   'titre' => 'Minéraux et cristaux',
-  'ep' => $ep,
+  'ep' => $site,
   'id_rubrique' => 'mineraux']);
 
-$this->load->view('fiche_ep/base_rubrique', [
+$this->load->view('fiche_site/base_rubrique', [
   'titre' => 'Fossiles et fossilisation',
-  'ep' => $ep,
+  'ep' => $site,
   'id_rubrique' => 'fossiles']);
 
-$this->load->view('fiche_ep/base_rubrique', [
+$this->load->view('fiche_site/base_rubrique', [
   'titre' => 'Structures et figurés rocheux particuliers',
-  'ep' => $ep,
+  'ep' => $site,
   'id_rubrique' => 'structures_rocheuses_particulieres']);
 
 ?>

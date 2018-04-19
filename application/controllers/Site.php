@@ -42,6 +42,8 @@ class Site extends CI_Controller {
     if ($type == 'Site') {
       $model = $this->site_model;
       $data = array('site' => $model->get($id));
+      // hack pas beau pour éviter d'avoir à tout remplacer
+      $data['ep'] = $data['site'];
     } elseif ($type == 'EG') {
       $this->load->model('entite_geol_model');
       $model = $this->entite_geol_model;
@@ -55,8 +57,7 @@ class Site extends CI_Controller {
     if ($rubrique == 'infos_preliminaires') {
       $data['site']->feuilles_cartes = $this->espace_protege_model->getFeuillesCartes($id);
     }
-    // hack pas beau pour éviter d'avoir à tout remplacer
-    $data['ep'] = $data['site'];
+
 
     $this->output->set_output($this->load->view('fiche_site/rubriques/' . $rubrique . '.php', $data, TRUE));
   }
@@ -161,7 +162,7 @@ class Site extends CI_Controller {
   }
 
   // ajout / modif d'entité géol
-  public function ajout_eg($id_ep, $id_eg=NULL) {
+  public function ajout_eg($id_site, $id_eg=NULL) {
     $this->load->model('entite_geol_model');
     $this->load->helper('form_helper');
     $this->load->library('form_validation');
@@ -171,7 +172,7 @@ class Site extends CI_Controller {
       $this->form_validation->set_rules('intitule', 'nom', 'required');
       if ($this->form_validation->run()) {
         $data = $this->input->post();
-        $data['espace_protege_id'] = $id_ep;
+        $data['site_id'] = $id_site;
         if (is_null($id_eg)) { // insert
           $id_eg = $this->entite_geol_model->add($data);
         } else { // update
@@ -188,7 +189,7 @@ class Site extends CI_Controller {
     }
 
     $data = array(
-      'ep' => $this->espace_protege_model->get($id_ep),
+      'site' => $this->site_model->get($id_site),
       'id_eg' => $id_eg,
       'eg' => $this->entite_geol_model->get($id_eg)
     );
@@ -205,8 +206,8 @@ class Site extends CI_Controller {
     $data = array();
     $eg = $this->entite_geol_model->get($id_eg);
     $data['eg'] = $eg;
-    $data['ep'] = $this->espace_protege_model->get($eg->espace_protege_id);
-	  $data['editable'] = $this->espace_protege_model->is_editable($eg->espace_protege_id);
+    $data['site'] = $this->site_model->get($eg->site_id);
+	  $data['editable'] = TRUE; //$this->espace_protege_model->is_editable($eg->espace_protege_id);
 
     $this->load->view('default/header', ['scripts' => ['js/fiche_projet.js', 'js/fiche_eg.js'],
       'title' => 'Entité géologique "' . $eg->intitule . '"']);

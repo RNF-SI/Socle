@@ -2,7 +2,7 @@ $(function() {
   $('#echelle_geol').bonsai({createInputs: 'radio'});
 
   // CARTO
-  var map = base_map('map', ep.code_national_ep);
+  var map = base_map('map', site.ep_id);
 
   var lyr = L.geoJSON(undefined, {pointToLayer: function(jsonPt, latlng) {
     return L.circleMarker(latlng, {radius: 7, color: '#b78a31', fillColor: '#b78a31', fillOpacity: 0.5})
@@ -23,17 +23,17 @@ $(function() {
     lyr.clearLayers();
     lyr.addData(json);
 
-    $("input[name=geojson]").val(JSON.stringify(json.features[0].geometry));
+    $("input[name=geom]").val(JSON.stringify(json.features[0].geometry));
 
     getGeolInfo(map, evt, function(response) {
-      $('input#code_eg').val(response.notation);
-      $('input#intitule_eg').val(response.description);
+      $('input#code').val(response.notation);
+      $('input#intitule').val(response.description);
     });
   });
 
   L.easyButton('glyphicon-remove', function(btn, map) {
     lyr.clearLayers();
-    $('input[name=geojson]').val(undefined);
+    $('input[name=geom]').val(undefined);
   }).addTo(map);
 
 });
