@@ -1,3 +1,6 @@
+<script>
+  var id_ep = <?= $ep->id ?>;
+</script>
 <h1><?= $ep->nom ?></h1>
 <div id="map"></div>
 

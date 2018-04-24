@@ -98,10 +98,14 @@ $(function() {
       });
     });
 
-    $.get(site_url("carto/site_geom/" + site.id), function(data) {
-      var vectLayer = L.geoJSON(data).addTo(map).bringToBack();
-      map.fitBounds(vectLayer.getBounds());
-    });
+    if (map.monosite != 't') {
+      $.get(site_url("carto/site_geom/" + site.id), function(data) {
+        if (data.features[0].geometry) {
+          var vectLayer = L.geoJSON(data).addTo(map).bringToBack();
+          map.fitBounds(vectLayer.getBounds());
+        }
+      });
+    }
   }
 
 });

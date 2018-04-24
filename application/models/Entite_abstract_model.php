@@ -13,6 +13,8 @@ class Entite_abstract_model extends CI_Model {
 
   protected $entity;
 
+  protected $has_geometry = TRUE;
+
 
   public function __construct() {
     $this->load->database();
@@ -48,6 +50,10 @@ class Entite_abstract_model extends CI_Model {
 
   public function get($id) {
     if (empty($this->entity) || $id != $this->entity->id) {
+      $this->db->select($this->tableName . '.*');
+      if ($this->has_geometry) {
+        $this->db->select('st_asGeoJson(geom) as geom');
+      }
       $query = $this->db->get_where($this->tableName, array('id' => $id));
       $this->entity = $query->row();
     }
@@ -296,10 +302,21 @@ class Entite_abstract_model extends CI_Model {
   }
 
 
-  public function getGeometry($id) {
-    $query = $this->db->select('st_asGeoJson(geom) as geojson')
-      ->get_where($this->tableName, ['id'=>$id]);
-    return $query->row()->geojson;
+  public function getGeometry($id, $additional_fields=NULL) {
+    $this->db->select('st_asGeoJson(geom) as geojson');
+    if (is_array($additional_fields)) {
+      $this->db->select($additional_fields);
+    }
+    $res = $this->db->get_where($this->tableName, ['id'=>$id])->row_array();
+    $data = ['properties' => []];
+    foreach ($res as $key => $val) {
+      if ($key == 'geojson') {
+        $data['geom'] = $val;
+      } else {
+        $data['properties'][$key] = $val;
+      }
+    }
+    return $data;
   }
 
 }

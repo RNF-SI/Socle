@@ -44,6 +44,7 @@ function base_map(id_map, id_ep) {
       fill: false
     }
     var vectLayer = L.geoJSON(data, options).addTo(mainMap).bringToBack();
+    mainMap.monosite = data.features[0].properties.monosite;
 
     mainMap.fitBounds(vectLayer.getBounds());
   });

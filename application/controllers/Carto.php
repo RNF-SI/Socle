@@ -32,16 +32,16 @@ class Carto extends CI_Controller {
   public function espace_protege_geom($id) {
     $this->load->model('espace_model');
 
-    $data = $this->espace_model->getGeometry($id);
+    $data = $this->espace_model->getGeometry($id, ['monosite']);
 
-    $this->output->set_output($this->_create_geoJson(array(array('geom'=>$data))));
+    $this->output->set_output($this->_create_geoJson(array($data)));
   }
 
   public function site_geom($id) {
     $this->load->model('site_model');
     $data = $this->site_model->getGeometry($id);
 
-    $this->output->set_output($this->_create_geoJson(array(array('geom'=>$data))));
+    $this->output->set_output($this->_create_geoJson(array($data)));
   }
 
 
