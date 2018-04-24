@@ -51,3 +51,7 @@ function form_text($name, $label='', $value = '') {
 function form_submit($label="Enregistrer") {
   return '<button type="submit"  class="btn btn-primary">' . $label . '</button>';
 }
+
+function set_value_obj($label, $obj, $html_escape=TRUE) {
+  return set_value($label, isset($obj->$label) ? $obj->$label : NULL, $html_escape);
+}

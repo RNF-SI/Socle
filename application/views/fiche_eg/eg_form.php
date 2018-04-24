@@ -8,11 +8,7 @@
       <p>Cliquez sur la carte pour localiser le point et remplir automatiquement les références de l'entité cartographiée.
         (ne fonctionne que sur la France métropolitaine)</p>
       <p>Pour une entité fractionnée, plusieurs points peuvent être positionnés.</p>
-        <?php
-        function set_value_obj($label, $obj, $html_escape=TRUE) {
-          return set_value($label, isset($obj->$label) ? $obj->$label : NULL, $html_escape);
-        }
-
+        <?php        
         echo form_hidden('geom', set_value_obj('geojson', $eg, FALSE));
         echo form_input('intitule', 'Nom de l\'entité (libre)', set_value_obj('intitule', $eg));
         echo form_input('code', 'code de l\'entité sur la carte géologique', set_value_obj('code', $eg));
@@ -50,6 +46,7 @@
  <?= form_select('quantite_affleurements', 'Présence d\'affleurements :', [
    'aucun' => 'aucun affleurement',
    'un seul' => 'un seul',
+   'quelques' => 'quelques affleurements',
    'nombreux' => 'nombreux affleurements',
    'surfaces' => 'grandes surfaces d\'affleurements'
  ], set_value_obj('quantite_affleurements', $eg)) ?>

@@ -204,8 +204,10 @@ class Site extends CI_Controller {
 
   public function fiche_entite_geol($id_eg) {
     $this->load->model('entite_geol_model');
+    $this->load->model('affleurement_model');
     $data = array();
     $eg = $this->entite_geol_model->get($id_eg);
+    $eg->affleurements = $this->affleurement_model->getByEG($id_eg);
     $data['eg'] = $eg;
     $data['site'] = $this->site_model->get($eg->site_id);
 	  $data['editable'] = TRUE; //$this->espace_protege_model->is_editable($eg->espace_protege_id);
@@ -221,15 +223,74 @@ class Site extends CI_Controller {
 
   }
 
+// pas de vue pour le moment (peut-être pas nécessaire)
+  public function fiche_affleurement($id_affl) {
+    $this->load->model('affleurement_model');
+    $data = array();
+    $affl = $this->affleurement_model->get($id_affl);
+    $data['affl'] = $affl;
+    $data['eg'] = $this->entite_geol_model->get($affl->eg_id);
+    $data['editable'] = TRUE; //$this->espace_protege_model->is_editable($eg->espace_protege_id);
+
+    $this->load->view('default/header', ['scripts' => ['js/fiche_affl.js'],
+      'title' => 'Affleurement "' . $affl->nom . '"']);
+    $this->load->view('affleurement/fiche_affleurement', $data);
+    $this->load->view('default/footer');
+  }
+
+
+  // ajout / modif d'affleurement
+  public function ajout_affleurement($id_eg, $id_affl=NULL) {
+    $this->load->model('affleurement_model');
+    $this->load->helper('form_helper');
+    $this->load->library('form_validation');
+
+    // enregistrement de l'EG
+    if ($this->input->post()) {
+      $this->form_validation->set_rules('nom', 'nom', 'required');
+      if ($this->form_validation->run()) {
+        $data = $this->input->post();
+        $data['eg_id'] = $id_eg;
+        if (is_null($id_affl)) { // insert
+          $id_affl = $this->affleurement_model->add($data);
+        } else { // update
+          $this->affleurement_model->update($id_affl, $data);
+        }
+
+        $this->load->library('session');
+        $this->session->set_flashdata('message', "Affleurement enregistré");
+        $this->session->set_flashdata('message-class', 'success');
+        redirect('site/fiche_entite_geol/'.$id_eg);
+      } else {
+        log_message('ERROR', validation_errors());
+      }
+    }
+
+    $this->load->model('entite_geol_model');
+    $data = array(
+      'eg' => $this->entite_geol_model->get($id_eg),
+      'affl' => $this->affleurement_model->get($id_affl)
+    );
+
+    $this->load->view('default/header', ['scripts' => ['js/form_affl.js']]);
+    $this->load->view('affleurement/affleurement_form', $data);
+    $this->load->view('default/footer');
+  }
+
+  public function modification_affleurement($id_affl, $id_eg) {
+    return $this->ajout_affleurement($id_eg, $id_affl);
+  }
+
+
   // Fiche de synthèse d'un EP
-  public function resume($id_ep) {
-    $ep = $this->espace_protege_model->get($id_ep);
+  public function resume($id) {
+    $site = $this->site_model->get($id);
 
     $data = new stdClass();
-    $data->ep = $ep;
-    $data->caract = $this->espace_protege_model->getCaracteristiques($id_ep);
+    $data->site = $site;
+    $data->caract = $this->site_model->getCaracteristiques($id);
 
-    $this->load->view('default/header', ['title' => 'Synthèse ' . $ep->nom_ep]);
+    $this->load->view('default/header', ['title' => 'Synthèse ' . $site->nom]);
     $this->load->view('fiche_ep/synthese_ep', $data);
     $this->load->view('default/footer');
   }

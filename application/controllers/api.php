@@ -14,11 +14,16 @@ class Api extends CI_Controller {
     $this->output->set_output(json_encode($data));
   }
 
-  //récupere le nom est la geom du l'espace de reference
+  //récupere le nom est la geom de l'espace de reference
   public function getEspaceRef($code) {
     $this->load->model('espace_ref_model');
     $data = $this->espace_ref_model->getEspaceWkt($code);
     $this->send($data);
+  }
+
+  public function info_entite_geol($id_eg) {
+    $this->load->model('entite_geol_model');
+    
   }
 
 

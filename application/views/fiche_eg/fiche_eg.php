@@ -17,6 +17,9 @@
   <a href="<?= site_url('site/fiche_site/' . $site->id) ?>"><?= $site->nom ?></a>
 </strong></p>
 <div class="row">
+  <div id="map"></div>
+</div>
+<div class="row">
   <div class="col-sm-7">
     <h3>Identification sur la carte géologique</h3>
     <p>code <?= $eg->code ?> : <?= $eg->intitule ?></p>
@@ -26,10 +29,20 @@
     <div id="map" style="height:300px"></div>
   </div>
 </div>
-<h3>Aspect des affleurements</h3>
+<h3>Affleurements</h3>
 <p><?= $eg->quantite_affleurements ?><br />
   <?= $eg->affleurements_accessibles ? 'Affleurements accessibles' : 'Affleurements inaccessibles' ?>
 </p>
+<div>
+  <h4>Affleurements identifiés :</h4>
+  <table class="table">
+  <?php foreach ($eg->affleurements as $affl): ?>
+    <tr><td><?= $affl->nom ?></td>
+      <td><a href="<?= site_url('site/modification_affleurement/' . $affl->id . '/' . $eg->id) ?>" title="modifier"><span class="glyphicon glyphicon-edit"> </span></td></tr>
+  <?php endforeach; ?>
+</table>
+  <a href="<?= site_url('site/ajout_affleurement/' . $eg->id) ?>" class="btn btn-primary">Ajouter et décrire un affleurement</a>
+</div>
 <?php
 
 $this->load->view('fiche_site/base_rubrique', [

@@ -19,17 +19,7 @@ class Entite_geol_model extends Entite_abstract_model {
       ->row();
   }
 
-  /* public function add($data) {
-    $data['geom'] = 'st_setSRID(st_geomFromGeoJson(\'' .$data['geojson'] . '\'), 4326)';
-    unset($data['geojson']);
-    return parent::add($data);
-  } */
-
-  public function update($id_eg, $data) {
-    $data['geom'] = 'st_setSRID(st_geomFromGeoJson(\'' .$data['geojson'] . '\'), 4326)';
-    unset($data['geojson']);
-    return parent::update($id_eg, $data);
-  }
+  
 
   // retourne l'échelle géol sous forme d'arbre
   public function echelle_geol() {
