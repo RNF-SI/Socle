@@ -34,7 +34,6 @@ class Site_model extends Entite_abstract_model {
       ->join('espace_protege', 'ep_id=espace_protege.id')
       ->get_where($this->tableName, ['site.id'=>$id]);
     $res = $query->row();
-    var_dump($this->db->last_query());
     return $this->auth->in_group(['admin', $res->group_id]);
   }
 

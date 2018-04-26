@@ -8,7 +8,7 @@
       <p>Cliquez sur la carte pour localiser le point et remplir automatiquement les références de l'entité cartographiée.
         (ne fonctionne que sur la France métropolitaine)</p>
       <p>Pour une entité fractionnée, plusieurs points peuvent être positionnés.</p>
-        <?php        
+        <?php
         echo form_hidden('geom', set_value_obj('geojson', $eg, FALSE));
         echo form_input('intitule', 'Nom de l\'entité (libre)', set_value_obj('intitule', $eg));
         echo form_input('code', 'code de l\'entité sur la carte géologique', set_value_obj('code', $eg));
@@ -21,7 +21,7 @@
   </div>
 
   <h3>Âge des roches</h3>
-  <ol id="echelle_geol" data-name="id_ere_geol" data-value="<?= set_value_obj('id_ere_geol',  $eg) ?>">
+  <ol id="echelle_geol" data-name="ere_geol_id" data-value="<?= set_value_obj('id_ere_geol',  $eg) ?>">
   <?php
   // structure arborescente de l'échelle géologique
   function makeTree($elt) {
@@ -51,10 +51,6 @@
    'surfaces' => 'grandes surfaces d\'affleurements'
  ], set_value_obj('quantite_affleurements', $eg)) ?>
 <?= form_checkbox('affleurements_accessibles', 'Affleurements accessibles', set_value_obj('affleurements_accessibles', $eg)) ?>
-<div id="affleurements" class="jumbotron">
-Liste des affleurements <br />
-  [ A FAIRE ]
-</div>
 
 <h3>Informations complémentaires</h3>
 <p>Pour cette entité géologique : rechercher et décrire les quelques informations

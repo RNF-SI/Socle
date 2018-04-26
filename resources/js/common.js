@@ -3,6 +3,23 @@ function site_url(path) {
   return base_url + 'index.php/' + path;
 }
 
+// ajoute une couche vectorielle à la carte
+function addVectorLayer(map, url, options, callback) {
+  $.get(site_url(url), function(data) {
+    if (options === undefined) {
+      var options = {
+        color: 'green',
+        weight: 2,
+        fill: false
+      }
+    }
+    var vectLayer = L.geoJSON(data, options).addTo(map)
+    if (callback) {
+      callback(vectLayer);
+    }
+  });
+}
+
 
 // crée une carte de base avec les couches qu'il faut
 function base_map(id_map, id_ep) {
@@ -36,18 +53,20 @@ function base_map(id_map, id_ep) {
   L.control.layers(baseLayers).addTo(mainMap);
   L.control.scale({imperial: false}).addTo(mainMap);
 
-  // contours de la réserve
-  $.get(site_url("carto/espace_protege_geom/" + id_ep), function(data) {
-    var options = {
-      color: 'green',
-      weight: 2,
-      fill: false
-    }
-    var vectLayer = L.geoJSON(data, options).addTo(mainMap).bringToBack();
-    mainMap.monosite = data.features[0].properties.monosite;
-
-    mainMap.fitBounds(vectLayer.getBounds());
-  });
+  // contours de l'espace
+  if (id_ep !== undefined) {
+      var options = {
+        color: 'green',
+        weight: 2,
+        fill: false
+      }
+      addVectorLayer(mainMap, 'carto/espace_protege_geom/' + id_ep, options, function(lyr) {
+        lyr.eachLayer(function(slyr) {
+          mainMap.monosite = slyr.feature.properties.monosite;
+        });
+        mainMap.fitBounds(lyr.getBounds());
+      });
+  }
 
   // traitement de la mini carte agrandissable
   if ($("#" + id_map).hasClass("minimap")) {

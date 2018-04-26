@@ -225,7 +225,7 @@ class Site extends CI_Controller {
         }
 
         $this->load->library('session');
-        $this->session->set_flashdata('message', "Espace correctement entegistré");
+        $this->session->set_flashdata('message', "Entité correctement enregistrée");
         $this->session->set_flashdata('message-class', 'success');
         redirect('site/fiche_entite_geol/'.$id_eg);
       } else {
@@ -315,6 +315,7 @@ class Site extends CI_Controller {
       'eg' => $this->entite_geol_model->get($id_eg),
       'affl' => $this->affleurement_model->get($id_affl)
     );
+    $data['site'] = $this->site_model->get($data['eg']->site_id);
 
     $this->load->view('default/header', ['scripts' => ['js/form_affl.js']]);
     $this->load->view('affleurement/affleurement_form', $data);

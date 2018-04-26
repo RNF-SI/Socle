@@ -1,5 +1,10 @@
 $(function() {
-  $('#echelle_geol').bonsai({createInputs: 'radio'});
+  var $echelle = $('#echelle_geol');
+  $echelle.bonsai({createInputs: 'radio'});
+  var bonsai = $echelle.data('bonsai');
+  $('#echelle_geol li').click(function(e) {
+    bonsai.expand($(this));
+  })
 
   // CARTO
   var map = base_map('map', site.ep_id);

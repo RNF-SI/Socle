@@ -200,10 +200,10 @@ chaque territoire.</p>
    'ep' => $site,
    'id_rubrique' => 'structures_geol_territoire']);
 
- $this->load->view('fiche_site/base_rubrique', [
+ /* $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /3 Contexte sismique',
    'ep' => $site,
-   'id_rubrique' => 'contexte_sismique']);
+   'id_rubrique' => 'contexte_sismique']); */
 
  $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /4 Structures et morphologies liées au volcanisme',

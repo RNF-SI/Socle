@@ -1,6 +1,7 @@
 <script>
   var entite_id = <?= $eg->id ?>;
-  var id_site = '<?= $site->id ?>';
+  var id_site = <?= $site->id ?>;
+  var id_ep = <?= $site->ep_id ?>;
   var type_rubrique = 'EG';
   var point_coords = <?= $eg->geojson ?>;
 </script>

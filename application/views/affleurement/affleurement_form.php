@@ -10,3 +10,6 @@ Nom du lieu si connu – nom de la carrière (par exemple).</p>
   <?= form_text('description', 'Description :', set_value_obj('description', $affl)) ?>
   <?= form_submit() ?>
 </form>
+<script>
+  var site_id = <?= $site->id ?>;
+</script>

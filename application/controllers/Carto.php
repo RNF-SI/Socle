@@ -44,6 +44,17 @@ class Carto extends CI_Controller {
     $this->output->set_output($this->_create_geoJson(array($data)));
   }
 
+  // générique pour récupérer l'un ou l'autre des éléments
+  public function element_geom($type, $id) {
+    switch ($type) {
+      case 'espace':
+        $this->espace_protege_geom($id);
+        break;
+      case 'site':
+        $this->site_geom($id);
+        break;
+    }
+  }
 
   private function getServiceXML($base_url, $params) {
     $url = $base_url . '?' . http_build_query($params);
