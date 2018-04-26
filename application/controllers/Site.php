@@ -10,6 +10,7 @@ class Site extends CI_Controller {
 
 
   public function fiche_site($id) {
+    $this->load->model('photo_model');
     $data = array();
     $site = $this->site_model->get($id);
 
@@ -26,6 +27,7 @@ class Site extends CI_Controller {
       redirect('accueil/index');
     } */
 
+    $site->photos = $this->photo_model->getBySite($id);
     $data['site'] = $site;
     $data['editable'] = $this->site_model->is_editable($id);
     $data['entites_geol'] = $this->site_model->getEntitesGeol($id);
@@ -37,6 +39,13 @@ class Site extends CI_Controller {
 
   public function rubrique_content($id, $rubrique, $type = 'Site') {
     // chargement asynchrone du contenu du panel
+
+    // gestion des exceptions (ne se comportent pas comme les rubriques standard)
+    if ($rubrique == 'points_de_vue') {
+      $this->rubrique_points_de_vue($id);
+      return;
+    }
+
     $this->load->helper('caracteristiques_helper');
 
     if ($type == 'Site') {
@@ -160,6 +169,41 @@ class Site extends CI_Controller {
 
   public function modification($id, $id_ep) {
     return $this->creation($id_ep, $id);
+  }
+
+  public function rubrique_points_de_vue($id) {
+    $this->load->model('photo_model');
+    $data['photos'] = $this->photo_model->getBySite($id);
+
+    $this->output->set_output($this->load->view('fiche_site/rubriques/points_de_vue.php', $data, TRUE));
+  }
+
+  // ajout d'une photo au site (ajax)
+  public function ajout_photo($id_site) {
+    $this->load->helper('form_helper');
+
+    if ($this->input->post()) {
+      $config = [
+        'upload_path' => './photos',
+        'allowed_types' => 'jpg|png',
+        'file_name' => uniqid('img_' . $id_site . '_')
+      ];
+      $this->load->library('upload', $config);
+
+      if ($this->upload->do_upload('photo')) {
+        $this->load->model('photo_model');
+        $data = $this->input->post();
+        $fname = $this->upload->data('file_name');
+        $data['url'] = $fname;
+        $this->photo_model->add_photo($data);
+      } else {
+        log_message('error', $this->upload->display_errors());
+        $this->output->set_output($this->upload->display_errors());
+        return;
+      }
+    }
+
+    $this->rubrique_content($id_site, 'points_de_vue');
   }
 
   // ajout / modif d'entité géol

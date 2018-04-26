@@ -5,6 +5,11 @@
 </script>
 
 <div class="container-fluid col-sm-2" id="col-menu">
+  <div id="main_image">
+    <?php if (count($site->photos) > 0): ?>
+      <img src="<?= base_url('photos/' . $site->photos[0]->url) ?>" class="img-rounded" />
+    <?php endif; ?>
+  </div>
   <div id="carto">
     <div id="map-main" class="minimap"></div>
 

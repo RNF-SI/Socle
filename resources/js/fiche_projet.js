@@ -61,17 +61,34 @@ $(function() {
   // traitement du formulaire
   $(".rubrique").on("submit", "form", function(evt) {
     evt.preventDefault();
-    var container = $(this).parents(".rubrique-content");
-    $.post($(this).attr("action"), $(this).serialize(), function(response) {
-        var messageBox = container.siblings(".message");
-        messageBox.empty();
-        if (typeof response == "object") { // echec de validation (retourne du json)
-          messageBox.html('<div class="alert alert-warning">' + response.message + '</div>')
-        } else {
-          container.html(response);
-        }
+    var $container = $(this).parents(".rubrique-content");
 
-    });
+    var params = {
+      url: $(this).attr("action"),
+      data: $(this).serialize(),
+      type: 'POST',
+      success: function(response) {
+          var messageBox = $container.siblings(".message");
+          messageBox.empty();
+          if (typeof response == "object") { // echec de validation (retourne du json)
+            messageBox.html('<div class="alert alert-warning">' + response.message + '</div>')
+          } else {
+            $container.html(response);
+          }
+
+      }
+    }
+    // traitement de l'upload
+    if ($(this).attr("enctype") == 'multipart/form-data') {
+      var file_data = $container.find("input[name='photo']").prop('files')[0];
+      var form_data = new FormData(this);
+      form_data.append('photo', file_data);
+      params.processData = false;
+      params.data = form_data;
+      params.contentType = false;
+    }
+
+    $.ajax(params);
     return false;
   });
 
