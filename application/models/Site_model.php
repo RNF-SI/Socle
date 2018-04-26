@@ -29,9 +29,13 @@ class Site_model extends Entite_abstract_model {
   }
 
   public function is_editable($id) {
-    return TRUE;
-    //$res = $this->get($id);
-    //return $this->auth->in_group(['admin', $res->group_id]);
+    $query = $this->db
+      ->select('espace_protege.group_id')
+      ->join('espace_protege', 'ep_id=espace_protege.id')
+      ->get_where($this->tableName, ['site.id'=>$id]);
+    $res = $query->row();
+    var_dump($this->db->last_query());
+    return $this->auth->in_group(['admin', $res->group_id]);
   }
 
   public function change_status($id_site, $status) {

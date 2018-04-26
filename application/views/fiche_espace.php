@@ -1,12 +1,14 @@
+<?php $editable = $this->auth->is_admin(); ?>
 <script>
   var id_ep = <?= $ep->id ?>;
 </script>
 <h1><?= $ep->nom ?></h1>
+<div class="container-fluid">
 <div id="map"></div>
 
-<div class="container-fluid">
-<?php if ($this->auth->is_admin()): ?>
-  <div><a href="<?= site_url('espace/modification/' . $ep->id) ?>" class="btn btn-default">modifier</a></div>
+
+<?php if ($editable): ?>
+  <div><a href="<?= site_url('espace/modification/' . $ep->id) ?>" class="btn btn-primary">Modifier</a></div>
 <?php endif; ?>
 <?php if ($ep->monosite == 't'):
   $site = $sites[0];
@@ -24,7 +26,6 @@
 
   <table class="table">
     <?php
-    $editable = $this->auth->is_admin();
     foreach ($sites as $site):
       ?>
       <tr>

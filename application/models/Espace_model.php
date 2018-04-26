@@ -12,6 +12,18 @@ class Espace_model extends Entite_abstract_model {
   }
 
 
+  public function get($id) {
+    $this->entity = parent::get($id);
+    // associe l'id du site dans le cas d'un monosite
+    if ($this->entity->monosite && !isset($this->entity->site_id)) {
+      $this->load->model('site_model');
+      $site = $this->site_model->getByEspace($id)[0];
+      $this->entity->site_id = $site->id;
+    }
+    return $this->entity;
+  }
+
+
   // renvoie toutes les entités reliées à l'EP
   public function getAllChildren($id) {
     $query = $this->db->select('espace_protege.id as espace_id, espace_protege.nom as espace_nom, st_asgeojson(espace_protege.geom) as espace_geom, espace_protege.monosite as espace_monosite,

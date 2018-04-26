@@ -76,7 +76,7 @@ class Espace extends CI_Controller {
       $groups = $this->auth->get_users_groups()->result();
     }
     foreach($groups as $g) {
-      if ($g->id > 4) {
+      if ($g->id >= 4) {
         $data['groupes'][$g->id] = $g->name;
       }
     }
