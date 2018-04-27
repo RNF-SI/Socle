@@ -20,7 +20,7 @@
         <li><a href="#Q-1">Q-1 / Approche géographique du territoire</a>
           <ul>
             <li><a href="#points_de_vue">Q-1 /0 Points de vue / Panoramas</a></li>
-            <li><a href="#contexte_general">Q-1 /1 Contexte général</a></li>
+            <!--<li><a href="#contexte_general">Q-1 /1 Contexte général</a></li>-->
             <li><a href="#contexte_hydro">Q-1 /2 Contexte hydrographique général</a></li>
             <li><a href="#contexte_littoral">Q-1 /3 Contexte général littoral et marin</a></li>
             <li><a href="#contexte_anthropique">Q-1 /4 Contexte anthropique général - Aménagements</a></li>
@@ -115,10 +115,10 @@ chaque territoire.</p>
       'ep' => $site,
       'id_rubrique' => 'points_de_vue']);
 
-    $this->load->view('fiche_site/base_rubrique', [
+    /*$this->load->view('fiche_site/base_rubrique', [
       'titre' => 'Q-1 /1 Contexte général',
       'ep' => $site,
-      'id_rubrique' => 'contexte_general']);
+      'id_rubrique' => 'contexte_general']); */
 
     $this->load->view('fiche_site/base_rubrique', [
       'titre' => 'Q-1 /2 Contexte hydrographique général',
@@ -138,7 +138,7 @@ chaque territoire.</p>
 
 <h2 id="Q-2">Q-2 / Aspects morphologiques et structuraux des terrains</h2>
 <div class="explication">
-   <p>Ce qui crée, ce qui déforme et ce qui use !</p>
+   <p>Ce qui crée, ce qui déforme et ce qui use&nbsp;!</p>
    <p>Après avoir proposé une première découverte d’un territoire au travers de ses
    grandes caractéristiques géographiques générales, les questionnements suivants
    s’attachent à préciser les aspects géomorphologiques et structuraux des terrains
@@ -159,14 +159,14 @@ chaque territoire.</p>
    contexte de la France métropolitaine et par-delà les mers. Il exclut les aspects
    très spécifiques de certaines régions du Grand Nord ou des déserts.<br />
    Il permet de passer en revue et de préciser, avec un vocabulaire adapté, les éléments
-   qui caractérisent un territoire :
+   qui caractérisent un territoire&nbsp;:
    <ul>
    <li>par son appartenance à un contexte structural général, d’ordre, le plus souvent
    régional,</li>
    <li>et, par l’observation des morphologies, des structures et des objets géologiques
    qui le caractérisent in situ à différentes échelles.</li>
  </ul></p>
-   <p>Les observations et les descriptions font, de ce fait, appel :
+   <p>Les observations et les descriptions font, de ce fait, appel&nbsp;:
      <ul>
    <li>à la disposition des terrains dans le sous-sol et à l’affleurement : géologie
    structurale, tectonique,</li>
@@ -177,7 +177,7 @@ chaque territoire.</p>
 
    <p>Il est important, quelle que soit la localisation d’un territoire donné, de passer
    en revue toutes les typologies de structures et de morphologies, car beaucoup
-   d’entre elles sont à cheval sur différents contextes !<br />
+   d’entre elles sont à cheval sur différents contextes&nbsp;!<br />
    Dans chaque rubrique les listes typologiques associent structures, morphologies
    et objets, car la hiérarchisation entre ces trois critères d’approche serait difficile à
    faire de façon exacte et non utile au niveau de l’analyse d’un territoire. L’important
@@ -375,7 +375,7 @@ pas à vous rapprocher de votre DREAL.</p>
 <p><a class="btn btn-primary" href="https://inpn.mnhn.fr/accueil/recherche-de-donnees/inpg/" target="_blank">Faire une recherche sur l'INPG</a></p>
 <?php
 $this->load->view('fiche_site/base_rubrique', [
-  'titre' => 'Q4 /1 Eléments remarquables identifiés précedemment',
+  'titre' => 'Q4 /1 Eléments remarquables identifiés précédemment',
   'site' => $site,
   'id_rubrique' => 'elements_remarquables']);
 ?>
