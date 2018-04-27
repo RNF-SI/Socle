@@ -11,14 +11,17 @@ class Utilisateurs extends CI_Controller {
 
   }
 
-  // liste des utilisateurs
-  public function gestion() {
-
+  private function check_admin() {
     if (!$this->auth->is_admin())	{
 			$this->session->set_flashdata('message', 'Vous devez être administrateur pour voir cette page');
       $this->session->set_flashdata('message-class', 'danger');
 			redirect('accueil/index');
 		}
+  }
+
+  // liste des utilisateurs
+  public function gestion() {
+    $this->check_admin();
 
     $data = array();
     $data['users'] = $this->auth->users()->result();
@@ -71,6 +74,8 @@ class Utilisateurs extends CI_Controller {
 
   // ajout d'un utilisateur
   public function creation() {
+    $this->check_admin();
+
     $this->load->library('form_validation');
     $data_head = array();
     if ($this->input->post()) {
@@ -84,7 +89,7 @@ class Utilisateurs extends CI_Controller {
         $input = $this->input->post();
         $groups = array($input['privilege']);
         if (isset($input['groups']))
-          $groups += $input['groups'];
+          $groups = array_merge($groups, $input['groups']);
         $res = $this->auth->register(
           $input['email'],
           $input['password'],
@@ -102,7 +107,6 @@ class Utilisateurs extends CI_Controller {
         }
       }
     }
-
 
     $groups = $this->auth->groups()->result();
     $data['groups'] = array();
@@ -137,7 +141,10 @@ class Utilisateurs extends CI_Controller {
     $this->output->set_output(json_encode($data));
   }
 
+
   public function creation_groupe() {
+    $this->check_admin();
+
     $this->load->library('form_validation');
 
     $this->form_validation->set_rules('name', 'nom du groupe', 'required');
@@ -153,7 +160,27 @@ class Utilisateurs extends CI_Controller {
     $this->load->view('default/footer');
   }
 
+  // pour ajax : liste des groupes
+  public function user_groups($userid) {
+    $data['user_groups'] = $this->auth->get_users_groups($userid)->result();
+    $data['groups'] = $this->auth->groups()->result();
+    $data['userid'] = $userid;
 
+    $this->output->set_output($this->load->view('auth/user_groups', $data, TRUE));
+  }
 
+  public function user_add_group($userid, $groupid) {
+    if (! $this->auth->in_group($groupid, $userid)) {
+      $res = $this->auth->add_to_group($groupid, $userid);
+    } else {
+      $res = FALSE;
+    }
+    $this->output->set_output($res ? 'true' : 'false');
+  }
+
+  public function user_remove_group($userid, $groupid) {
+    $res = $this->auth->remove_from_group($groupid, $userid);
+    $this->output->set_output($res ? 'true' : 'false');
+  }
 
 }

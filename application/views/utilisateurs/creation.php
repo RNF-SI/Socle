@@ -1,6 +1,6 @@
 <h2>Création d'utiliisateur</h2>
 <?= validation_errors('<div class="alert alert-danger">', '</div>') ?>
-<?= isset('message') ? '<div class="alert alert-danger">' . $message . '</div>' : '' ?>
+<?= isset($message) ? '<div class="alert alert-danger">' . $message . '</div>' : '' ?>
 <form method="POST">
   <div class="form-group">
     <label for="email">Adresse email :</label>
