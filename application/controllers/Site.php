@@ -44,6 +44,9 @@ class Site extends CI_Controller {
     if ($rubrique == 'points_de_vue') {
       $this->rubrique_points_de_vue($id);
       return;
+    } elseif ($rubrique == 'elements_remarquables') {
+      $this->rubrique_elements_remarquables($id);
+      return;
     }
 
     $this->load->helper('caracteristiques_helper');
@@ -176,6 +179,12 @@ class Site extends CI_Controller {
     $data['photos'] = $this->photo_model->getBySite($id);
 
     $this->output->set_output($this->load->view('fiche_site/rubriques/points_de_vue.php', $data, TRUE));
+  }
+
+  public function rubrique_elements_remarquables($id) {
+    $data['caracts'] = $this->site_model->getAllElementsRemarquables($id);
+    $data['site_id'] = $id;
+    $this->output->set_output($this->load->view('fiche_site/rubriques/elements_remarquables.php', $data, TRUE));
   }
 
   // ajout d'une photo au site (ajax)

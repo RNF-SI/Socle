@@ -74,12 +74,12 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'	=> '',
+	'dsn'	=> 'pgsql:host=localhost;dbname=geologie2',
 	'hostname' => 'localhost',
 	'username' => 'postgres',
 	'password' => 'postgres',
 	'database' => 'geologie2',
-	'dbdriver' => 'postgre',
+	'dbdriver' => 'pdo',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),

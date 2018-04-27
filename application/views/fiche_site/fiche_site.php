@@ -373,7 +373,12 @@ votre territoire est concerné par cet inventaire est aussi chose importante ! P
 en savoir plus et connaitre le patrimoine identifié dans votre région, n’hésitez
 pas à vous rapprocher de votre DREAL.</p>
 <p><a class="btn btn-primary" href="https://inpn.mnhn.fr/accueil/recherche-de-donnees/inpg/" target="_blank">Faire une recherche sur l'INPG</a></p>
-[A CONTINUER]
+<?php
+$this->load->view('fiche_site/base_rubrique', [
+  'titre' => 'Q4 /1 Eléments remarquables identifiés précedemment',
+  'site' => $site,
+  'id_rubrique' => 'elements_remarquables']);
+?>
 
 </div>
 

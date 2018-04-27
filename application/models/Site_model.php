@@ -12,6 +12,23 @@ class Site_model extends Entite_abstract_model {
     return $query->result();
   }
 
+  // renvoie les éléments remarquables du site et des EG associées
+  public function getAllElementsRemarquables($id) {
+    $siteElements = $this->db
+      ->select('site.id, site.nom, interet_scientifique, interet_pedagogique, interet_esthetique, interet_historique, qcm.id, qcm.label, qcm.rubrique')
+      ->join('site_qcm', 'site.id=site_id')
+      ->join('qcm', 'qcm.id=qcm_id')
+      ->get_where('site', ['remarquable'=>TRUE, 'site.id'=>$id]);
+    $res['site'] = $siteElements->result();
+    $egElements = $this->db
+      ->select('eg.id as eg_id, eg.intitule, interet_scientifique, interet_pedagogique, interet_esthetique, interet_historique, qcm.id, qcm.label, qcm.rubrique')
+      ->join('entite_geol_qcm', 'eg.id=entite_geol_id')
+      ->join('qcm', 'qcm.id=qcm_id')
+      ->get_where('entite_geol as eg', ['remarquable'=>TRUE, 'site_id'=>$id]);
+    $res['eg'] = $egElements->result();
+    return $res;
+  }
+
 
   // feuilles des cartes géol associées au site (requete spatiale)
   public function getFeuillesCartes($id_site) {
