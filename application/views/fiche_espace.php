@@ -14,11 +14,11 @@
   $site = $sites[0];
   ?>
   <div class="row">
-    <div class="col-sm-6">
-      <a href="<?= site_url('site/fiche_site/' . $site->id) ?>">Fiche de terrain</a>
+    <div class="col-sm-6" style="text-align:center;">
+      <h3><a href="<?= site_url('site/fiche_site/' . $site->id) ?>">Fiche de terrain</a></h3>
     </div>
     <div class="col-sm-6">
-      <a href="<?= site_url('site/synthese_site/' . $site->id) ?>">Synthèse</a>
+      <h3><a href="<?= site_url('site/synthese_site/' . $site->id) ?>">Synthèse</a></h3>
     </div>
   </div>
 <?php else: ?>
