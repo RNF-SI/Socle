@@ -53,19 +53,13 @@ li.qcm-patrimonial {
   padding-left: 10px;
 }
 
-.minimap {
-  height: 200px;
-  margin-bottom: 20px;
-  border: 1px solid gray;
-  border-radius: 5px;
-}
-
 #carto-full .modal-dialog {
   width: 80%;
 }
 
-#col-menu {
+#col-menu-content {
   background-color: #f9d69d;
+  padding: 5px;
   padding-top: 10px;
   height: 100%;
   z-index: 200;
@@ -73,6 +67,21 @@ li.qcm-patrimonial {
 
 #col-menu a {
   color: black;
+}
+
+#col-menu-content.affix {
+  top: 20px;
+  left: 5px;
+  right: 83.3%;
+  height: 96%;
+  overflow: auto;
+}
+
+.minimap {
+  height: 200px;
+  margin-bottom: 20px;
+  border: 1px solid gray;
+  border-radius: 5px;
 }
 
 .illustration {

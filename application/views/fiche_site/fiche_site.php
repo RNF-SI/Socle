@@ -3,8 +3,10 @@
   var entite_id = <?= $site->id ?>;
   var type_rubrique = 'Site';
 </script>
-
-<div class="container-fluid col-sm-2" id="col-menu">
+<div class="container-fluid">
+<div class="row">
+<div class="col-sm-2" id="col-menu">
+  <div id="col-menu-content"  data-spy="affix" data-offset-top="200">
   <div id="main_image">
     <?php if (count($site->photos) > 0): ?>
       <img src="<?= base_url('photos/' . $site->photos[0]->url) ?>" class="img-rounded" />
@@ -15,7 +17,6 @@
 
   </div>
   <div class="" id="tdm">
-
       <ul>
         <li><a href="#Q-1">Q-1 / Approche géographique du territoire</a>
           <ul>
@@ -52,6 +53,7 @@
         <li><a href="#Q-4">Q-4 / Objets géologiques remarquables</a></li>
       </ul>
     </div>
+</div>
 </div>
 
 <div id="page-content" class="container-fluid col-sm-10">
@@ -377,9 +379,12 @@ pas à vous rapprocher de votre DREAL.</p>
 $this->load->view('fiche_site/base_rubrique', [
   'titre' => 'Q4 /1 Eléments remarquables identifiés précédemment',
   'site' => $site,
+  'editable' => FALSE,
   'id_rubrique' => 'elements_remarquables']);
 ?>
 
 </div>
 
+</div>
+</div>
 </div>
