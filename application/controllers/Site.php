@@ -41,12 +41,16 @@ class Site extends CI_Controller {
     // chargement asynchrone du contenu du panel
 
     // gestion des exceptions (ne se comportent pas comme les rubriques standard)
-    if ($rubrique == 'points_de_vue') {
-      $this->rubrique_points_de_vue($id);
-      return;
-    } elseif ($rubrique == 'elements_remarquables') {
-      $this->rubrique_elements_remarquables($id);
-      return;
+    switch ($rubrique) {
+      case 'points_de_vue':
+        $this->rubrique_points_de_vue($id);
+        return;
+      case 'elements_remarquables':
+        $this->rubrique_elements_remarquables($id);
+        return;
+      case 'contexte_sismique':
+        $this->rubrique_contexte_sismique($id);
+        return;
     }
 
     $this->load->helper('caracteristiques_helper');
@@ -178,13 +182,19 @@ class Site extends CI_Controller {
     $this->load->model('photo_model');
     $data['photos'] = $this->photo_model->getBySite($id);
 
-    $this->output->set_output($this->load->view('fiche_site/rubriques/points_de_vue.php', $data, TRUE));
+    $this->output->set_output($this->load->view('fiche_site/rubriques/points_de_vue', $data, TRUE));
+  }
+
+  public function rubrique_contexte_sismique($id) {
+    $data = $this->site_model->getSeismes($id);
+    
+    $this->output->set_output($this->load->view('fiche_site/rubriques/contexte_sismique', $data, TRUE));
   }
 
   public function rubrique_elements_remarquables($id) {
     $data['caracts'] = $this->site_model->getAllElementsRemarquables($id);
     $data['site_id'] = $id;
-    $this->output->set_output($this->load->view('fiche_site/rubriques/elements_remarquables.php', $data, TRUE));
+    $this->output->set_output($this->load->view('fiche_site/rubriques/elements_remarquables', $data, TRUE));
   }
 
   // ajout d'une photo au site (ajax)
@@ -338,14 +348,16 @@ class Site extends CI_Controller {
 
   // Fiche de synthèse d'un EP
   public function resume($id) {
+    $this->load->model('photo_model');
     $site = $this->site_model->get($id);
 
     $data = new stdClass();
     $data->site = $site;
     $data->caract = $this->site_model->getCaracteristiques($id);
+    $data->photos = $this->photo_model->getBySite($id);
 
     $this->load->view('default/header', ['title' => 'Synthèse ' . $site->nom]);
-    $this->load->view('fiche_ep/synthese_ep', $data);
+    $this->load->view('fiche_site/synthese_site', $data);
     $this->load->view('default/footer');
   }
 

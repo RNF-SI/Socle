@@ -1,8 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-/*
-Représente un espace sur lequel on peut gérer les droits
-*/
 
 class Photo_model extends CI_Model {
 

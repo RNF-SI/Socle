@@ -60,4 +60,35 @@ class Site_model extends Entite_abstract_model {
   }
 
 
+  // récupère les données sismiques de SISFrance à partir du WFS du BRGM
+  public function getSeismes($id) {
+    $this->load->library('Webservices');
+    $bboxData = $this->getBBox($id);
+
+    $params = [
+      'service'=> 'WFS',
+      'version'=> '1.1.0',
+      'request'=> 'GETFEATURE',
+      'srsName'=> 'EPSG:4326',
+      'typeName' => 'ms:SIS_INTENSITE',
+      'bbox' => $bboxData->xmin . ',' . $bboxData->ymin . ',' . $bboxData->xmax . ',' . $bboxData->ymax
+    ];
+    $xml = $this->webservices->getServiceXML('http://geoservices.brgm.fr/risques', $params);
+
+    $values = array();
+    foreach ($xml->xpath('//gml:featureMember') as $ft) {
+      $val = '(' . $ft->xpath('.//ms:max_int_calc')[0] . '::real,'
+        . $ft->xpath('.//ms:nb_total')[0] . '::integer, st_flipCoordinates(st_geomFromGML(\''
+        . $ft->xpath('.//ms:msGeometry')[0]->children('gml', TRUE)[0]->asXML() . '\'::text)))';
+      $values[] = $val;
+    }
+
+    $req = 'SELECT max(nb_total) nb_total, max(max_int_calc) max_int_calc FROM (VALUES ' . implode(',', $values) .
+      ' ) as communes (max_int_calc, nb_total, geom) JOIN site on st_intersects(communes.geom, site.geom)
+      WHERE id=' . $this->db->escape($id) .' GROUP BY id';
+    $res = $this->db->query($req)->row();
+    return $res;
+  }
+
+
 }

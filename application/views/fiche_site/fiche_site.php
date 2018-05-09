@@ -6,7 +6,8 @@
 <div class="container-fluid">
 <div class="row">
 <div class="col-sm-2" id="col-menu">
-  <div id="col-menu-content"  data-spy="affix" data-offset-top="200">
+  <div id="col-menu-content" class="panel panel-default"  data-spy="affix" data-offset-top="200">
+    <div class="panel-body">
   <div id="main_image">
     <?php if (count($site->photos) > 0): ?>
       <img src="<?= base_url('photos/' . $site->photos[0]->url) ?>" class="img-rounded" />
@@ -53,6 +54,7 @@
         <li><a href="#Q-4">Q-4 / Objets géologiques remarquables</a></li>
       </ul>
     </div>
+</div>
 </div>
 </div>
 
@@ -202,10 +204,11 @@ chaque territoire.</p>
    'ep' => $site,
    'id_rubrique' => 'structures_geol_territoire']);
 
- /* $this->load->view('fiche_site/base_rubrique', [
+ $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /3 Contexte sismique',
    'ep' => $site,
-   'id_rubrique' => 'contexte_sismique']); */
+   'id_rubrique' => 'contexte_sismique',
+    'editable' => FALSE]);
 
  $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /4 Structures et morphologies liées au volcanisme',

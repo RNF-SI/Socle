@@ -319,4 +319,10 @@ class Entite_abstract_model extends CI_Model {
     return $data;
   }
 
+  public function getBBox($id) {
+    $this->db->select('st_xmin(geom) xmin, st_ymin(geom) ymin, st_xmax(geom) xmax, st_ymax(geom) ymax');
+    $res = $this->db->get_where($this->tableName, ['id' => $id])->row();
+    return $res;
+  }
+
 }
