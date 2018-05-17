@@ -55,6 +55,9 @@ class Espace extends CI_Controller {
           }
         } else { // modification
           $this->espace_model->update($id, $data);
+          if ($data['monosite']) {
+            $this->espace_model->update_monosite($id, $data);
+          }
         }
 
         $this->load->library('session');

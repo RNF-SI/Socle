@@ -23,6 +23,29 @@ class Espace_model extends Entite_abstract_model {
     return $this->entity;
   }
 
+  public function get_monosite_id($id) {
+    $query = $this->db->select('site.id, monosite')
+      ->join('site', 'site.ep_id=espace_protege.id')
+      ->get_where('espace_protege', ['espace_protege.id'=>$id]);
+    $res = $query->row();
+    if (!$res->monosite)
+      return FALSE;
+    return $res->id;
+  }
+
+  // maj du monosite associé
+  public function update_monosite($id, $data) {
+    $sid = $this->get_monosite_id($id);
+    if (!$sid) return FALSE;
+    $this->load->model('site_model');
+    $sdata = [
+      'nom'=> $data['nom'],
+      'geom'=>$data['geom'],
+      'ep_id'=>$id
+    ];
+    $this->site_model->update($sid, $sdata);
+  }
+
 
   // renvoie toutes les entités reliées à l'EP
   public function getAllChildren($id) {
