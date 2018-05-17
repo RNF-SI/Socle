@@ -4,8 +4,13 @@ $(function() {
   $(".rubrique-collapse").on("show.bs.collapse", function(evt) {
     var id_rubrique = $(this).parents(".rubrique").attr('id');
     var container  = $(this).find(".rubrique-content");
-    $.get(site_url("site/rubrique_content/" + entite_id + "/" + id_rubrique + '/' + type_rubrique), function(data) {
-      container.html(data);
+    $.ajax(site_url("site/rubrique_content/" + entite_id + "/" + id_rubrique + '/' + type_rubrique), {
+      success: function(data) {
+        container.html(data);
+      },
+      error: function(xhr, status) {
+        container.html('<p class="error">Erreur de chargement :' + status + '</p>');
+      }
     });
   }).on("change", "input[name='caracteristiques[]']", function(evt) {
     var id = $(this).val();
