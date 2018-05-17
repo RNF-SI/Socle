@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /*
-Modèle servant de mère aux autres modèles pouvant utiliser des QCMi.e. EP et EG
+Modèle servant de mère aux autres modèles pouvant utiliser des QCM i.e. EP et EG
 */
 
 class Entite_abstract_model extends CI_Model {
@@ -14,6 +14,7 @@ class Entite_abstract_model extends CI_Model {
   protected $entity;
 
   protected $has_geometry = TRUE;
+  protected $store_user_info = FALSE;
 
 
   public function __construct() {
@@ -70,6 +71,7 @@ class Entite_abstract_model extends CI_Model {
       $this->_processGeometry($data['geom']);
       unset($data['geom']);
     }
+    $this->update_user_date($id);
     $this->db->set($data)
       ->where('id', $id)->update($this->tableName);
   }
@@ -85,7 +87,6 @@ class Entite_abstract_model extends CI_Model {
     $this->db->insert($this->tableName);
     return $this->db->insert_id();
   }
-
 
 
   public function getCaracteristiques($id, $rubrique = NULL) {
@@ -189,7 +190,7 @@ class Entite_abstract_model extends CI_Model {
       'info_complement' => 't'
     ];
     $colname = $this->linkColumnName();
-    log_message('debug', print_r($data, TRUE));
+
     $this->db->trans_start();
 
     if (isset($data['caracteristiques'])) {
@@ -298,7 +299,22 @@ class Entite_abstract_model extends CI_Model {
         $this->db->insert_batch($this->qcmLinkTable, $toinsert);
       }
     }
+
+    // actualisation date/user maj
+    $this->update_user_date($id);
     $this->db->trans_complete();
+  }
+
+
+  public function update_user_date($id) {
+    if ($this->store_user_info) {
+      $uid = $this->auth->user()->row()->id;
+      $this->db->where('id', $id)
+        ->update($this->tableName, [
+        'last_modified' => date(DateTime::ATOM),
+        'modified_by_userid' => $uid
+      ]);
+    }
   }
 
 

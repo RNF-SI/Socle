@@ -4,6 +4,7 @@ class Site_model extends Entite_abstract_model {
   protected $tableName = 'site';
   protected $qcmLinkTable = 'site_qcm';
   protected $complementTableName = 'complement_site';
+  protected $store_user_info = TRUE;
 
 
   public function getByEspace($id_ep) {
@@ -11,6 +12,7 @@ class Site_model extends Entite_abstract_model {
       ->get_where($this->tableName, ['ep_id' => $id_ep]);
     return $query->result();
   }
+
 
   // renvoie les éléments remarquables du site et des EG associées
   public function getAllElementsRemarquables($id) {

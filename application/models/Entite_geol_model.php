@@ -4,6 +4,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Entite_geol_model extends Entite_abstract_model {
   protected $tableName = 'entite_geol';
   protected $qcmLinkTable = 'entite_geol_qcm';
+  protected $store_user_info = TRUE;
 
   protected $commentTableName = 'commentaire_eg';
   protected $complementTableName = 'complement_eg';
@@ -19,7 +20,7 @@ class Entite_geol_model extends Entite_abstract_model {
       ->row();
   }
 
-  
+
 
   // retourne l'échelle géol sous forme d'arbre
   public function echelle_geol() {
