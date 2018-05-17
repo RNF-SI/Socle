@@ -45,6 +45,104 @@ class Site_model extends Entite_abstract_model {
     return $this->db->get_where('entite_geol', array('site_id' => $id_site))->result();
   }
 
+  public function getAllSubelements($id, $with_geom=FALSE) {
+    $this->db->select('site.nom as site_nom, site_qcm.info_complement AS siteqcm_complement, site_qcm.remarquable AS siteqcm_remarquable,
+      site_qcm.interet_scientifique As siteqcm_interet_scientifique,
+      site_qcm.interet_historique As siteqcm_interet_historique,
+      site_qcm.interet_pedagogique As siteqcm_interet_pedagogique,
+      site_qcm.interet_esthetique As siteqcm_interet_esthetique,
+      site_qcm.comments As siteqcm_comments,
+      qcm_site.id As siteqcm_id_qcm,
+      qcm_site.question As siteqcm_question,
+      qcm_site.label As siteqcm_label,
+      qcm_site.rubrique As siteqcm_rubrique,
+      eg.id AS eg_id,
+      eg.intitule as eg_nom, eg_qcm.info_complement AS egqcm_complement, eg_qcm.remarquable AS egqcm_remarquable,
+      eg_qcm.interet_scientifique As egqcm_interet_scientifique,
+      eg_qcm.interet_historique As egqcm_interet_historique,
+      eg_qcm.interet_pedagogique As egqcm_interet_pedagogique,
+      eg_qcm.interet_esthetique As egqcm_interet_esthetique,
+      eg_qcm.comments As egqcm_comments,
+      qcm_eg.id As egqcm_id_qcm,
+      qcm_eg.question As egqcm_question,
+      qcm_eg.label As egqcm_label,
+      qcm_eg.rubrique As egqcm_rubrique,
+      echelle_geol.label AS eg_age_roches,
+      affleurement.nom AS affleurement_nom,
+      affleurement.id AS affleurement_id,
+      affleurement.description AS affleurement_description,
+      photo.id AS photo_id, photo.url as photo_url, photo.description AS photo_description');
+      if ($with_geom) {
+        $this->db->select('st_asgeojson(site.geom) AS site_geom,
+          st_asGeoJson(eg.geom) AS eg_geom,
+          st_asGeoJson(affleurement.geom) AS affleurement_geom');
+      }
+      $this->db->join('site_qcm', 'site.id=site_qcm.site_id', 'left')
+        ->join('qcm AS qcm_site', 'qcm_site.id = site_qcm.id')
+        ->join('entite_geol AS eg', 'eg.site_id=site.id', 'left')
+        ->join('entite_geol_qcm AS eg_qcm', 'eg.id=eg_qcm.entite_geol_id', 'left')
+        ->join('qcm AS qcm_eg', 'eg_qcm.qcm_id = qcm_eg.id')
+        ->join('echelle_geol', 'ere_geol_id=echelle_geol.id', 'left')
+        ->join('affleurement', 'affleurement.eg_id=eg.id', 'left')
+        ->join('photo', 'site.id=photo.site_id', 'left');
+      $query = $this->db->get_where('site', ['site.id'=>$id]);
+
+    $data = array();
+    foreach ($query->result() as $li) {
+      if (empty($data)) {
+        $data = ['nom'=>$li->site_nom, 'egs'=>[], 'qcms'=>[], 'photos'=>[]];
+        if ($with_geom) $data['geom'] = $li->site_geom;
+      }
+      if (!isset($data['qcms'][$li->siteqcm_question][$li->siteqcm_id_qcm]) && !is_null($li->siteqcm_question)) {
+        $data['qcms'][$li->siteqcm_question][$li->siteqcm_id_qcm] = ['id'=>$li->siteqcm_id_qcm, 'label'=>$li->siteqcm_label, 'rubrique'=>$li->siteqcm_rubrique,
+        'remarquable'=>$li->siteqcm_remarquable, 'historique'=>$li->siteqcm_interet_historique, 'scientifique'=>$li->siteqcm_interet_scientifique,
+        'pedagogique'=>$li->siteqcm_interet_pedagogique, 'esthetique'=>$li->siteqcm_interet_esthetique];
+      }
+      if (!isset($data['egs'][$li->eg_id]) && !is_null($li->eg_id)) {
+        $data['egs'][$li->eg_id] = ['nom'=>$li->eg_nom, 'age_roches'=>$li->eg_age_roches, 'qcms'=>[], 'affleurements'=>[]];
+        if ($with_geom) $data['egs'][$li->eg_id]['geom'] = $li->eg_geom;
+      }
+      if (!isset($data['egs'][$li->eg_id]['qcms'][$li->egqcm_question][$li->egqcm_id_qcm]) && !is_null($li->egqcm_question)) {
+        $data['egs'][$li->eg_id]['qcms'][$li->egqcm_question][$li->egqcm_id_qcm] = ['id'=>$li->egqcm_id_qcm, 'label'=>$li->egqcm_label, 'rubrique'=>$li->egqcm_rubrique,
+        'remarquable'=>$li->egqcm_remarquable, 'historique'=>$li->egqcm_interet_historique, 'scientifique'=>$li->egqcm_interet_scientifique,
+        'pedagogique'=>$li->egqcm_interet_pedagogique, 'esthetique'=>$li->egqcm_interet_esthetique];
+      }
+      if (!isset($data['egs'][$li->eg_id]['affleurements'][$li->affleurement_id]) && !is_null($li->affleurement_id)) {
+        $data['egs'][$li->eg_id]['affleurements'][$li->affleurement_id] = ['nom' => $li->affleurement_nom, 'description'=>$li->affleurement_description];
+        if ($with_geom) $data['egs'][$li->eg_id]['affleurements'][$li->affleurement_id]['geom'] = $li->affleurement_geom;
+      }
+      if (!isset($data['photos'][$li->photo_id]) && !is_null($li->photo_id)) {
+        $data['photos'][$li->photo_id] = ['url'=>$li->photo_url, 'legende'=>$li->photo_description];
+      }
+    }
+    return $data;
+  }
+
+  // retourne tous les éléments géométriques du site
+  public function getSubelements_geom($id) {
+    $this->db->select('site.id as site_id, site.nom as site_nom, st_asGeoJson(site.geom) AS site_geom,
+      eg.intitule AS eg_nom, eg.id AS eg_id, st_asGeoJson(eg.geom) AS eg_geom,
+      affleurement.id AS affleurement_id, affleurement.nom AS affleurement_nom, st_asGeoJson(affleurement.geom) AS affleurement_geom')
+      ->join('entite_geol AS eg', 'eg.site_id=site.id', 'left')
+      ->join('affleurement', 'affleurement.eg_id=eg.id', 'left');
+    $query = $this->db->get_where('site', ['site.id'=>$id]);
+    $data = array();
+    foreach ($query->result() as $li) {
+      if (!isset($data['site'])) {
+        $data['site'] = ['geom'=>$li->site_geom, 'properties'=>['nom'=>$li->site_nom, 'id'=>$li->site_id]];
+      }
+      if (!isset($data['egs'][$li->eg_id])) {
+        $data['egs'][$li->eg_id] = ['geom'=>$li->eg_geom, 'properties'=>['nom'=>$li->eg_nom, 'id'=>$li->eg_id]];
+      }
+      if (!isset($data['affleurements'][$li->affleurement_id])) {
+        $data['affleurements'][$li->affleurement_id] = ['geom'=>$li->affleurement_geom,
+          'properties'=>['nom'=>$li->affleurement_nom, 'id'=>$li->affleurement_id, 'eg_id'=>$li->eg_id]];
+      }
+    }
+    return $data;
+  }
+
+
   public function is_editable($id) {
     $query = $this->db
       ->select('espace_protege.group_id')

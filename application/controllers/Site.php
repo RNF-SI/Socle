@@ -187,7 +187,7 @@ class Site extends CI_Controller {
 
   public function rubrique_contexte_sismique($id) {
     $data = $this->site_model->getSeismes($id);
-    
+
     $this->output->set_output($this->load->view('fiche_site/rubriques/contexte_sismique', $data, TRUE));
   }
 
@@ -352,11 +352,14 @@ class Site extends CI_Controller {
     $site = $this->site_model->get($id);
 
     $data = new stdClass();
+    $siteElements = $this->site_model->getAllSubelements($id);
     $data->site = $site;
-    $data->caract = $this->site_model->getCaracteristiques($id);
-    $data->photos = $this->photo_model->getBySite($id);
+    $data->elements = $siteElements;
+    //$data->caract = $this->site_model->getCaracteristiques($id);
+    //$data->photos = $this->photo_model->getBySite($id);
 
-    $this->load->view('default/header', ['title' => 'Synthèse ' . $site->nom]);
+    $this->load->view('default/header', ['title' => 'Synthèse ' . $site->nom,
+      'scripts'=>['js/synthese_site.js']]);
     $this->load->view('fiche_site/synthese_site', $data);
     $this->load->view('default/footer');
   }

@@ -70,7 +70,7 @@ $this->load->view('fiche_site/base_rubrique', [
 
 <h3>Perméabilité des terrains</h3>
 <p><?= $eg->permeabilite ?><br />
-  <?= $eg->presence_aquifere ? 'La formation contien un aquifère' : 'La formation ne contient pas d\'aquifère' ?>
+  <?= $eg->presence_aquifere ? 'La formation contient un aquifère' : 'La formation ne contient pas d\'aquifère' ?>
   <br /><?= $eg->niveau_sources ? 'La formation correspond à un niveau de sources' : 'La formation ne correspond pas à un niveau de sources' ?>
 </p>
 

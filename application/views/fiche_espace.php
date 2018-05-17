@@ -18,7 +18,7 @@
       <h3><a href="<?= site_url('site/fiche_site/' . $site->id) ?>">Fiche de terrain</a></h3>
     </div>
     <div class="col-sm-6">
-      <h3><a href="<?= site_url('site/synthese_site/' . $site->id) ?>">Synthèse</a></h3>
+      <h3><a href="<?= site_url('site/resume/' . $site->id) ?>">Synthèse</a></h3>
     </div>
   </div>
 <?php else: ?>
@@ -31,7 +31,7 @@
       <tr>
         <td><?= $site->nom ?></td>
         <td><a href="<?= site_url('site/fiche_site/' . $site->id) ?>">Fiche de terrain</a></td>
-        <td><a href="<?= site_url('site/synthese_site/' . $site->id) ?>">Synthèse</a></td>
+        <td><a href="<?= site_url('site/resume/' . $site->id) ?>">Synthèse</a></td>
         <td><?php if ($editable): ?>
           <a href="<?= site_url('site/modification/'. $site->id . '/' . $ep->id) ?>" class="btn btn-default"><span class="glyphicon glyphicon-edit"> </span></a>
         <?php endif; ?></td>

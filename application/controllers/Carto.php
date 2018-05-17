@@ -10,7 +10,7 @@ class Carto extends CI_Controller {
 
   // encode en geojson des données
   // structure : [[properties=>[...], geom=><geom>]]
-  private function _create_geoJson($features) {
+  private function _create_geoJson($features, $encode=TRUE) {
     $json = [
       'type' => "FeatureCollection",
       'features' => []
@@ -23,9 +23,16 @@ class Carto extends CI_Controller {
           'geometry' =>  $geom,
           'properties' => isset($ft['properties']) ? $ft['properties'] : array()
         ];
+        if (!isset($ft['properties'])) {
+          foreach ($ft as $k=>$v) {
+            if ($k != 'geom') {
+              $ftJson['properties'][$k] = $v;
+            }
+          }
+        }
         array_push($json['features'], $ftJson);
     }
-    return json_encode($json);
+    return $encode ? json_encode($json) : $json;
   }
 
   //renvoie la géometrie de l'EP
@@ -42,6 +49,14 @@ class Carto extends CI_Controller {
     $data = $this->site_model->getGeometry($id);
 
     $this->output->set_output($this->_create_geoJson(array($data)));
+  }
+
+  public function site_subelements_geom($id) {
+    $this->load->model('site_model');
+    $elements = $this->site_model->getSubelements_geom($id);
+    $elements['site'] = array($elements['site']);
+    $elements = array_map(function ($v) { return $this->_create_geoJson($v, FALSE); }, $elements);
+    $this->output->set_output(json_encode($elements));
   }
 
   // générique pour récupérer l'un ou l'autre des éléments
