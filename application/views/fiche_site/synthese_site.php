@@ -110,6 +110,6 @@ Fiche de synthèse
     <?php endforeach; ?>
   </tbody>
 </table>
-[A CONTINUER]
-<?php var_dump($elements) ?>
+
+<?php //var_dump($elements) ?>
 </div>

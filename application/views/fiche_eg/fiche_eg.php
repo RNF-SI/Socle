@@ -17,6 +17,8 @@
 <p>Pour le site <strong>
   <a href="<?= site_url('site/fiche_site/' . $site->id) ?>"><?= $site->nom ?></a>
 </strong></p>
+<div class="last_modified">Modifié le <?= date('d/m/Y', strtotime($eg->last_modified)) ?>
+  par <?= $this->auth->user($eg->modified_by_userid)->row()->username ?>.</div>
 <div class="row">
   <div id="map"></div>
 </div>

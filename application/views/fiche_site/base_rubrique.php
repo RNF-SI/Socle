@@ -4,7 +4,7 @@
   </div>
   <div id="collapse-<?=$id_rubrique ?>" class="rubrique-collapse panel-collapse collapse">
     <div class="panel-body">
-      <?php if ($editable): ?>
+      <?php if (isset($editable) && $editable): ?>
       <button class="btn btn-default button-edit-form"><span class="glyphicon glyphicon-edit"></span> Editer</button>
     <?php endif; ?>
       <div class="message">

@@ -72,23 +72,25 @@
         ?>
       </div>
     <?php endif; ?>
+<div class="last_modified">Modifié le <?= date('d/m/Y', strtotime($site->last_modified)) ?>
+  par <?= $this->auth->user($site->modified_by_userid)->row()->username ?>.</div>
 
 <div id="rubriques" class="panel-group">
   <h2>Q-1 / Approche géographique du territoire</h2>
   <div class="explication">
     <p>La découverte géologique d’un territoire débute toujours par son approche géographique
-et un questionnement très simple pour en décrire l’environnement !
-Dans quel contexte général se situe-t-il ? Quels sont les principaux types de
-paysages et morphologies associés : plaine, plateau, collines et vallons, massif
+et un questionnement très simple pour en décrire l’environnement&nbsp;!
+Dans quel contexte général se situe-t-il&nbsp;? Quels sont les principaux types de
+paysages et morphologies associés&nbsp;: plaine, plateau, collines et vallons, massif
 montagneux, haute montagne glaciaire, réseau hydrographique, zone littorale,
 milieu marin, etc.<br />
 Il est aussi important dans cette première approche de prendre en compte le
 contexte anthropique. Le, les, ou certains sites sont-ils liés aux activités humaines,
-telles que d’anciennes carrières par exemple ?</p>
+telles que d’anciennes carrières par exemple&nbsp;?</p>
 
 <p>Un paysage, pris dans l’acceptation géographique physique du terme, ne doit
 rien au hasard. Il répond principalement à une histoire d’ordre géologique.<br />
-Un paysage résulte de quelques facteurs principaux :
+Un paysage résulte de quelques facteurs principaux&nbsp;:
 <ul>
 <li>la nature des roches qui en constituent les sous-sols,</li>
 <li>les mouvements tectoniques qui soulèvent, affaissent, cassent, déplacent
@@ -213,7 +215,8 @@ chaque territoire.</p>
  $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /4 Structures et morphologies liées au volcanisme',
    'ep' => $site,
-   'id_rubrique' => 'volcanisme']);
+   'id_rubrique' => 'volcanisme',
+   'editable' => TRUE]);
 
  $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /5 Morphologies liées à l’érosion générale',
@@ -264,13 +267,13 @@ des terrains qui en constituent le sous-sol.<br />
 C’est cette démarche que vous propose ce chapitre en lien direct avec un principe
 de questionnement systématique, type base de données. De façon sans
 doute plus importante que pour les démarches précédentes, celle-ci nécessite
-différents registres de connaissances croisées : roches, minéraux, fossiles, repères
+différents registres de connaissances croisées&nbsp;: roches, minéraux, fossiles, repères
 temporels et carte géologique. Les généralités sur ces thèmes sont abordées
-dans la première partie de ce document, sous les titres : « Roches et fossiles »
-« Espace et temps : Géologie à la carte ».</p>
+dans la première partie de ce document, sous les titres&nbsp;: «&nbsp;Roches et fossiles&nbsp;»
+«&nbsp;Espace et temps&nbsp;: Géologie à la carte&nbsp;».</p>
 <p>La démarche proposée consiste principalement dans l’utilisation de la carte
 géologique en corrélation avec les observations des terrains : en un mot, ce que
-nous dit la carte et comment on l’interprète ! L’accompagnement par un spécialiste
+nous dit la carte et comment on l’interprète&nbsp;! L’accompagnement par un spécialiste
 s’avérera sans doute le plus souvent nécessaire.</p>
 
 <h3>Préambule important !</h3>
@@ -286,16 +289,16 @@ endroits dans le territoire étudié, ou à l’extérieur de celui-ci.</p>
 
 <h3>Des actions à mener de front !</h3>
 <p>Méthodologie pour l’identification des différentes unités rocheuses constituant
-le sous-sol d’un territoire :</p>
+le sous-sol d’un territoire&nbsp;:</p>
 
 <h4>Lire et décoder la carte géologique.</h4>
 <p>Elle informe sur la nature du premier niveau rocheux constituant le soussol
 de l’endroit considéré, abstraction faite du sol dans le sens pédologique
 du terme.</p>
 
-<h4>Arpenter le territoire ! Géologie de terrain !</h4>
+<h4>Arpenter le territoire&nbsp;! Géologie de terrain&nbsp;!</h4>
 <p>Repérer les affleurements et identifier les roches qui les constituent.<br />
-Il est vrai que certains territoires ne montrent aucun affleurement !<br />
+Il est vrai que certains territoires ne montrent aucun affleurement&nbsp;!<br />
 De toute façon, la simple observation des affleurements et des échantillons
 prélevés sur ces derniers ne suffira pas en général à les identifier précisément.
 Elle devra être complétée d’informations complémentaires et si besoin d’une
@@ -347,15 +350,15 @@ ou entité rocheuse</em>, à une échelle ou à une autre, il est important de s
 question de son intérêt spécifique à un titre ou à un autre.<br />
 Pensez-vous que tel objet ou telle entité géologique possède un intérêt particulier,
 même minime, à titre scientifique, pédagogique, esthétique, historique,
-culturel, autre ?<br />
-En un mot se poser la question et identifier ce qui vous semble remarquable !
+culturel, autre&nbsp;?<br />
+En un mot se poser la question et identifier ce qui vous semble remarquable&nbsp;!
 <quote>Cet objet géologique vous semble-t-il intéressant ?<br />
-Est-il qualifiable d’ « objet géologique remarquable » ?</quote></p>
+Est-il qualifiable d’«&nbsp;objet géologique remarquable&nbsp;»&nbsp;?</quote></p>
 
 <p>Au-delà de la subtilité des qualificatifs, la démarche est importante car elle permet
 de pointer et de nommer les particularités et les richesses géologiques d’un
 territoire, si besoin de les protéger et de les valoriser. Il est alors nécessaire, après
-avoir repéré et identifié un objet, de le décrire et d’en faire <em>valider l’importance !</em></p>
+avoir repéré et identifié un objet, de le décrire et d’en faire <em>valider l’importance&nbsp;!</em></p>
 
 <strong>Faites-vous aider si besoin !</strong>
 <p>Comme pour les autres disciplines des sciences de la nature, la chose n’est pas
