@@ -20,6 +20,7 @@ class Accueil extends CI_Controller {
 	 */
 	public function index()
 	{
+		$this->load->library('image_lib');
 		$data = array();
 		$this->load->model(['espace_model', 'photo_model']);
 		$data['espaces'] = $this->espace_model->getEspacesWithPhoto(6);
