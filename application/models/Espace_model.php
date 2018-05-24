@@ -81,5 +81,18 @@ class Espace_model extends Entite_abstract_model {
     return $ep;
   }
 
+  public function getEspacesWithPhoto($limit=NULL) {
+    $sreq = $this->db->select('id')->limit(1)->from('photo')
+      ->where(['site_id'=>'site.id'], NULL, FALSE)->get_compiled_select();
+    $this->db->select('photo.*, espace_protege.nom AS nom_espace, site.nom AS nom_site, espace_protege.id AS espace_id')
+      ->join('site', "photo.id=($sreq)", NULL, FALSE)
+      ->join('espace_protege', 'ep_id=espace_protege.id')
+      ->order_by('site.last_modified', 'desc');
+    if (!is_null($limit)) {
+      $this->db->limit($limit);
+    }
+    return $this->db->get('photo')->result();
+  }
+
 
 }

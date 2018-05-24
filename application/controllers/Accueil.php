@@ -21,9 +21,9 @@ class Accueil extends CI_Controller {
 	public function index()
 	{
 		$data = array();
-		$this->load->model('espace_model');
-		$data['espaces'] = $this->espace_model->getAll();
-
+		$this->load->model(['espace_model', 'photo_model']);
+		$data['espaces'] = $this->espace_model->getEspacesWithPhoto(6);
+		$data['photo'] = $this->photo_model->getRandomPhoto();
 		$this->load->view('default/header');
 		$this->load->view('accueil', $data);
 		$this->load->view('default/footer');

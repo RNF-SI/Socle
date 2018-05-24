@@ -15,12 +15,39 @@ header .subtitle {
   color: #ca7b3e;
 }
 
+#footer {
+  text-align: center;
+  font-size: 95%;
+  margin-top: 20px;
+  margin-right: 10px;
+  margin-left: 10px;
+  padding-top: 20px;
+  border-top: 1px solid #a4b1c8;
+}
+
 .breadcrumb {
   margin-top: 10px;
 }
 
 li::marker {
   color: #0c8da6;
+}
+
+/* Accueil */
+.home-image {
+  width: 100%;
+}
+
+.home-image-caption {
+  position: absolute;
+  background-color: #FFFFFFAA;
+  width: 100%;
+  bottom: 0;
+  padding: 5px;
+}
+
+.home-gallerie-item img {
+  width: 100%;
 }
 
 .qcm input[type=checkbox] {

@@ -9,6 +9,15 @@ class Espace extends CI_Controller {
   }
 
 
+  public function liste_espaces() {
+    $data['espaces'] = $this->espace_model->getAll();
+
+    $this->load->view('default/header');
+    $this->load->view('liste_espaces', $data);
+    $this->load->view('default/footer');
+  }
+
+
   public function fiche_espace($id_ep) {
     $this->load->model('site_model');
 

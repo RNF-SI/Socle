@@ -16,4 +16,15 @@ class Photo_model extends CI_Model {
     $this->db->insert('photo', $data);
   }
 
+  public function getRandomPhoto() {
+    $this->db
+      ->select('photo.id, site.id as id_site, photo.url, photo.description, site.nom as nom_site')
+      ->join('site', 'site_id=site.id');
+    $query = $this->db
+      ->order_by('random()')
+      ->limit(1)
+      ->get('photo');
+    return $query->row();
+  }
+
 }

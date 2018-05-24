@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>RNF - Géologie <?= isset($title) ? ' - '.$title : '' ?></title>
+        <title>SOCLE <?= isset($title) ? ' - '.$title : '' ?></title>
         <link rel="icon" type="image/x-icon" href="<?= base_url('resources/images/icone_RNF.png') ?>" />
 
         <link rel="stylesheet" href="<?= base_url('resources/lib/bootstrap/css/bootstrap.min.css') ?>" />
@@ -36,7 +36,7 @@
               <img src="<?= base_url('resources/images/logo1.png') ?>" />
             </div>
             <div class="col-sm-8"><h1>SOCLE</h1>
-              <span class="subtitle">Réserves Naturelles de France</span>
+              <span class="subtitle">Regards sur la géodiversité des espaces naturels</span>
             </div>
             <div class="col-sm-2">
               <div id="user-info">
