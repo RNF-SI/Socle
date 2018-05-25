@@ -59,6 +59,14 @@ class Carto extends CI_Controller {
     $this->output->set_output(json_encode($elements));
   }
 
+  public function espaces_all() {
+    // geom de l'ensemble des espaces
+    $this->load->model('espace_model');
+    $data = $this->espace_model->getAll();
+    $data = array_map(function($a) { return (array)$a; }, $data);
+    $this->output->set_output($this->_create_geoJson($data));
+  }
+
   // générique pour récupérer l'un ou l'autre des éléments
   public function element_geom($type, $id) {
     switch ($type) {

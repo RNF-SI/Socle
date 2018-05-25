@@ -25,7 +25,7 @@ class Accueil extends CI_Controller {
 		$this->load->model(['espace_model', 'photo_model']);
 		$data['espaces'] = $this->espace_model->getEspacesWithPhoto(6);
 		$data['photo'] = $this->photo_model->getRandomPhoto();
-		$this->load->view('default/header');
+		$this->load->view('default/header', ['scripts'=>['lib/leaflet/L.Deflate.js', 'js/accueil.js']]);
 		$this->load->view('accueil', $data);
 		$this->load->view('default/footer');
 	}

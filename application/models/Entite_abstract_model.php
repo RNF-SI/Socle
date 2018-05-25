@@ -62,6 +62,10 @@ class Entite_abstract_model extends CI_Model {
   }
 
   public function getAll() {
+    $this->db->select('*');
+    if ($this->has_geometry) {
+      $this->db->select('st_asGeoJson(geom) AS geom');
+    }
     $query = $this->db->get($this->tableName);
     return $query->result();
   }

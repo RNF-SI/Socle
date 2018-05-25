@@ -22,7 +22,7 @@ function addVectorLayer(map, url, options, callback) {
 
 
 // crée une carte de base avec les couches qu'il faut
-function base_map(id_map, id_ep) {
+function base_map(id_map, id_ep, baseLayerToDisplay="Carte géologique") {
   var mainMap = L.map(id_map);
 
   var baseLayers = {};
@@ -39,7 +39,7 @@ function base_map(id_map, id_ep) {
       attribution: 'IGN-F/Geoportail',
       maxZoom: 18,
       tileSize: 256
-  }).addTo(mainMap);
+  });
   baseLayers['IGN'] = ignLayer;
 
   var wmsGeolLayer = L.tileLayer.wms("http://geoservices.brgm.fr/geologie", {
@@ -47,8 +47,9 @@ function base_map(id_map, id_ep) {
     format: "image/jpeg",
     attribution: "&copy; BRGM",
     maxZoom: 15
-  }).addTo(mainMap);
+  });
   baseLayers["Carte géologique"] = wmsGeolLayer;
+  baseLayers[baseLayerToDisplay].addTo(mainMap);
 
   L.control.layers(baseLayers).addTo(mainMap);
   L.control.scale({imperial: false}).addTo(mainMap);
