@@ -8,9 +8,9 @@ class Site extends CI_Controller {
     $this->load->model('site_model');
   }
 
-
   public function fiche_site($id) {
     $this->load->model('photo_model');
+    $this->load->library('image_lib');
     $data = array();
     $site = $this->site_model->get($id);
 
@@ -180,7 +180,10 @@ class Site extends CI_Controller {
 
   public function rubrique_points_de_vue($id) {
     $this->load->model('photo_model');
+    $this->load->library('image_lib');
+
     $data['photos'] = $this->photo_model->getBySite($id);
+    $data['editable'] = $this->site_model->is_editable($id);
 
     $this->output->set_output($this->load->view('fiche_site/rubriques/points_de_vue', $data, TRUE));
   }
@@ -223,6 +226,18 @@ class Site extends CI_Controller {
     }
 
     $this->rubrique_content($id_site, 'points_de_vue');
+  }
+
+
+  // suppression de photo (ajax)
+  public function suppr_photo($id_photo) {
+    $this->load->model('photo_model');
+    $photo = $this->photo_model->get($id_photo);
+    if ($this->site_model->is_editable($photo->site_id)) {
+      $success = $this->photo_model->delete($id_photo);
+    } else {
+      $this->output->set_output('{"error": "Opération interdite", "success": false}');
+    }
   }
 
   // ajout / modif d'entité géol

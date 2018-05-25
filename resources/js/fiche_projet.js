@@ -59,6 +59,15 @@ $(function() {
       })
     }
     $mymodal.modal();
+  }).on('click', '.photo-remove-button', function() {
+    // suppression de photos
+    var id = $(this).data('photo_id');
+    var $cont = $(this).parents('.photo-thumbnail');
+    if (window.confirm("Voulez-vous vraiment supprimer cette photo ?")) {
+      $.get(site_url('site/suppr_photo/' + id), function(data) {
+        $cont.remove();
+      });
+    }
   });
 
   // TODO : doit-on supprimer le contenu quand ça collapse ?

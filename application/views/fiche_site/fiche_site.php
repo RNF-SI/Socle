@@ -10,7 +10,7 @@
     <div class="panel-body">
   <div id="main_image">
     <?php if (count($site->photos) > 0): ?>
-      <img src="<?= base_url('photos/' . $site->photos[0]->url) ?>" class="img-rounded" />
+      <img src="<?= $this->image_lib->thumbnail_url($site->photos[0]->url, 200) ?>" class="img-rounded" />
     <?php endif; ?>
   </div>
   <div id="carto">
