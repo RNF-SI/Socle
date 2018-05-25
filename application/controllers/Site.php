@@ -288,7 +288,7 @@ class Site extends CI_Controller {
     $eg->affleurements = $this->affleurement_model->getByEG($id_eg);
     $data['eg'] = $eg;
     $data['site'] = $this->site_model->get($eg->site_id);
-	  $data['editable'] = TRUE; //$this->espace_protege_model->is_editable($eg->espace_protege_id);
+	  $data['editable'] = $this->site_model->is_editable($eg->site_id);
 
     $this->load->view('default/header', ['scripts' => ['js/fiche_projet.js', 'js/fiche_eg.js'],
       'title' => 'Entité géologique "' . $eg->intitule . '"']);

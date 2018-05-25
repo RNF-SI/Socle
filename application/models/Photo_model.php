@@ -4,6 +4,8 @@
 class Photo_model extends Entite_abstract_model {
   protected $tableName = 'photo';
   protected $has_geometry = FALSE;
+  protected $store_user_info = FALSE;
+  
 
   public function getBySite($id_site) {
     $query = $this->db->get_where('photo', ['site_id' => $id_site]);

@@ -5,6 +5,7 @@
   var type_rubrique = 'EG';
   var point_coords = <?= $eg->geojson ?>;
 </script>
+<?php if ($editable): ?>
 <p>
 	<div class="btn-group">
 		<a href="<?= site_url('site/ajout_eg/'.$site->id.'/'.$eg->id) ?>" class="btn btn-primary">
@@ -13,6 +14,7 @@
 			<span class="glyphicon glyphicon-plus"></span> Créer une nouvelle entité</a>
 	</div>
 </p>
+<?php endif; ?>
 <h1><?= $eg->intitule ?></h1>
 <p>Pour le site <strong>
   <a href="<?= site_url('site/fiche_site/' . $site->id) ?>"><?= $site->nom ?></a>
@@ -41,10 +43,14 @@
   <table class="table">
   <?php foreach ($eg->affleurements as $affl): ?>
     <tr><td><?= $affl->nom ?></td>
-      <td><a href="<?= site_url('site/modification_affleurement/' . $affl->id . '/' . $eg->id) ?>" title="modifier"><span class="glyphicon glyphicon-edit"> </span></td></tr>
+      <td><?php if ($editable): ?>
+        <a href="<?= site_url('site/modification_affleurement/' . $affl->id . '/' . $eg->id) ?>" title="modifier"><span class="glyphicon glyphicon-edit"> </span></a>
+      <?php endif; ?></td></tr>
   <?php endforeach; ?>
 </table>
+<?php if ($editable): ?>
   <a href="<?= site_url('site/ajout_affleurement/' . $eg->id) ?>" class="btn btn-primary">Ajouter et décrire un affleurement</a>
+<?php endif; ?>
 </div>
 <?php
 
