@@ -21,7 +21,23 @@ $(function() {
     $("#modal-groups").modal();
     $.get(site_url('utilisateurs/user_groups/' + userid), function(response) {
       $("#modal-groups .modal-body").html(response);
-    })
+    });
+    return false;
+  });
+
+  $('.action-delete').click(function(evt) {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
+      var $a_elt = $(this);
+      var userid = $a_elt.parents("tr").data('user-id');
+      $.get(site_url('utilisateurs/user_delete/' + userid), function(response) {
+        if (response.success) {
+          window.location.reload(true);
+        } else {
+          window.alert("L'utilisateur n'a pas pu être supprimé.");
+        }
+      });
+      return false;
+    }
   });
 
   $("#modal-groups").on('click', ".remove_group", function(evt) {

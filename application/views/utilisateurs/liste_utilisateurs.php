@@ -1,5 +1,7 @@
 <h2>Gestion des utilisateurs</h2>
-<p><a href="<?= site_url('utilisateurs/creation') ?>" class="btn btn-primary">Créer un utilisateur</a></p>
+<p><a href="<?= site_url('utilisateurs/creation') ?>" class="btn btn-primary">Créer un utilisateur</a>
+<a href="<?= site_url('utilisateurs/creation_groupe') ?>" class="btn btn-primary">Créer un groupe</a>
+</p>
 <div id="modal-groups" class="modal" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -34,7 +36,8 @@
       <td><?= $user->email ?></td>
       <td><a href="#" class="action-groups">Afficher/modifier</a></td>
       <td class="col-active"><?= $user->active ? 'oui' : 'non' ?></td>
-      <td><a href="#" class="action-activate"><?= $user->active ? 'désactiver' : 'activer' ?></a></td>
+      <td><a href="#" class="action-activate"><?= $user->active ? 'désactiver' : 'activer' ?></a>
+      <a href="#" class="action-delete">Supprimer</a></td>
     </tr>
   <?php endforeach; ?>
 </tbody>

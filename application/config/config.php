@@ -76,7 +76,7 @@ $config['url_suffix'] = '';
 | than english.
 |
 */
-$config['language']	= 'english';
+$config['language']	= 'french';
 
 /*
 |--------------------------------------------------------------------------
@@ -526,3 +526,5 @@ $config['proxy_ips'] = '';
 /* CONFIG PERSO */
 $config['photo_folder'] = 'photos';
 $config['thumbnail_folder'] = 'photos/thumb';
+
+$config['admin_email'] = 'augustin.roche-rnf@espaces-naturels.fr';

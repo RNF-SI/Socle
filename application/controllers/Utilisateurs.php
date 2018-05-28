@@ -31,12 +31,55 @@ class Utilisateurs extends CI_Controller {
     $this->load->view('default/footer');
   }
 
-  // formulaire de souscription et traitement (ajax)
+  // formulaire de souscription et traitement
   public function subscribe() {
-    $cont = $this->load->view('utilisateurs/subscription_form', NULL, FALSE);
+    $this->load->helper('form_helper');
 
-    $this->output->set_output($cont);
+    $data = array();
 
+    if ($this->input->post()) {
+      $this->load->library('form_validation');
+      $this->form_validation->set_rules('nom', 'nom', 'required');
+      $this->form_validation->set_rules('email', 'email', 'required|valid_email');
+      $this->form_validation->set_rules('password', 'mot de passe', 'required|min_length[6]');
+      $this->form_validation->set_rules('pwd_confirm', 'confirmation du mot de passe', 'required|matches[password]');
+
+      if ($this->form_validation->run()) {
+        $moredata = ['username'=>$this->input->post('nom')];
+        $res = $this->auth->register($this->input->post('email'), $this->input->post('password'), $this->input->post('email'), $moredata);
+        if ($res) {
+          // envoi de mail
+          $this->load->library('email');
+          $this->email->from($this->config->item('admin_email'));
+          $this->email->to($this->config->item('admin_email'));
+          $this->email->subject('Base SOCLE : demande d\'inscription');
+          $message = $this->load->view('utilisateurs/mail_subscription_new_user', $this->input->post(), TRUE);
+          $this->email->message($message);
+          $this->email->send();
+          $this->session->set_flashdata(['message'=>'Votre compte a été créé. Un administrateur validera votre demande et activera votre compte.',
+            'message_class' => 'success']);
+          redirect('accueil/index');
+        } else {
+          $data['message'] = 'Echec de la création d\'utilisateur : ' . $this->auth->messages();
+          $data['message_class'] = 'danger';
+        }
+      }
+    }
+
+    $this->load->view('default/header');
+    $this->load->view('utilisateurs/subscription_form', $data);
+    $this->load->view('default/footer');
+  }
+
+  public function test_mail() {
+    //phpinfo();
+    $this->load->library('email');
+    $this->email->from($this->config->item('admin_email'));
+    $this->email->to($this->config->item('admin_email'));
+    $this->email->subject('Base SOCLE : test');
+    $message = 'Ceci est un test.';
+    $this->email->message($message);
+    $this->email->send();
   }
 
   // formulaire de login et traitement (ajax)
@@ -158,6 +201,15 @@ class Utilisateurs extends CI_Controller {
     $this->load->view('default/header');
     $this->load->view('utilisateurs/creation_groupe', $data);
     $this->load->view('default/footer');
+  }
+
+  // suppression user pour ajax
+  public function user_delete($id) {
+    $this->check_admin();
+    $res = $this->auth->delete_user($id);
+    
+    $this->output->set_content_type('application/json');
+    $this->output->set_output(json_encode(['success'=>$res]));
   }
 
   // pour ajax : liste des groupes

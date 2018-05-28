@@ -10,6 +10,15 @@ function form_input($name, $label, $value = '') {
   </div>';
 }
 
+function form_password($name, $label, $value = '') {
+  return '<div class="form-group">
+  <label class="control-label col-sm-3" for="' . $name . '">' . $label .'</label>
+    <div class="col-sm-9">
+      <input type="password" class="form-control" id="' . $name . '" name="' . $name . '" value="' . $value . '" />
+    </div>
+  </div>';
+}
+
 
 function form_checkbox($name, $label, $checked = FALSE) {
   return '<div class="form-group">
