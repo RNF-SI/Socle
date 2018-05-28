@@ -6,9 +6,15 @@ $(function() {
      quand on dézoome */
     var deflated = L.deflate({minSize: 20});
     deflated.addTo(map);
-    var eplyr = L.geoJSON(data).bindTooltip(function(lyr) {
-      return lyr.feature.properties.nom;
-    }).addTo(deflated);
+    var eplyr = L.geoJSON(data, {onEachFeature: function(ft, lyr) {
+      lyr.bindTooltip(function() {
+        return lyr.feature.properties.nom;
+      });
+      lyr.on('click', function() {
+        var url = site_url('espace/fiche_espace/' + ft.properties.id);
+        window.location.href = url;
+      })
+    }}).addTo(deflated);
     map.fitBounds(eplyr.getBounds());
   });
 })
