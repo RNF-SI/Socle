@@ -14,7 +14,7 @@ $(function() {
   $("#code_national_ep").on('keyup change', function() {
     var txt = $(this).val();
     if (txt.search(search) > -1) {
-      $.get(site_url('api/getEspaceRef/' + txt), function(data) {
+      $.get(site_url('api/get_espace_ref/' + txt), function(data) {
         $("#nom").val(data.nom_site);
         $("#geom").text(data.wkt);
       });

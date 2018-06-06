@@ -15,7 +15,7 @@ class Api extends CI_Controller {
   }
 
   //récupere le nom est la geom de l'espace de reference
-  public function getEspaceRef($code) {
+  public function get_espace_ref($code) {
     $this->load->model('espace_ref_model');
     $data = $this->espace_ref_model->getEspaceWkt($code);
     $this->send($data);
@@ -23,7 +23,7 @@ class Api extends CI_Controller {
 
   public function info_entite_geol($id_eg) {
     $this->load->model('entite_geol_model');
-    
+
   }
 
 

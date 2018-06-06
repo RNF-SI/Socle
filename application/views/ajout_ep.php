@@ -12,7 +12,7 @@
     ]) ?>
   <?= form_checkbox('monosite', 'Cet espace ne contient qu\'un seul site (l\'analyse portera sur l\'ensemble du périmètre de l\'espace protégé)',
     isset($ep) ? $ep->monosite == 't' : TRUE) ?>
-  <?= form_text('geom', 'Géométrie au format WKT ou GeoJson :', $ep->geom) ?>
+  <?= form_text('geom', 'Géométrie au format WKT ou GeoJson :', isset($ep) ? $ep->geom : '') ?>
   <?= form_select('group_id', 'Groupe d\'utilisateur à associer à l\'entité :', $groupes, min(array_keys($groupes))) ?>
   <p><a href="<?= site_url('utilisateurs/creation_groupe') ?>">Créer un nouveau groupe</a></p>
   <?= form_submit() ?>

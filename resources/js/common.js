@@ -55,7 +55,7 @@ function base_map(id_map, id_ep, baseLayerToDisplay="Carte géologique") {
   L.control.scale({imperial: false}).addTo(mainMap);
 
   // contours de l'espace
-  if (id_ep !== undefined) {
+  if (id_ep !== undefined && id_ep !== null) {
       var options = {
         color: 'green',
         weight: 2,
