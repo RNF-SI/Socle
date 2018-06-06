@@ -1,7 +1,8 @@
 <p>Bienvenue sur la base de données géologique de Réserves Naturelles de France&nbsp;!</p>
 <div class="alert alert-warning">
   <strong>Attention</strong>
-  <p>Ce site est actuellement en construction. Aucune donnée n'est à considérer comme définitive.</p>
+  <p>Ce site est actuellement en construction. Certaines données présentes ne sont pas réelles, elles ne sont rentrées qu'à
+    titre de test.</p>
 </div>
 <div class="container">
   <div class="row">

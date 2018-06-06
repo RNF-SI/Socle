@@ -6,6 +6,8 @@
     <?php endforeach;  ?>
   </ul>
 </div>
+<?php if ($this->auth->is_admin()): ?>
 <div>
-  <a href="<?= site_url('espace/ajout_ep') ?>" class="btn btn-primary">Ajouter</a>
+  <a href="<?= site_url('espace/creation') ?>" class="btn btn-primary">Ajouter</a>
 </div>
+<?php endif; ?>

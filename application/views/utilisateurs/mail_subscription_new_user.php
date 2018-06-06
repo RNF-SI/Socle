@@ -1,4 +1,4 @@
-L'utilisateur <?=$nom ?> s'est inscrit sur la base Socle et requiert une activation de son compte.
+L'utilisateur <?=$nom ?> (<?=$email ?>) s'est inscrit sur la base Socle et requiert une activation de son compte.
 Pour l'activer, rendez-vous sur <?= site_url('utilisateurs/gestion') ?>.
 
 L'utilisateur a indiqué vouloir travailler sur l'espace suivant : <?=$message ?>.

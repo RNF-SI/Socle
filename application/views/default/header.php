@@ -43,7 +43,7 @@
                 <?php
                 $user = $this->auth->user()->row();
                 if (is_null($user)): ?>
-                <a href="#" id="login-link">s'identifier</a> -
+                <a href="#" id="login-link">S'identifier</a> -
                 <a href="<?= site_url('utilisateurs/subscribe') ?>">S'inscrire</a>
                 <?php else: ?>
                   connecté en tant que <a href="<?= site_url('utilisateurs/utilisateur/' . $user->id ) ?>">
