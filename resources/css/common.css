@@ -25,6 +25,10 @@ header .subtitle {
   border-top: 1px solid #a4b1c8;
 }
 
+.thumbnail {
+  margin-right: 5px;
+}
+
 .breadcrumb {
   margin-top: 10px;
 }

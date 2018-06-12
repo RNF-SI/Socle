@@ -25,15 +25,17 @@
   <div id="map"></div>
 </div>
 <div class="row">
-  <div class="col-sm-7">
     <h3>Identification sur la carte géologique</h3>
     <p>code <?= $eg->code ?> : <?= $eg->intitule ?></p>
     <p>Âge des roches : <?= $eg->ere_geol_label ?></p>
-  </div>
-  <div class="col-sm-5">
-    <div id="map" style="height:300px"></div>
-  </div>
 </div>
+<?php
+  $this->load->view('fiche_site/base_rubrique', [
+    'titre' => 'Photos, documents',
+    'ep' => $site,
+    'id_rubrique' => 'points_de_vue'
+  ]);
+  ?>
 <h3>Affleurements</h3>
 <p><?= $eg->quantite_affleurements ?><br />
   <?= $eg->affleurements_accessibles ? 'Affleurements accessibles' : 'Affleurements inaccessibles' ?>

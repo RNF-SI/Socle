@@ -5,14 +5,33 @@ class Photo_model extends Entite_abstract_model {
   protected $tableName = 'photo';
   protected $has_geometry = FALSE;
   protected $store_user_info = FALSE;
-  
 
-  public function getBySite($id_site) {
-    $query = $this->db->get_where('photo', ['site_id' => $id_site]);
+
+  public function getBySite($id_site, $images_only=FALSE) {
+    $crit =  ['site_id' => $id_site];
+    if ($images_only) {
+      $crit['mimetype !='] = 'application/pdf';
+    }
+    $query = $this->db->get_where('photo', $crit);
     return $query->result();
   }
 
-  public function add_photo($data) {
+  public function getByEG($id_eg, $images_only=FALSE) {
+    $crit = ['eg_id' => $id_eg];
+    if ($images_only) {
+      $crit['mimetype !='] = 'application/pdf';
+    }
+    $query = $this->db->get_where('photo', $crit);
+    return $query->result();
+  }
+
+  public function add_photo($data, $type) {
+    if ($type == 'Site') {
+      $data['site_id'] = $data['entite_id'];
+    } elseif ($type == 'EG') {
+      $data['eg_id'] = $data['entite_id'];
+    }
+    unset($data['entite_id']);
     $this->db->insert('photo', $data);
   }
 
@@ -23,6 +42,7 @@ class Photo_model extends Entite_abstract_model {
     $query = $this->db
       ->order_by('random()')
       ->limit(1)
+      ->where('mimetype != \'application/pdf\'')
       ->get('photo');
     return $query->row();
   }

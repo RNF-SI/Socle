@@ -28,7 +28,7 @@ Fiche de synthèse
   <?php foreach ($elements['photos'] as $phot): ?>
     <div class="col-md-3">
       <div class="thumbnail">
-        <a href="<?= base_url('photos/' . $phot['url']) ?>"><img src="<?= base_url('photos/' . $phot['url']) ?>" /></a>
+        <a href="<?= base_url('photos/' . $phot['url']) ?>"><img src="<?= $this->image_lib->thumbnail_url($phot['url'], 200, $phot['type']) ?>" /></a>
         <div class="caption"><?= $phot ['legende'] ?></div>
       </div>
     </div>

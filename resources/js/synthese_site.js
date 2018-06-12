@@ -1,6 +1,10 @@
 $(function() {
   var map = base_map('map');
   $.get(site_url('carto/site_subelements_geom/' + site_id), function(data) {
+    if (data.site.geometry == null) {
+      $('#map').remove();
+      return;
+    }
     var siteLayer = L.geoJSON(data.site, {style: function(ft) {
       return {color: 'blue'};
     }});

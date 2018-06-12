@@ -73,7 +73,10 @@ class Site_model extends Entite_abstract_model {
       affleurement.nom AS affleurement_nom,
       affleurement.id AS affleurement_id,
       affleurement.description AS affleurement_description,
-      photo.id AS photo_id, photo.url as photo_url, photo.description AS photo_description');
+      photo.id AS photo_id,
+      photo.url as photo_url,
+      photo.description AS photo_description,
+      photo.mimetype AS photo_mimetype');
       if ($with_geom) {
         $this->db->select('st_asgeojson(site.geom) AS site_geom,
           st_asGeoJson(eg.geom) AS eg_geom,
@@ -114,7 +117,7 @@ class Site_model extends Entite_abstract_model {
         if ($with_geom) $data['egs'][$li->eg_id]['affleurements'][$li->affleurement_id]['geom'] = $li->affleurement_geom;
       }
       if (!isset($data['photos'][$li->photo_id]) && !is_null($li->photo_id)) {
-        $data['photos'][$li->photo_id] = ['url'=>$li->photo_url, 'legende'=>$li->photo_description];
+        $data['photos'][$li->photo_id] = ['url'=>$li->photo_url, 'legende'=>$li->photo_description, 'type'=>$li->photo_mimetype];
       }
     }
     return $data;

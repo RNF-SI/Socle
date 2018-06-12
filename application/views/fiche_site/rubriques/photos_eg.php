@@ -1,4 +1,3 @@
-<h4>Photos du site</h4>
 <div class="row">
   <?php foreach($photos as $phot): ?>
     <div class="col-md-4 photo-thumbnail">

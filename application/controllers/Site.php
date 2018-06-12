@@ -27,7 +27,7 @@ class Site extends CI_Controller {
       redirect('accueil/index');
     } */
 
-    $site->photos = $this->photo_model->getBySite($id);
+    $site->photos = $this->photo_model->getBySite($id, TRUE);
     $data['site'] = $site;
     $data['editable'] = $this->site_model->is_editable($id);
     $data['entites_geol'] = $this->site_model->getEntitesGeol($id);
@@ -43,7 +43,8 @@ class Site extends CI_Controller {
     // gestion des exceptions (ne se comportent pas comme les rubriques standard)
     switch ($rubrique) {
       case 'points_de_vue':
-        $this->rubrique_points_de_vue($id);
+      case 'photos_eg':
+        $this->rubrique_points_de_vue($id, $type);
         return;
       case 'elements_remarquables':
         $this->rubrique_elements_remarquables($id);
@@ -178,14 +179,14 @@ class Site extends CI_Controller {
     return $this->creation($id_ep, $id);
   }
 
-  public function rubrique_points_de_vue($id) {
+  public function rubrique_points_de_vue($id, $type) {
     $this->load->model('photo_model');
     $this->load->library('image_lib');
 
-    $data['photos'] = $this->photo_model->getBySite($id);
+    $data['photos'] = $type == 'Site' ? $this->photo_model->getBySite($id) : $this->photo_model->getByEG($id);
     $data['editable'] = $this->site_model->is_editable($id);
-
-    $this->output->set_output($this->load->view('fiche_site/rubriques/points_de_vue', $data, TRUE));
+    $view = $type == 'Site' ? 'points_de_vue' : 'photos_eg';
+    $this->output->set_output($this->load->view('fiche_site/rubriques/' . $view, $data, TRUE));
   }
 
   public function rubrique_contexte_sismique($id) {
@@ -200,15 +201,15 @@ class Site extends CI_Controller {
     $this->output->set_output($this->load->view('fiche_site/rubriques/elements_remarquables', $data, TRUE));
   }
 
-  // ajout d'une photo au site (ajax)
-  public function ajout_photo($id_site) {
+  // ajout d'une photo au site ou EG (ajax)
+  public function ajout_photo($id, $type='Site') {
     $this->load->helper('form_helper');
 
     if ($this->input->post()) {
       $config = [
         'upload_path' => './photos',
-        'allowed_types' => 'jpg|png',
-        'file_name' => uniqid('img_' . $id_site . '_')
+        'allowed_types' => 'jpg|png|pdf',
+        'file_name' => uniqid("img_{$type}_{$id}_")
       ];
       $this->load->library('upload', $config);
 
@@ -217,7 +218,8 @@ class Site extends CI_Controller {
         $data = $this->input->post();
         $fname = $this->upload->data('file_name');
         $data['url'] = $fname;
-        $this->photo_model->add_photo($data);
+        $data['mimetype'] = $this->upload->data('file_type');
+        $this->photo_model->add_photo($data, $type);
       } else {
         log_message('error', $this->upload->display_errors());
         $this->output->set_output($this->upload->display_errors());
@@ -225,7 +227,7 @@ class Site extends CI_Controller {
       }
     }
 
-    $this->rubrique_content($id_site, 'points_de_vue');
+    $this->rubrique_content($id, $type == 'Site' ? 'points_de_vue' : 'photos_eg');
   }
 
 
@@ -364,6 +366,7 @@ class Site extends CI_Controller {
   // Fiche de synthèse d'un EP
   public function resume($id) {
     $this->load->model('photo_model');
+    $this->load->library('image_lib');
     $site = $this->site_model->get($id);
 
     $data = new stdClass();
