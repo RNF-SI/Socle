@@ -73,29 +73,34 @@ class Site_model extends Entite_abstract_model {
       affleurement.nom AS affleurement_nom,
       affleurement.id AS affleurement_id,
       affleurement.description AS affleurement_description,
-      photo.id AS photo_id,
-      photo.url as photo_url,
-      photo.description AS photo_description,
-      photo.mimetype AS photo_mimetype');
-      if ($with_geom) {
-        $this->db->select('st_asgeojson(site.geom) AS site_geom,
-          st_asGeoJson(eg.geom) AS eg_geom,
-          st_asGeoJson(affleurement.geom) AS affleurement_geom');
-      }
-      $this->db->join('site_qcm', 'site.id=site_qcm.site_id', 'left')
-        ->join('qcm AS qcm_site', 'qcm_site.id = site_qcm.id')
-        ->join('entite_geol AS eg', 'eg.site_id=site.id', 'left')
-        ->join('entite_geol_qcm AS eg_qcm', 'eg.id=eg_qcm.entite_geol_id', 'left')
-        ->join('qcm AS qcm_eg', 'eg_qcm.qcm_id = qcm_eg.id')
-        ->join('echelle_geol', 'ere_geol_id=echelle_geol.id', 'left')
-        ->join('affleurement', 'affleurement.eg_id=eg.id', 'left')
-        ->join('photo', 'site.id=photo.site_id', 'left');
-      $query = $this->db->get_where('site', ['site.id'=>$id]);
+      photo_site.id AS photo_id,
+      photo_site.url as photo_url,
+      photo_site.description AS photo_description,
+      photo_site.mimetype AS photo_mimetype,
+      photo_eg.id AS photo_eg_id,
+      photo_eg.url as photo_eg_url,
+      photo_eg.description AS photo_eg_description,
+      photo_eg.mimetype AS photo_eg_mimetype');
+    if ($with_geom) {
+      $this->db->select('st_asgeojson(site.geom) AS site_geom,
+        st_asGeoJson(eg.geom) AS eg_geom,
+        st_asGeoJson(affleurement.geom) AS affleurement_geom');
+    }
+    $this->db->join('site_qcm', 'site.id=site_qcm.site_id', 'left')
+      ->join('qcm AS qcm_site', 'qcm_site.id = site_qcm.id')
+      ->join('entite_geol AS eg', 'eg.site_id=site.id', 'left')
+      ->join('entite_geol_qcm AS eg_qcm', 'eg.id=eg_qcm.entite_geol_id', 'left')
+      ->join('qcm AS qcm_eg', 'eg_qcm.qcm_id = qcm_eg.id')
+      ->join('echelle_geol', 'ere_geol_id=echelle_geol.id', 'left')
+      ->join('affleurement', 'affleurement.eg_id=eg.id', 'left')
+      ->join('photo AS photo_site', 'site.id=photo_site.site_id', 'left')
+      ->join('photo AS photo_eg', 'eg.id=photo_eg.eg_id', 'left');
+    $query = $this->db->get_where('site', ['site.id'=>$id]);
 
-    $data = array();
+    $data = ['egs'=>[], 'qcms'=>[], 'photos'=>[]];
     foreach ($query->result() as $li) {
-      if (empty($data)) {
-        $data = ['nom'=>$li->site_nom, 'egs'=>[], 'qcms'=>[], 'photos'=>[]];
+      if (!isset($data['nom'])) {
+        $data['nom'] = $li->site_nom;
         if ($with_geom) $data['geom'] = $li->site_geom;
       }
       if (!isset($data['qcms'][$li->siteqcm_question][$li->siteqcm_id_qcm]) && !is_null($li->siteqcm_question)) {
@@ -104,7 +109,7 @@ class Site_model extends Entite_abstract_model {
         'pedagogique'=>$li->siteqcm_interet_pedagogique, 'esthetique'=>$li->siteqcm_interet_esthetique];
       }
       if (!isset($data['egs'][$li->eg_id]) && !is_null($li->eg_id)) {
-        $data['egs'][$li->eg_id] = ['nom'=>$li->eg_nom, 'age_roches'=>$li->eg_age_roches, 'qcms'=>[], 'affleurements'=>[]];
+        $data['egs'][$li->eg_id] = ['nom'=>$li->eg_nom, 'age_roches'=>$li->eg_age_roches, 'qcms'=>[], 'affleurements'=>[], 'photos'=>[]];
         if ($with_geom) $data['egs'][$li->eg_id]['geom'] = $li->eg_geom;
       }
       if (!isset($data['egs'][$li->eg_id]['qcms'][$li->egqcm_question][$li->egqcm_id_qcm]) && !is_null($li->egqcm_question)) {
@@ -114,6 +119,10 @@ class Site_model extends Entite_abstract_model {
       }
       if (!isset($data['egs'][$li->eg_id]['affleurements'][$li->affleurement_id]) && !is_null($li->affleurement_id)) {
         $data['egs'][$li->eg_id]['affleurements'][$li->affleurement_id] = ['nom' => $li->affleurement_nom, 'description'=>$li->affleurement_description];
+        if ($with_geom) $data['egs'][$li->eg_id]['affleurements'][$li->affleurement_id]['geom'] = $li->affleurement_geom;
+      }
+      if (!isset($data['egs'][$li->eg_id]['photos'][$li->photo_eg_id]) && !is_null($li->photo_eg_id)) {
+        $data['egs'][$li->eg_id]['photos'][$li->photo_id] = ['url' => $li->photo_eg_url, 'legende'=>$li->photo_eg_description, 'type'=>$li['photo_eg_mimetype']];
         if ($with_geom) $data['egs'][$li->eg_id]['affleurements'][$li->affleurement_id]['geom'] = $li->affleurement_geom;
       }
       if (!isset($data['photos'][$li->photo_id]) && !is_null($li->photo_id)) {
