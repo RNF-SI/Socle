@@ -11,6 +11,25 @@
   <div id="main_image">
     <?php if (count($site->photos) > 0): ?>
       <img src="<?= $this->image_lib->thumbnail_url($site->photos[0]->url, 200) ?>" class="img-rounded" />
+    <?php elseif ($editable): ?>
+      <div id="alert-image" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Site non illustré</h4>
+            </div>
+            <div class="modal-body">
+              <p>Si vous n'ajoutez pas au moins une image représentative du site, il n'aparaîtra pas en page d'accueil.</p>
+              <p>Pour ajouter une image, ouvrez le panneau "<a href="#points_de_vue">Images / documents</a>"
+                et cliquez sur "éditer".</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Compris</button>
+            </div>
+          </div>
+        </div>
+      </div>
     <?php endif; ?>
   </div>
   <div id="carto">
@@ -21,7 +40,7 @@
       <ul>
         <li><a href="#Q-1">Q-1 / Approche géographique du territoire</a>
           <ul>
-            <li><a href="#points_de_vue">Q-1 /0 Points de vue / Panoramas</a></li>
+            <li><a href="#points_de_vue">Q-1 /0 Images et documents</a></li>
             <!--<li><a href="#contexte_general">Q-1 /1 Contexte général</a></li>-->
             <li><a href="#contexte_hydro">Q-1 /2 Contexte hydrographique général</a></li>
             <li><a href="#contexte_littoral">Q-1 /3 Contexte général littoral et marin</a></li>
@@ -117,7 +136,7 @@ chaque territoire.</p>
 
   <?php
     $this->load->view('fiche_site/base_rubrique', [
-      'titre' => 'Q-1 /0 Points de vue / Panoramas',
+      'titre' => 'Q-1 /0 Images et documents',
       'ep' => $site,
       'id_rubrique' => 'points_de_vue']);
 

@@ -1,6 +1,8 @@
 // fonctions de chargement des composants RubriquesController
 
 $(function() {
+  $("#alert-image.modal").modal("show");
+
   $(".rubrique-collapse").on("show.bs.collapse", function(evt) {
     var id_rubrique = $(this).parents(".rubrique").attr('id');
     var container  = $(this).find(".rubrique-content");
@@ -115,7 +117,7 @@ $(function() {
   });
 
 
-  // carto
+  // CARTO
   if ($('#map-main').length > 0) {
     var map = base_map('map-main', site.ep_id);
     var popup = L.popup({maxWidth: 200});
