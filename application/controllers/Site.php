@@ -102,8 +102,8 @@ class Site extends CI_Controller {
       $this->form_validation->set_rules(element($rubrique, $config));
       if (!isset($config[$rubrique]) || $this->form_validation->run()) {
         $model->update_rubrique($id, $this->input->post(), $rubrique);
-
-        $this->rubrique_content($id, $rubrique, $type);
+        $this->output->set_content_type('application/json')
+          ->set_output(json_encode(array('success' => TRUE)));
         return;
       } else { // non validation du formulaire (renvoie les messages en ajax)
         $this->output->set_content_type('application/json')

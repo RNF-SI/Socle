@@ -1,20 +1,75 @@
 // fonctions de chargement des composants RubriquesController
 
+function load_content(evt) {
+  // contenu rubrique
+  var $rubrique = $(evt.target).parents(".rubrique");
+  var id_rubrique = $rubrique.attr('id');
+  var $container  = $rubrique.find(".rubrique-content");
+  $rubrique.find(".rubrique-toolbar .btn-group").html('<button class="btn btn-primary button-edit-form">Editer</button>');
+  $.ajax(site_url("site/rubrique_content/" + entite_id + "/" + id_rubrique + '/' + type_rubrique), {
+    success: function(data) {
+      $container.html(data);
+    },
+    error: function(xhr, status) {
+      $container.html('<p class="error">Erreur de chargement :' + status + '</p>');
+    }
+  });
+}
+
+// soumission du formulaire
+function submit_form(evt) {
+  evt.preventDefault();
+  var $container = $(evt.target).parents(".rubrique").find(".rubrique-content");
+  var $form = $container.find("form");
+
+  var params = {
+    url: $form.attr("action"),
+    data: $form.serialize(),
+    type: 'POST',
+    success: function(response) {
+        var messageBox = $container.siblings(".message");
+        messageBox.empty();
+        if (! response.success) { // echec de validation (retourne du json)
+          messageBox.html('<div class="alert alert-warning">' + response.message + '</div>')
+        } else {
+          load_content(evt);
+        }
+    }
+  }
+  // traitement de l'upload
+  if ($form.attr("enctype") == 'multipart/form-data') {
+    var file_data = $container.find("input[name='photo']").prop('files')[0];
+    var form_data = new FormData(this);
+    form_data.append('photo', file_data);
+    params.processData = false;
+    params.data = form_data;
+    params.contentType = false;
+  }
+
+  $.ajax(params);
+  return false;
+}
+
+function load_form(evt) {
+  // Affichage du formulaire
+  var $rubrique = $(evt.target).parents(".rubrique").first();
+  var id_rubrique = $rubrique.attr('id');
+  $rubrique.find(".rubrique-toolbar .btn-group").html('<button class="btn btn-primary button-save">Enregistrer</button>'
+    + '<button class="btn btn-primary button-cancel">Annuler</button>');
+  $.get(site_url("site/rubrique_form/" + entite_id + "/" + id_rubrique + '/' + type_rubrique), function(data) {
+    var form = $(data);
+    $rubrique.find(".rubrique-content").empty().append(form);
+  });
+}
+
+
 $(function() {
   $("#alert-image.modal").modal("show");
 
-  $(".rubrique-collapse").on("show.bs.collapse", function(evt) {
-    var id_rubrique = $(this).parents(".rubrique").attr('id');
-    var container  = $(this).find(".rubrique-content");
-    $.ajax(site_url("site/rubrique_content/" + entite_id + "/" + id_rubrique + '/' + type_rubrique), {
-      success: function(data) {
-        container.html(data);
-      },
-      error: function(xhr, status) {
-        container.html('<p class="error">Erreur de chargement :' + status + '</p>');
-      }
-    });
-  }).on("change", "input[name='caracteristiques[]']", function(evt) {
+  $(".rubrique-collapse")
+    .on("show.bs.collapse", load_content)
+    .on("change", "input[name='caracteristiques[]']", function(evt) {
+    // affichage options remarquable
     var id = $(this).val();
     $(this).parents('.choix-container').find('.remarquable-control').toggleClass('hidden');
   }).on('click', '.coche-remarquable', function() {
@@ -61,6 +116,7 @@ $(function() {
       })
     }
     $mymodal.modal();
+    return false;
   }).on('click', '.photo-remove-button', function() {
     // suppression de photos
     var id = $(this).data('photo_id');
@@ -75,46 +131,11 @@ $(function() {
   // TODO : doit-on supprimer le contenu quand ça collapse ?
 
   // traitement du formulaire
-  $(".rubrique").on("submit", "form", function(evt) {
-    evt.preventDefault();
-    var $container = $(this).parents(".rubrique-content");
-
-    var params = {
-      url: $(this).attr("action"),
-      data: $(this).serialize(),
-      type: 'POST',
-      success: function(response) {
-          var messageBox = $container.siblings(".message");
-          messageBox.empty();
-          if (typeof response == "object") { // echec de validation (retourne du json)
-            messageBox.html('<div class="alert alert-warning">' + response.message + '</div>')
-          } else {
-            $container.html(response);
-          }
-
-      }
-    }
-    // traitement de l'upload
-    if ($(this).attr("enctype") == 'multipart/form-data') {
-      var file_data = $container.find("input[name='photo']").prop('files')[0];
-      var form_data = new FormData(this);
-      form_data.append('photo', file_data);
-      params.processData = false;
-      params.data = form_data;
-      params.contentType = false;
-    }
-
-    $.ajax(params);
-    return false;
-  });
-
-  $(".button-edit-form").click(function(evt) {
-    var id_rubrique = $(evt.target).parents(".rubrique").first().attr('id');
-    $.get(site_url("site/rubrique_form/" + entite_id + "/" + id_rubrique + '/' + type_rubrique), function(data) {
-      var form = $(data);
-      $(".rubrique#" + id_rubrique + " .rubrique-content").empty().append(form);
-    });
-  });
+  $(".rubrique")
+    .on("submit", "form", submit_form)
+    .on("click", ".button-save", submit_form)
+    .on("click", ".button-cancel", load_content)
+    .on("click", ".button-edit-form", load_form);
 
 
   // CARTO
