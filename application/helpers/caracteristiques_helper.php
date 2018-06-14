@@ -1,5 +1,16 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+// produit un cadre contenant la description
+function help_tooltip($choice) {
+  if (empty($choice->description)) {
+    return '';
+  }
+  $s = '<span class="description-tooltip">?<div class="description-tooltip-content">';
+  $s .= '<p>'.$choice->description.'</p>';
+  $s .= '</div></span>';
+  return $s;
+}
+
 // permet de faire une liste de caractéristiques
 function liste_caracteristiques($list, $question) {
   if (! isset($list[$question]))
@@ -12,7 +23,7 @@ function liste_caracteristiques($list, $question) {
     'interet_historique' => 'historique/culturel'
   ];
   foreach ($list[$question] as $car) {
-    $txt .= '<li>' . $car->label;
+    $txt .= '<li>' . $car->label . help_tooltip($car);
 
     if ($car->remarquable == 't') {
       $txt .= '<span class="coche-remarquable active"> &starf;</span>';
@@ -32,7 +43,6 @@ function liste_caracteristiques($list, $question) {
   return $txt;
 }
 
-
 // construit une série de checkbox avec le choix QCM
 function qcm_caracteristiques($choices) {
   $hidden_fields = [
@@ -43,17 +53,15 @@ function qcm_caracteristiques($choices) {
     'interet_historique' => 'b',
     'comments' => 't'
   ];
-  // log_message('debug', print_r($choices, TRUE));
 
   $txt = '<div class="qcm form-group">';
   foreach ($choices as $choice) {
-    //$id  = $choice->rubrique . '-' . $choice->id;
     $li = '<div class="choix-container col-sm-4">
       <div class="checkbox"><label>
         <input type="checkbox" name="caracteristiques[]" value="'. $choice->id . '"';
     if ($choice->checked)
       $li .= ' checked';
-    $li .= '>' . $choice->label . '</label> <span class="remarquable-control'
+    $li .= '>' . $choice->label . help_tooltip($choice) . '</label> <span class="remarquable-control'
       . ($choice->checked ? '' : ' hidden') . '"><a href="#" class="coche-remarquable'
       .($choice->remarquable == 't' ? ' active': '') .'" title="Signaler cet élément comme remarquable">&starf;</a>
       <a href="#" class="remarquable-edit"><span class="glyphicon glyphicon-edit"> </span></a></span></div>';

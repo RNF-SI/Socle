@@ -119,6 +119,16 @@ function base_map(id_map, id_ep, baseLayerToDisplay="Carte géologique") {
 
 
 $(function() {
+  // tooltip
+  $(document).on({
+    mouseenter: function(evt) {
+      $(evt.target).children('.description-tooltip-content').show();
+    },
+    mouseout: function(evt) {
+      $(evt.target).children('.description-tooltip-content').hide();
+    }
+  }, '.description-tooltip');
+
     // identification
     $("#login-link").click(function(e) {
       $.get(site_url('utilisateurs/login'), function (response) {

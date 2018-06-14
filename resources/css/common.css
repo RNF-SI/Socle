@@ -154,6 +154,22 @@ img.photo-gallerie {
   margin-bottom: 5px;
 }
 
+.description-tooltip {
+  color: #673ab7;
+  font-size: 90%;
+  vertical-align: super;
+  cursor: help;
+}
+
+.description-tooltip-content {
+  display: none;
+  border: 1px solid;
+  padding: 5px;
+  position: absolute;
+  z-index: 100;
+  background-color: white;
+}
+
 .last_modified {
   font-size: 80%;
 }
