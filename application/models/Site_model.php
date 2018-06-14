@@ -137,7 +137,7 @@ class Site_model extends Entite_abstract_model {
         if ($with_geom) $data['egs'][$li->eg_id]['affleurements'][$li->affleurement_id]['geom'] = $li->affleurement_geom;
       }
       if (!isset($data['egs'][$li->eg_id]['photos'][$li->photo_eg_id]) && !is_null($li->photo_eg_id)) {
-        $data['egs'][$li->eg_id]['photos'][$li->photo_id] = ['url' => $li->photo_eg_url, 'legende'=>$li->photo_eg_description, 'type'=>$li['photo_eg_mimetype']];
+        $data['egs'][$li->eg_id]['photos'][$li->photo_id] = ['url' => $li->photo_eg_url, 'legende'=>$li->photo_eg_description, 'type'=>$li->photo_eg_mimetype];
         if ($with_geom) $data['egs'][$li->eg_id]['affleurements'][$li->affleurement_id]['geom'] = $li->affleurement_geom;
       }
       if (!isset($data['photos'][$li->photo_id]) && !is_null($li->photo_id)) {
