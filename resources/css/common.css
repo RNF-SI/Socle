@@ -33,6 +33,14 @@ header .subtitle {
   margin-top: 10px;
 }
 
+.link-gotop {
+  font-weight: bold;
+  font-size: 150%;
+  display: block;
+  float: right;
+  margin-right: 10px;
+}
+
 li::marker {
   color: #0c8da6;
 }
@@ -133,6 +141,17 @@ img.photo-gallerie {
 
 #rubriques p {
   text-align: justify;
+}
+
+.rubrique {
+  margin-top: 5px;
+}
+
+.rubrique-toolbar {
+  width: 100%;
+  border-bottom: 1px solid gray;
+  padding-bottom: 3px;
+  margin-bottom: 5px;
 }
 
 .last_modified {

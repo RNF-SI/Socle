@@ -32,7 +32,8 @@ class Site extends CI_Controller {
     $data['editable'] = $this->site_model->is_editable($id);
     $data['entites_geol'] = $this->site_model->getEntitesGeol($id);
 
-    $this->load->view('default/header', ['scripts' => ['js/fiche_projet.js'], 'title' => $site->nom]);
+    $this->load->view('default/header', ['scripts' => ['js/fiche_projet.js'], 'title' => $site->nom,
+      'path'=>$this->site_model->getPath($id)]);
     $this->load->view('fiche_site/fiche_site', $data);
     $this->load->view('default/footer');
   }
@@ -293,7 +294,8 @@ class Site extends CI_Controller {
 	  $data['editable'] = $this->site_model->is_editable($eg->site_id);
 
     $this->load->view('default/header', ['scripts' => ['js/fiche_projet.js', 'js/fiche_eg.js'],
-      'title' => 'Entité géologique "' . $eg->intitule . '"']);
+      'title' => 'Entité géologique "' . $eg->intitule . '"',
+      'path' => $this->entite_geol_model->getPath($id_eg)]);
     $this->load->view('fiche_eg/fiche_eg', $data);
     $this->load->view('default/footer');
   }

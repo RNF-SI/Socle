@@ -47,6 +47,21 @@ class Site_model extends Entite_abstract_model {
     return $this->db->get_where('entite_geol', array('site_id' => $id_site))->result();
   }
 
+  public function getPath($id) {
+    $this->db->select(['site.id AS site_id', 'site.nom', 'espace_protege.id AS ep_id',
+      'espace_protege.nom as ep_nom', 'monosite'])
+      ->from('site')
+      ->join('espace_protege', 'ep_id=espace_protege.id')
+      ->where(['site.id'=>$id]);
+    $res = $this->db->get()->row();
+    $data = array();
+    if (!$res->monosite) {
+      $data[] = ['path'=>'espace/fiche_espace/'.$res->ep_id, 'title'=>$res->ep_nom];
+    }
+    $data[] = ['path'=>'site/fiche_site/'.$id, 'title'=>$res->nom];
+    return $data;
+  }
+
   public function getAllSubelements($id, $with_geom=FALSE) {
     $this->db->select('site.nom as site_nom, site_qcm.info_complement AS siteqcm_complement, site_qcm.remarquable AS siteqcm_remarquable,
       site_qcm.interet_scientifique As siteqcm_interet_scientifique,

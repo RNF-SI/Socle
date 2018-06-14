@@ -74,8 +74,20 @@
               </div>
             </div>
           </div>
-          <div class="breadcrumb">
+          <div class="breadcrumb" id="navigation">
             <a href="<?= site_url() ?>">Accueil</a>
+            <?php
+            if (isset($path)) {
+              for ($i=0; $i<count($path); $i++) {
+                echo ' > ';
+                if ($i+1 == count($path)) {
+                  echo $path[$i]['title'];
+                } else {
+                  echo '<a href="'. site_url($path[$i]['path']) . '">' .$path[$i]['title'] . '</a>';
+                }
+              }
+            }
+            ?>
           </div>
           <div id="messages-global">
             <?php // gestion des messages

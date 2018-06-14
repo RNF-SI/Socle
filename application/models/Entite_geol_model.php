@@ -20,7 +20,23 @@ class Entite_geol_model extends Entite_abstract_model {
       ->row();
   }
 
-
+  public function getPath($id) {
+    $this->db->select(['eg.id AS eg_id', 'eg.intitule',
+      'site.id AS site_id', 'site.nom as site_nom',
+     'espace_protege.id AS ep_id', 'espace_protege.nom as ep_nom', 'monosite'])
+      ->from('entite_geol AS eg')
+      ->join('site', 'site_id=site.id')
+      ->join('espace_protege', 'ep_id=espace_protege.id')
+      ->where(['eg.id'=>$id]);
+    $res = $this->db->get()->row();
+    $data = array();
+    if (!$res->monosite) {
+      $data[] = ['path'=>'espace/fiche_espace/'.$res->ep_id, 'title'=>$res->ep_nom];
+    }
+    $data[] = ['path'=>'site/fiche_site/'.$res->site_id, 'title'=>$res->site_nom];
+    $data[] = ['path'=>'site/fiche_entite_geol/'.$id, 'title'=>$res->intitule];
+    return $data;
+  }
 
   // retourne l'échelle géol sous forme d'arbre
   public function echelle_geol() {
