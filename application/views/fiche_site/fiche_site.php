@@ -93,7 +93,9 @@
     <?php endif; ?>
 <div class="last_modified">Modifié le <?= date('d/m/Y', strtotime($site->last_modified)) ?>
   par <?= $this->auth->user($site->modified_by_userid)->row()->username ?>.</div>
-
+<p>
+  <a href="<?= site_url('site/resume/' . $site->id) ?>">Accès à la fiche synthétique</a>
+</p>
 <div id="rubriques" class="panel-group">
   <h2>Q-1 / Approche géographique du territoire</h2>
   <div class="explication">
