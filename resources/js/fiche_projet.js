@@ -19,6 +19,7 @@ function load_content(evt) {
 // soumission du formulaire
 function submit_form(evt) {
   evt.preventDefault();
+  $('.remarquable-dialog').remove();
   var $container = $(evt.target).parents(".rubrique").find(".rubrique-content");
   var $form = $container.find("form");
 
@@ -91,7 +92,7 @@ $(function() {
     if ($mymodal.length == 0) {
       var checkbox = function(name, label) {
         var val = $cont.find("input[name='" + name + "[]']").val();
-        return '<label><input type="checkbox" data-name="' + name + '" ' + (val ? 'checked' : '') + ' />' + label + '</label>';
+        return '<label><input type="checkbox" data-name="' + name + '" ' + (val ? 'checked' : '') + ' />' + label + '</label></br />';
       };
       var modal = '<div class="modal remarquable-dialog" role="dialog"><div class="modal-dialog"><div class="modal-content">'
         + '<div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4>Elément remarquable : informations complémentaires</h4></div>'
@@ -101,6 +102,8 @@ $(function() {
         + checkbox('interet_pedagogique', 'pédagogique')
         + checkbox('interet_esthetique', 'esthétique')
         + checkbox('interet_historique', 'historique/culturel')
+        + '<label>Commentaires :</label><textarea name="remarquable_info">' + $cont.find("input[name='remarquable_info[]']").val()
+        + '</textarea>'
         + '</form></div><div class="modal-footer"><button type="button" id="button-ok" class="btn btn-default" data-dismiss="modal">OK</button></div>'
         + '</div></div></div>';
       $mymodal = $(modal).appendTo($cont);
@@ -114,7 +117,8 @@ $(function() {
           } else {
             $hiddenField.removeAttr('value');
           }
-        })
+        });
+        $cont.find("input[name='remarquable_info[]']").val($mymodal.find("[name='remarquable_info']").val());
       })
     }
     $mymodal.modal();

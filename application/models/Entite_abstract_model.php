@@ -121,7 +121,7 @@ class Entite_abstract_model extends CI_Model {
   // et précise si elles sont sélectionnées
   public function getCaracteristiquesForm($id, $rubrique = NULL) {
     $subquery = $this->db
-      ->select('qcm_id, info_complement, remarquable, interet_esthetique, interet_historique, interet_pedagogique, interet_scientifique, comments')
+      ->select('qcm_id, info_complement, remarquable, interet_esthetique, interet_historique, interet_pedagogique, interet_scientifique, remarquable_info')
       ->where($this->linkColumnName(), $id)
       ->get_compiled_select($this->qcmLinkTable);
     $this->db->from('qcm')
@@ -190,7 +190,7 @@ class Entite_abstract_model extends CI_Model {
       'interet_pedagogique' => 'b',
       'interet_esthetique' => 'b',
       'interet_historique' => 'b',
-      'comments' => 't',
+      'remarquable_info' => 't',
       'info_complement' => 't'
     ];
     $colname = $this->linkColumnName();
@@ -199,7 +199,6 @@ class Entite_abstract_model extends CI_Model {
 
     if (isset($data['caracteristiques'])) {
       $cars = array();
-
       foreach ($data['caracteristiques'] as $car) {
         $cars[$car] = array('qcm_id' => $car, $colname => $id);
       }

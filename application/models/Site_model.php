@@ -68,7 +68,7 @@ class Site_model extends Entite_abstract_model {
       site_qcm.interet_historique As siteqcm_interet_historique,
       site_qcm.interet_pedagogique As siteqcm_interet_pedagogique,
       site_qcm.interet_esthetique As siteqcm_interet_esthetique,
-      site_qcm.comments As siteqcm_comments,
+      site_qcm.remarquable_info As siteqcm_remarquable_info,
       qcm_site.id As siteqcm_id_qcm,
       qcm_site.question As siteqcm_question,
       qcm_site.label As siteqcm_label,
@@ -80,7 +80,7 @@ class Site_model extends Entite_abstract_model {
       eg_qcm.interet_historique As egqcm_interet_historique,
       eg_qcm.interet_pedagogique As egqcm_interet_pedagogique,
       eg_qcm.interet_esthetique As egqcm_interet_esthetique,
-      eg_qcm.comments As egqcm_comments,
+      eg_qcm.remarquable_info As egqcm_remarquable_info,
       qcm_eg.id As egqcm_id_qcm,
       qcm_eg.question As egqcm_question,
       qcm_eg.label As egqcm_label,
@@ -124,7 +124,7 @@ class Site_model extends Entite_abstract_model {
         $data['qcms'][$li->siteqcm_question][$li->siteqcm_id_qcm] = ['id'=>$li->siteqcm_id_qcm, 'label'=>$li->siteqcm_label,
         'description'=>$li->siteqcm_description, 'rubrique'=>$li->siteqcm_rubrique,
         'remarquable'=>$li->siteqcm_remarquable, 'historique'=>$li->siteqcm_interet_historique, 'scientifique'=>$li->siteqcm_interet_scientifique,
-        'pedagogique'=>$li->siteqcm_interet_pedagogique, 'esthetique'=>$li->siteqcm_interet_esthetique];
+        'pedagogique'=>$li->siteqcm_interet_pedagogique, 'esthetique'=>$li->siteqcm_interet_esthetique, 'remarquable_info'=>$li->siteqcm_remarquable_info];
       }
       if (!isset($data['egs'][$li->eg_id]) && !is_null($li->eg_id)) {
         $data['egs'][$li->eg_id] = ['nom'=>$li->eg_nom, 'age_roches'=>$li->eg_age_roches, 'qcms'=>[], 'affleurements'=>[], 'photos'=>[]];
@@ -134,7 +134,7 @@ class Site_model extends Entite_abstract_model {
         $data['egs'][$li->eg_id]['qcms'][$li->egqcm_question][$li->egqcm_id_qcm] = ['id'=>$li->egqcm_id_qcm, 'label'=>$li->egqcm_label,
         'description'=>$li->egqcm_description, 'rubrique'=>$li->egqcm_rubrique,
         'remarquable'=>$li->egqcm_remarquable, 'historique'=>$li->egqcm_interet_historique, 'scientifique'=>$li->egqcm_interet_scientifique,
-        'pedagogique'=>$li->egqcm_interet_pedagogique, 'esthetique'=>$li->egqcm_interet_esthetique];
+        'pedagogique'=>$li->egqcm_interet_pedagogique, 'esthetique'=>$li->egqcm_interet_esthetique, 'remarquable_info'=>$li->egqcm_remarquable_info];
       }
       if (!isset($data['egs'][$li->eg_id]['affleurements'][$li->affleurement_id]) && !is_null($li->affleurement_id)) {
         $data['egs'][$li->eg_id]['affleurements'][$li->affleurement_id] = ['nom' => $li->affleurement_nom, 'description'=>$li->affleurement_description];

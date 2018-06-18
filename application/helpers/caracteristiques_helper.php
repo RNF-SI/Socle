@@ -34,8 +34,11 @@ function liste_caracteristiques($list, $question) {
         if (isset($car->$key) && $car->$key == 't')
           $item_interets[] = $value;
       }
-      if (count($item_interets) > 0) {
-        $txt .= ' (intérêts identifiés : ' . implode(', ', $item_interets) . ')';
+      if (count($item_interets) > 0 || $car->remarquable_info) {
+        $txt .= ' (intérêts identifiés : ' . implode(', ', $item_interets);
+        if ($car->remarquable_info)
+          $txt .= ' ; ' . $car->remarquable_info;
+       $txt .= ')';
       }
     }
     $txt .=  ($car->info_complement ? ' (' . $car->intitule_complement . '&nbsp;: ' . $car->info_complement . ')' : '')
@@ -53,7 +56,7 @@ function qcm_caracteristiques($choices) {
     'interet_pedagogique' => 'b',
     'interet_esthetique' => 'b',
     'interet_historique' => 'b',
-    'comments' => 't'
+    'remarquable_info' => 't'
   ];
 
   $txt = '<div class="qcm form-group">';
@@ -72,13 +75,13 @@ function qcm_caracteristiques($choices) {
       <a href="#" class="remarquable-edit" title="Critères de remarquabilité"><span class="glyphicon glyphicon-edit">
       </span></a></span></div>';
 
-
     foreach ($hidden_fields as $hf => $type) {
       $input = '<input type="hidden" id="'. $hf . '-' . $choice->id . '" name="' . $hf . '[]" ';
       if ($hf == 'remarquable' && $choice->$hf) {
         $input .= 'value ="' . $choice->id . '"';
-      } elseif ($choice->$hf == 't') {
-        $input .= 'value ="' . $choice->id . '"';
+      } elseif ($type == 't') {
+        //print_r($choice);
+        $input .= 'value ="' . $choice->$hf . '"';
       }
       $input .= ' />';
       $li .=  $input;
