@@ -67,7 +67,7 @@
         <li><a href="#Q-3">Q-3 / Identification des terrains, des roches et des fossiles</a>
           <ul>
             <li><a href="#infos_preliminaires">Q3 /00 Informations préliminaires</a></li>
-            <li><a href="#Q3-1">Q3 /1 Recensement des différentes entités géologiques constituant le sous-sol du territoire</a></li>
+            <li><a href="#Q3-1"><b>Q3 /1 Recensement des différentes entités géologiques constituant le sous-sol du territoire</a></b></li>
           </ul>
         </li>
         <li><a href="#Q-4">Q-4 / Objets géologiques remarquables</a></li>

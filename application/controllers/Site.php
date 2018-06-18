@@ -369,6 +369,7 @@ class Site extends CI_Controller {
   public function resume($id) {
     $this->load->model('photo_model');
     $this->load->library('image_lib');
+    $this->load->helper('caracteristiques');
     $site = $this->site_model->get($id);
 
     $data = new stdClass();

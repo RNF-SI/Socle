@@ -2,6 +2,8 @@
 
 // produit un cadre contenant la description
 function help_tooltip($choice) {
+  if (is_array($choice))
+    $choice = (object)$choice;
   if (empty($choice->description)) {
     return '';
   }

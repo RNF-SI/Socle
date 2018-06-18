@@ -6,7 +6,7 @@
     if ($titre) echo "<h4>$titre&nbsp;:</h4>";
     echo '<ul>';
     foreach ($data[$question] as $q) {
-        echo  '<li>' . $q['label'];
+        echo  '<li>' . $q['label'] . help_tooltip($q);
         if ($q['remarquable']) {
           echo ' <span class="coche-remarquable active"> &starf;</span>';
         }

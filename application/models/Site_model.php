@@ -72,6 +72,7 @@ class Site_model extends Entite_abstract_model {
       qcm_site.id As siteqcm_id_qcm,
       qcm_site.question As siteqcm_question,
       qcm_site.label As siteqcm_label,
+      qcm_site.description As siteqcm_description,
       qcm_site.rubrique As siteqcm_rubrique,
       eg.id AS eg_id,
       eg.intitule as eg_nom, eg_qcm.info_complement AS egqcm_complement, eg_qcm.remarquable AS egqcm_remarquable,
@@ -83,6 +84,7 @@ class Site_model extends Entite_abstract_model {
       qcm_eg.id As egqcm_id_qcm,
       qcm_eg.question As egqcm_question,
       qcm_eg.label As egqcm_label,
+      qcm_eg.description As egqcm_description,
       qcm_eg.rubrique As egqcm_rubrique,
       echelle_geol.label AS eg_age_roches,
       affleurement.nom AS affleurement_nom,
@@ -102,7 +104,7 @@ class Site_model extends Entite_abstract_model {
         st_asGeoJson(affleurement.geom) AS affleurement_geom');
     }
     $this->db->join('site_qcm', 'site.id=site_qcm.site_id', 'left')
-      ->join('qcm AS qcm_site', 'qcm_site.id = site_qcm.id')
+      ->join('qcm AS qcm_site', 'qcm_site.id = site_qcm.qcm_id')
       ->join('entite_geol AS eg', 'eg.site_id=site.id', 'left')
       ->join('entite_geol_qcm AS eg_qcm', 'eg.id=eg_qcm.entite_geol_id', 'left')
       ->join('qcm AS qcm_eg', 'eg_qcm.qcm_id = qcm_eg.id')
@@ -119,7 +121,8 @@ class Site_model extends Entite_abstract_model {
         if ($with_geom) $data['geom'] = $li->site_geom;
       }
       if (!isset($data['qcms'][$li->siteqcm_question][$li->siteqcm_id_qcm]) && !is_null($li->siteqcm_question)) {
-        $data['qcms'][$li->siteqcm_question][$li->siteqcm_id_qcm] = ['id'=>$li->siteqcm_id_qcm, 'label'=>$li->siteqcm_label, 'rubrique'=>$li->siteqcm_rubrique,
+        $data['qcms'][$li->siteqcm_question][$li->siteqcm_id_qcm] = ['id'=>$li->siteqcm_id_qcm, 'label'=>$li->siteqcm_label,
+        'description'=>$li->siteqcm_description, 'rubrique'=>$li->siteqcm_rubrique,
         'remarquable'=>$li->siteqcm_remarquable, 'historique'=>$li->siteqcm_interet_historique, 'scientifique'=>$li->siteqcm_interet_scientifique,
         'pedagogique'=>$li->siteqcm_interet_pedagogique, 'esthetique'=>$li->siteqcm_interet_esthetique];
       }
@@ -128,7 +131,8 @@ class Site_model extends Entite_abstract_model {
         if ($with_geom) $data['egs'][$li->eg_id]['geom'] = $li->eg_geom;
       }
       if (!isset($data['egs'][$li->eg_id]['qcms'][$li->egqcm_question][$li->egqcm_id_qcm]) && !is_null($li->egqcm_question)) {
-        $data['egs'][$li->eg_id]['qcms'][$li->egqcm_question][$li->egqcm_id_qcm] = ['id'=>$li->egqcm_id_qcm, 'label'=>$li->egqcm_label, 'rubrique'=>$li->egqcm_rubrique,
+        $data['egs'][$li->eg_id]['qcms'][$li->egqcm_question][$li->egqcm_id_qcm] = ['id'=>$li->egqcm_id_qcm, 'label'=>$li->egqcm_label,
+        'description'=>$li->egqcm_description, 'rubrique'=>$li->egqcm_rubrique,
         'remarquable'=>$li->egqcm_remarquable, 'historique'=>$li->egqcm_interet_historique, 'scientifique'=>$li->egqcm_interet_scientifique,
         'pedagogique'=>$li->egqcm_interet_pedagogique, 'esthetique'=>$li->egqcm_interet_esthetique];
       }
