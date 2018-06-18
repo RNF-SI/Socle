@@ -74,14 +74,26 @@ li.qcm-patrimonial {
   font-weight: bold;
 }
 
+.remarquable-control, .remarquable-edit {
+  display: none;
+}
+
+.remarquable-control.checked {
+  display: inline;
+}
+
 .coche-remarquable {
   color: #afafaf;
   text-decoration: none;
   font-weight: bold;
 }
 
-.coche-remarquable.active {
+.remarquable-control.remarquable .coche-remarquable, .coche-remarquable.active {
   color: #ffc700;
+}
+
+.remarquable-control.remarquable .remarquable-edit {
+  display: inline;
 }
 
 #tdm li {

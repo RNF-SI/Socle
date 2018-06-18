@@ -63,10 +63,14 @@ function qcm_caracteristiques($choices) {
         <input type="checkbox" name="caracteristiques[]" value="'. $choice->id . '"';
     if ($choice->checked)
       $li .= ' checked';
-    $li .= '>' . $choice->label . help_tooltip($choice) . '</label> <span class="remarquable-control'
-      . ($choice->checked ? '' : ' hidden') . '"><a href="#" class="coche-remarquable'
-      .($choice->remarquable == 't' ? ' active': '') .'" title="Signaler cet élément comme remarquable">&starf;</a>
-      <a href="#" class="remarquable-edit"><span class="glyphicon glyphicon-edit"> </span></a></span></div>';
+    $li .= '>' . $choice->label . help_tooltip($choice) . '</label> <span class="remarquable-control';
+    if ($choice->checked)
+      $li .= ' checked';
+    if ($choice->remarquable)
+      $li .= ' remarquable';
+    $li .= '"><a href="#" class="coche-remarquable" title="Signaler cet élément comme remarquable">&starf;</a>
+      <a href="#" class="remarquable-edit" title="Critères de remarquabilité"><span class="glyphicon glyphicon-edit">
+      </span></a></span></div>';
 
 
     foreach ($hidden_fields as $hf => $type) {

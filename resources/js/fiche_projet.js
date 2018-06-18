@@ -70,12 +70,14 @@ $(function() {
     .on("show.bs.collapse", load_content)
     .on("change", "input[name='caracteristiques[]']", function(evt) {
     // affichage options remarquable
-    var id = $(this).val();
-    $(this).parents('.choix-container').find('.remarquable-control').toggleClass('hidden');
+      var $chkbox = $(this);
+      var id = $chkbox.val();
+      $chkbox.parents('.choix-container').find('.remarquable-control')
+        .toggleClass('checked', $chkbox.is(':checked'));
   }).on('click', '.coche-remarquable', function() {
     var $star = $(this);
-    $star.toggleClass('active');
-    if ($star.hasClass('active')) {
+    $star.parents('.remarquable-control').toggleClass('remarquable');
+    if ($star.parents('.remarquable-control').hasClass('remarquable')) {
       var id = $star.parents('.choix-container').find("input[name='caracteristiques[]']").val();
       $star.parents('.choix-container').find("input[name='remarquable[]']").val(id);
     } else {
@@ -126,6 +128,7 @@ $(function() {
         $cont.remove();
       });
     }
+    return false;
   });
 
   // TODO : doit-on supprimer le contenu quand ça collapse ?
