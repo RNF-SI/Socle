@@ -62,4 +62,13 @@ class Photo_model extends Entite_abstract_model {
     return TRUE;
   }
 
+  public function is_editable($id, $type) {
+    if ($type == 'Site') {
+      $this->load->model('site_model', 'id_model');
+    } elseif ($type == 'EG') {
+      $this->load->model('entite_geol_model', 'id_model');
+    }
+    return $this->id_model->is_editable($id);
+  }
+
 }

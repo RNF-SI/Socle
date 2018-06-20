@@ -177,6 +177,7 @@ class Site_model extends Entite_abstract_model {
 
 
   public function is_editable($id) {
+    if (!$this->auth->logged_in()) return FALSE;
     $query = $this->db
       ->select('espace_protege.group_id')
       ->join('espace_protege', 'ep_id=espace_protege.id')

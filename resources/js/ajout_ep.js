@@ -1,14 +1,5 @@
 $(function() {
-/*  $.get(site_url('carto/getINPNWFSLayers'), function(res) {
-    $('#type_ep').empty();
-    $.each(res, function(i, lyr) {
-      var opt = $('<option>').attr('value', lyr.name).text(lyr.title);
-      if (lyr.name == 'Reserves_naturelles_nationales') {
-        opt.attr('selected', 'selected');
-      }
-      $('#type_ep').append(opt);
-    });
-  }) */
+  var map = base_map('map', id_ep);
 
   var search = /^FR\d{7}$/;
   $("#code_national_ep").on('keyup change', function() {

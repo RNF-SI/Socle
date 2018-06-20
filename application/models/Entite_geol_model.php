@@ -62,4 +62,10 @@ class Entite_geol_model extends Entite_abstract_model {
     return $struct;
   }
 
+  public function is_editable($id) {
+    $this->load->model('site_model');
+    $id_site = $this->get($id)->site_id;
+    return $this->site_model->is_editable($id_site);
+  }
+
 }

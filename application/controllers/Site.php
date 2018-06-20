@@ -185,7 +185,7 @@ class Site extends CI_Controller {
     $this->load->library('image_lib');
 
     $data['photos'] = $type == 'Site' ? $this->photo_model->getBySite($id) : $this->photo_model->getByEG($id);
-    $data['editable'] = $this->site_model->is_editable($id);
+    $data['editable'] = $this->photo_model->is_editable($id, $type);
     $view = $type == 'Site' ? 'points_de_vue' : 'photos_eg';
     $this->output->set_output($this->load->view('fiche_site/rubriques/' . $view, $data, TRUE));
   }

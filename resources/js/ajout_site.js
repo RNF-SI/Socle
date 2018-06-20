@@ -1,12 +1,15 @@
 $(function() {
   var map = base_map('map', id_ep);
-  map.pm.addControls({
-    drawRectangle: true,
-    drawPolygon: true,
-    drawMarker: false,
-    drawPolyline: false,
-    cutPolygon: false
-  });
+  if (geom_editable) {
+    map.pm.addControls({
+      drawRectangle: true,
+      drawPolygon: true,
+      drawMarker: false,
+      drawPolyline: false,
+      drawCircle: false,
+      cutPolygon: false
+    });
+  }
 
   var updateGeomTxt = function(lyr) {
     $('#geom').text(JSON.stringify(lyr.toGeoJSON()));
