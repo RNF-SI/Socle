@@ -17,6 +17,7 @@ class Carto extends CI_Controller {
     ];
 
     foreach ($features as $ft) {
+        $ft = (array) $ft;
         $geom = is_array($ft['geom']) ? $ft['geom'] : json_decode($ft['geom']);
         $ftJson = [
           'type' => 'Feature',
@@ -76,7 +77,16 @@ class Carto extends CI_Controller {
       case 'site':
         $this->site_geom($id);
         break;
+      case 'affleurement':
+        $this->affleurement_geom($id);
+        break;
     }
+  }
+
+  public function affleurements_by_eg($eg_id) {
+    $this->load->model('affleurement_model', 'affl_model');
+    $res = $this->affl_model->getByEG($eg_id);
+    $this->output->set_output($this->_create_geoJson($res));
   }
 
   private function getServiceXML($base_url, $params) {

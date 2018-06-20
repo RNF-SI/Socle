@@ -26,12 +26,18 @@ class Entite_abstract_model extends CI_Model {
   }
 
 
+  protected function log_debug($data) {
+    log_message('DEBUG', print_r($data, TRUE));
+  }
+
+
   private function _processGeometry($g) {
     // reconnait les formats textuels de géométrie et retourne la chaine à rentrer
     if (is_null($g) || $g === '') {
       $this->db->set('geom', NULL);
       return;
     }
+    $g = html_entity_decode($g);
     if (preg_match('/^[A-Z]+\(/', $g) == 1) { // WKT
       $func = 'st_geomFromText';
       $s = $g;
@@ -61,6 +67,16 @@ class Entite_abstract_model extends CI_Model {
     return $this->entity;
   }
 
+  // retourne toutes les entités d'une entité parente
+  protected function getByParent($pid, $linkColName) {
+    $this->db->select($this->tableName . '.*');
+    if ($this->has_geometry) {
+      $this->db->select('st_asGeoJson(geom) as geom');
+    }
+    $query = $this->db->get_where($this->tableName, array($linkColName => $pid));
+    return $query->result();
+  }
+
   public function getAll() {
     $this->db->select('*');
     if ($this->has_geometry) {
@@ -82,7 +98,6 @@ class Entite_abstract_model extends CI_Model {
 
   // ajout d'une entité
   public function add($data) {
-    log_message('debug', print_r($data, TRUE));
     if (isset($data['geom'])) {
       $this->_processGeometry($data['geom']);
       unset($data['geom']);

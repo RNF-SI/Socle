@@ -40,7 +40,7 @@ function form_select($name, $label, $options, $value = NULL) {
   foreach ($options as $key => $val) {
     $txt .= '<option value="' . $key . '"';
     if ($key == $value)
-      $txt .= ' checked';
+      $txt .= ' selected';
     $txt .= '>' . $val . '</option>';
   }
   $txt .= '<select></div></div>';
