@@ -15,8 +15,18 @@ header .subtitle {
   color: #ca7b3e;
 }
 
+#logo {
+  width: 125px;
+  position:fixed;
+  height: 100%;
+}
+
 .block-title {
   margin-bottom: 10px;
+}
+
+#cont-title-nav {
+  padding-left: 150px;
 }
 
 #footer {

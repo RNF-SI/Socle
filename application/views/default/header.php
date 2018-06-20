@@ -31,15 +31,15 @@
     </head>
     <body>
         <header>
-          <div class="row">
-            <div class="col-sm-1" id="logo">
+          <div>
+            <div id="logo">
               <img src="<?= base_url('resources/images/logo1.png') ?>" />
             </div>
-            <div class="col-sm-11">
+            <div id="cont-title-nav" class="col-md-12">
               <div class="block-title">
-              <h1>SOCLE</h1>
-              <span class="subtitle">Regards sur la géodiversité des espaces naturels</span>
-            </div>
+                <h1>SOCLE</h1>
+                <span class="subtitle">Regards sur la géodiversité des espaces naturels</span>
+              </div>
               <nav class="navbar navbar-default">
                <div class="container-fluid">
                  <ul class="nav navbar-nav">
@@ -82,20 +82,24 @@
               </div>
             </div>
           </div>
-          <div class="breadcrumb" id="navigation">
-            <a href="<?= site_url() ?>">Accueil</a>
-            <?php
-            if (isset($path)) {
-              for ($i=0; $i<count($path); $i++) {
-                echo ' > ';
-                if ($i+1 == count($path)) {
-                  echo $path[$i]['title'];
-                } else {
-                  echo '<a href="'. site_url($path[$i]['path']) . '">' .$path[$i]['title'] . '</a>';
+          <div class="row">
+            <div class="col-md-12">
+              <div class="breadcrumb" id="navigation">
+                <a href="<?= site_url() ?>">Accueil</a>
+                <?php
+                if (isset($path)) {
+                  for ($i=0; $i<count($path); $i++) {
+                    echo ' > ';
+                    if ($i+1 == count($path)) {
+                      echo $path[$i]['title'];
+                    } else {
+                      echo '<a href="'. site_url($path[$i]['path']) . '">' .$path[$i]['title'] . '</a>';
+                    }
+                  }
                 }
-              }
-            }
-            ?>
+                ?>
+              </div>
+            </div>
           </div>
           <div id="messages-global">
             <?php // gestion des messages
