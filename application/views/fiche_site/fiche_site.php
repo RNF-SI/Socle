@@ -80,7 +80,7 @@
 <div id="page-content" class="container-fluid col-sm-10">
     <div id="entete">
       <h1><?= $site->nom ?></h1>
-    </div>
+    </div><!--
     <?php if ($site->statut_validation == 'attente' || $site->statut_validation == 'validation'): ?>
       <div class="alert alert-warning"><strong>Attention</strong><br />
         <p>Cet espace est
@@ -90,7 +90,7 @@
         }
         ?>
       </div>
-    <?php endif; ?>
+    <?php endif; ?> -->
 <div class="last_modified">Modifié le <?= date('d/m/Y', strtotime($site->last_modified)) ?>
   par <?= $this->auth->user($site->modified_by_userid)->row()->username ?>.</div>
 <p>

@@ -187,8 +187,11 @@ class Site_model extends Entite_abstract_model {
   }
 
   public function change_status($id_site, $status) {
+    if (!$this->is_editable($id_site))
+      return FALSE;
     $this->db->where('id', $id_site)
       ->update('espace_protege', array('statut_validation' => $status));
+    return TRUE;
   }
 
 

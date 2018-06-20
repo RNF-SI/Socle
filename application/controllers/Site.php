@@ -180,6 +180,17 @@ class Site extends CI_Controller {
     return $this->creation($id_ep, $id);
   }
 
+  // passe le site à l'état publié (ajax)
+  public function publication($id) {
+    $rep = ['success'=>TRUE];
+    $res = $this->site_model->change_status($id, 'validé');
+    if (!$res) {
+      $rep['success'] = FALSE;
+      $rep['message'] = 'Vous ne disposez pas de droits pour effectuer cette opération';
+    }
+    $this->output->set_content_type('application/json')->set_output(json_encode($rep));
+  }
+
   public function rubrique_points_de_vue($id, $type) {
     $this->load->model('photo_model');
     $this->load->library('image_lib');
