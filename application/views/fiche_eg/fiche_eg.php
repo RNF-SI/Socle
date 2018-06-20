@@ -21,10 +21,8 @@
 </strong></p>
 <div class="last_modified">Modifié le <?= date('d/m/Y', strtotime($eg->last_modified)) ?>
   par <?= $this->auth->user($eg->modified_by_userid)->row()->username ?>.</div>
-<div class="row">
-  <div id="map"></div>
-</div>
-<div class="row">
+<div id="map"></div>
+<div>
     <h3>Identification sur la carte géologique</h3>
     <p>code <?= $eg->code ?> : <?= $eg->intitule ?></p>
     <p>Âge des roches : <?= $eg->ere_geol_label ?></p>
@@ -36,15 +34,17 @@
     'id_rubrique' => 'points_de_vue'
   ]);
   ?>
-<h3>Affleurements</h3>
+<h3>Objets remarquables : Affleurements, points de vue...</h3>
+<h4>Affleurements</h4>
 <p><?= $eg->quantite_affleurements ?><br />
   <?= $eg->affleurements_accessibles ? 'Affleurements accessibles' : 'Affleurements inaccessibles' ?>
 </p>
 <div>
-  <h4>Affleurements identifiés :</h4>
+  <h4>Objets identifiés :</h4>
   <table class="table">
   <?php foreach ($eg->affleurements as $affl): ?>
     <tr><td><?= $affl->nom ?></td>
+      <td><?= $affl->type ?></td>
       <td><?php if ($editable): ?>
         <a href="<?= site_url('site/modification_affleurement/' . $affl->id . '/' . $eg->id) ?>" title="modifier"><span class="glyphicon glyphicon-edit"> </span></a>
       <?php endif; ?></td></tr>

@@ -21,6 +21,8 @@
   </div>
 
   <h3>Âge des roches</h3>
+  <p>En cliquant sur un âge, vous déroulez les subdivisions. Renseignez l'âge le
+    plus précisément possible.</p>
   <ol id="echelle_geol" data-name="ere_geol_id" data-value="<?= set_value_obj('id_ere_geol',  $eg) ?>">
   <?php
   // structure arborescente de l'échelle géologique
