@@ -96,6 +96,11 @@
 <p>
   <a href="<?= site_url('site/resume/' . $site->id) ?>">Accès à la fiche synthétique</a>
 </p>
+<?php if ($editable): ?>
+  <div>
+    <a href="<?=site_url('site/creation/' . $site->ep_id . '/' . $site->id) ?>" class="btn btn-default">Modifier le site</a>
+  </div>
+<?php endif; ?>
 <div id="rubriques" class="panel-group">
   <h2>Q-1 / Approche géographique du territoire</h2>
   <div class="explication">

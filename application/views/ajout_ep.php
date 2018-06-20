@@ -21,3 +21,6 @@
 <div id="map"></div>
 
 <script src="<?= base_url('resources/js/ajout_ep.js') ?>"></script>
+<script>
+  var id_ep = <?= isset($ep) ? $ep->id : 'null' ?>;
+</script>

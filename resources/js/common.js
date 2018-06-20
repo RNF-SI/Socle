@@ -7,7 +7,7 @@ function site_url(path) {
 function addVectorLayer(map, url, options, callback) {
   $.get(site_url(url), function(data) {
     if (options === undefined) {
-      var options = {
+      options = {
         color: 'green',
         weight: 2,
         fill: false
@@ -59,7 +59,8 @@ function base_map(id_map, id_ep, baseLayerToDisplay="Carte géologique") {
       var options = {
         color: 'green',
         weight: 2,
-        fill: false
+        fill: false,
+        pmIgnore: true
       }
       addVectorLayer(mainMap, 'carto/espace_protege_geom/' + id_ep, options, function(lyr) {
         lyr.eachLayer(function(slyr) {

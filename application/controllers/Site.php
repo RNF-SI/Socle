@@ -228,7 +228,8 @@ class Site extends CI_Controller {
       }
     }
 
-    $this->rubrique_content($id, $type == 'Site' ? 'points_de_vue' : 'photos_eg');
+    $this->output->set_content_type('application/json')
+      ->set_output(json_encode(array('success' => TRUE)));
   }
 
 
