@@ -166,6 +166,13 @@ img.photo-gallerie {
   margin-bottom: 5px;
 }
 
+.rubrique-description {
+  background-color: #fff0bc;
+  padding: 5px;
+  text-indent: 1.5em;
+  margin-bottom: 10px;
+}
+
 .description-tooltip {
   color: #673ab7;
   font-size: 90%;
