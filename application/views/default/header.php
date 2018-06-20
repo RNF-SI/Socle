@@ -5,7 +5,7 @@
         <title>SOCLE <?= isset($title) ? ' - '.$title : '' ?></title>
         <link rel="icon" type="image/x-icon" href="<?= base_url('resources/images/icone_RNF.png') ?>" />
 
-        <link rel="stylesheet" href="<?= base_url('resources/lib/bootstrap/css/bootstrap.min.css') ?>" />
+        <link rel="stylesheet" href="<?= base_url('resources/lib/bootstrap/css/bootstrap-cerulean.min.css') ?>" />
         <link rel="stylesheet" href="<?= base_url('resources/lib/leaflet/leaflet.css') ?>" />
         <link rel="stylesheet" href="<?= base_url('resources/lib/leaflet/easy-button.css') ?>" />
    <?php
