@@ -14,8 +14,8 @@ $(function() {
   });
 
   map.on('click', function(evt) {
-    var json = ptlyr.toGeoJSON();
     ptlyr.setLatLng(evt.latlng);
+    var json = ptlyr.toGeoJSON();
     $("input[name=geom]").val(JSON.stringify(json.geometry));
   });
 

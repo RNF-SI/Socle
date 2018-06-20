@@ -74,10 +74,10 @@ function qcm_caracteristiques($choices) {
     $li .= '"><a href="#" class="coche-remarquable" title="Signaler cet élément comme remarquable">&starf;</a>
       <a href="#" class="remarquable-edit" title="Critères de remarquabilité"><span class="glyphicon glyphicon-edit">
       </span></a></span></div>';
-
+      
     foreach ($hidden_fields as $hf => $type) {
       $input = '<input type="hidden" id="'. $hf . '-' . $choice->id . '" name="' . $hf . '[]" ';
-      if ($hf == 'remarquable' && $choice->$hf) {
+      if ($choice->remarquable && $choice->$hf) {
         $input .= 'value ="' . $choice->id . '"';
       } elseif ($type == 't') {
         //print_r($choice);

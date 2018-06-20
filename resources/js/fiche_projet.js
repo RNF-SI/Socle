@@ -1,5 +1,7 @@
 // fonctions de chargement des composants RubriquesController
 
+// TODO : empecher la fermeture du volet si des infos ont été saisies
+
 function load_content(evt) {
   // contenu rubrique
   var $rubrique = $(evt.target).parents(".rubrique");
@@ -88,39 +90,38 @@ $(function() {
   }).on('click', '.remarquable-edit', function() {
     // affichage du sous-formulaire remarquable
     var $cont = $(this).parents('.choix-container');
-    var $mymodal = $cont.find('.remarquable-dialog');
-    if ($mymodal.length == 0) {
-      var checkbox = function(name, label) {
-        var val = $cont.find("input[name='" + name + "[]']").val();
-        return '<label><input type="checkbox" data-name="' + name + '" ' + (val ? 'checked' : '') + ' />' + label + '</label></br />';
-      };
-      var modal = '<div class="modal remarquable-dialog" role="dialog"><div class="modal-dialog"><div class="modal-content">'
-        + '<div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4>Elément remarquable : informations complémentaires</h4></div>'
-        + '<div class="modal-body"><form class="form-horizontal">'
-        + '<p>Cet élément est intéressant d\'un point de vue :</p>'
-        + checkbox('interet_scientifique', 'scientifique')
-        + checkbox('interet_pedagogique', 'pédagogique')
-        + checkbox('interet_esthetique', 'esthétique')
-        + checkbox('interet_historique', 'historique/culturel')
-        + '<label>Commentaires :</label><textarea name="remarquable_info">' + $cont.find("input[name='remarquable_info[]']").val()
-        + '</textarea>'
-        + '</form></div><div class="modal-footer"><button type="button" id="button-ok" class="btn btn-default" data-dismiss="modal">OK</button></div>'
-        + '</div></div></div>';
-      $mymodal = $(modal).appendTo($cont);
-      $mymodal.find('#button-ok').click(function() {
-        var id = $cont.find("input[name='caracteristiques[]']").val();
-        $mymodal.find('input').each(function(i, elt) {
-          var name = $(elt).data('name');
-          var $hiddenField = $cont.find("input[name='" + name + "[]']");
-          if ($(elt).is(':checked')) {
-            $hiddenField.val(id);
-          } else {
-            $hiddenField.removeAttr('value');
-          }
-        });
-        $cont.find("input[name='remarquable_info[]']").val($mymodal.find("[name='remarquable_info']").val());
-      })
-    }
+    var checkbox = function(name, label) {
+      var val = $cont.find("input[name='" + name + "[]']").val();
+      return '<label><input type="checkbox" data-name="' + name + '" ' + (val ? 'checked' : '') + ' />' + label + '</label></br />';
+    };
+    var modal = '<div class="modal remarquable-dialog" role="dialog"><div class="modal-dialog"><div class="modal-content">'
+      + '<div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4>Elément remarquable : informations complémentaires</h4></div>'
+      + '<div class="modal-body"><form class="form-horizontal">'
+      + '<p>Cet élément est intéressant d\'un point de vue :</p>'
+      + checkbox('interet_scientifique', 'scientifique')
+      + checkbox('interet_pedagogique', 'pédagogique')
+      + checkbox('interet_esthetique', 'esthétique')
+      + checkbox('interet_historique', 'historique/culturel')
+      + '<label>Commentaires :</label><textarea name="remarquable_info">' + $cont.find("input[name='remarquable_info[]']").val()
+      + '</textarea>'
+      + '</form></div><div class="modal-footer"><button type="button" id="button-ok" class="btn btn-default" data-dismiss="modal">OK</button></div>'
+      + '</div></div></div>';
+    var $mymodal = $(modal).appendTo($cont);
+
+    $mymodal.find('#button-ok').click(function() {
+      var id = $cont.find("input[name='caracteristiques[]']").val();
+      $mymodal.find('input').each(function(i, elt) {
+        var name = $(elt).data('name');
+        var $hiddenField = $cont.find("input[name='" + name + "[]']");
+        if ($(elt).is(':checked')) {
+          $hiddenField.val(id);
+        } else {
+          $hiddenField.removeAttr('value');
+        }
+      });
+      $cont.find("input[name='remarquable_info[]']").val($mymodal.find("[name='remarquable_info']").val());
+      //$mymodal.remove();
+    })
     $mymodal.modal();
     return false;
   }).on('click', '.photo-remove-button', function() {
