@@ -35,4 +35,10 @@ class Accueil extends CI_Controller {
 		$this->load->view('default/aide');
 		$this->load->view('default/footer');
 	}
+
+	public function liens() {
+		$this->load->view('default/header');
+		$this->load->view('default/liens');
+		$this->load->view('default/footer');
+	}
 }

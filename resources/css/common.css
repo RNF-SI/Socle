@@ -203,3 +203,7 @@ img.photo-gallerie {
   margin: 10px;
   border: 1px solid gray;
 }
+
+table#table-liens img {
+  max-height: 50px;
+}

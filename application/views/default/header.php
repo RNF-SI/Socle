@@ -46,6 +46,7 @@
                    <li class="active"><a href="<?= site_url() ?>">Accueil</a></li>
                    <li><a href="<?= site_url('espace/liste_espaces') ?>">Explorer</a></li>
                    <li><a href="<?= site_url('accueil/aide') ?>">Aide</a></li>
+                   <li><a href="<?= site_url('accueil/liens') ?>">Liens</a></li>
                  </ul>
                  <ul class="nav navbar-nav navbar-right">
                    <?php
