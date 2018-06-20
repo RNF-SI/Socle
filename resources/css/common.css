@@ -15,6 +15,10 @@ header .subtitle {
   color: #ca7b3e;
 }
 
+.block-title {
+  margin-bottom: 10px;
+}
+
 #footer {
   text-align: center;
   font-size: 95%;

@@ -32,32 +32,39 @@
     <body>
         <header>
           <div class="row">
-            <div class="col-sm-2" id="logo">
+            <div class="col-sm-1" id="logo">
               <img src="<?= base_url('resources/images/logo1.png') ?>" />
             </div>
-            <div class="col-sm-8"><h1>SOCLE</h1>
+            <div class="col-sm-11">
+              <div class="block-title">
+              <h1>SOCLE</h1>
               <span class="subtitle">Regards sur la géodiversité des espaces naturels</span>
             </div>
-            <div class="col-sm-2">
-              <div id="user-info">
-                <?php
-                $user = $this->auth->user()->row();
-                if (is_null($user)): ?>
-                <a href="#" id="login-link">S'identifier</a> -
-                <a href="<?= site_url('utilisateurs/subscribe') ?>">S'inscrire</a>
-                <?php else: ?>
-                  connecté en tant que <a href="<?= site_url('utilisateurs/utilisateur/' . $user->id ) ?>">
-                    <?= $user->username ?></a> / <a href="#" id="logout-link">déconnecter</a>
-                <?php endif;
-                  if ($this->auth->is_admin()):
-                ?>
-                <a href="<?= site_url('utilisateurs/gestion') ?>">Gestion des utilisateurs</a>
-              <?php endif; ?>
-
-              </div>
+              <nav class="navbar navbar-default">
+               <div class="container-fluid">
+                 <ul class="nav navbar-nav">
+                   <li class="active"><a href="<?= site_url() ?>">Accueil</a></li>
+                   <li><a href="<?= site_url('espace/liste_espaces') ?>">Explorer</a></li>
+                   <li><a href="<?= site_url('accueil/aide') ?>">Aide</a></li>
+                 </ul>
+                 <ul class="nav navbar-nav navbar-right">
+                   <?php
+                   $user = $this->auth->user()->row();
+                   if (is_null($user)): ?>
+                     <li><a href="<?= site_url('utilisateurs/subscribe') ?>"><span class="glyphicon glyphicon-user"></span> S'inscrire</a></li>
+                     <li><a href="#" id="login-link"><span class="glyphicon glyphicon-log-in"></span> Se connecter</a></li>
+                   <?php else: ?>
+                     <li><a href="<?= site_url('utilisateurs/utilisateur/' . $user->id ) ?>"><span class="glyphicon glyphicon-user"></span> <?=$user->username ?></a></li>
+                     <li><a href="#" id="logout-link"><span class="glyphicon glyphicon-log-out"></span> Se déconnecter</a></li>
+                   <?php endif;
+                   if ($this->auth->is_admin()): ?>
+                    <li><a href="<?= site_url('utilisateurs/gestion') ?>"><span class="glyphicon glyphicon-user"></span> Utilisateurs</a></li>
+                  <?php endif; ?>
+                 </ul>
+               </div>
+             </nav>
             </div>
           </div>
-
         </header>
         <div class="container-fluid">
 
