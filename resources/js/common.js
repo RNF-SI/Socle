@@ -27,6 +27,20 @@ function base_map(id_map, id_ep, baseLayerToDisplay="Carte géologique") {
 
   var baseLayers = {};
 
+  baseLayers['Photos aériennes'] = L.tileLayer("http://wxs.ign.fr/qi0jtcvtmn01lkt0621p5yci/geoportail/wmts?" +
+        "REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0" +
+        "&STYLE=normal" +
+        "&TILEMATRIXSET=PM" +
+        "&FORMAT=image/jpeg"+
+        "&LAYER=ORTHOIMAGERY.ORTHOPHOTOS" +
+	       "&TILEMATRIX={z}" +
+        "&TILEROW={y}" +
+        "&TILECOL={x}", {
+      attribution: 'IGN-F/Geoportail',
+      maxZoom: 18,
+      tileSize: 256
+  });
+
   var ignLayer = L.tileLayer("http://wxs.ign.fr/qi0jtcvtmn01lkt0621p5yci/geoportail/wmts?" +
         "REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0" +
         "&STYLE=normal" +
@@ -40,7 +54,7 @@ function base_map(id_map, id_ep, baseLayerToDisplay="Carte géologique") {
       maxZoom: 18,
       tileSize: 256
   });
-  baseLayers['IGN'] = ignLayer;
+  baseLayers['IGN topo'] = ignLayer;
 
   var wmsGeolLayer = L.tileLayer.wms("http://geoservices.brgm.fr/geologie", {
     layers: "GEOLOGIE",
