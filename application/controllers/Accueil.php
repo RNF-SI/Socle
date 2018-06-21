@@ -41,4 +41,10 @@ class Accueil extends CI_Controller {
 		$this->load->view('default/liens');
 		$this->load->view('default/footer');
 	}
+
+	public function mentions_legales() {
+		$this->load->view('default/header');
+		$this->load->view('default/legal');
+		$this->load->view('default/footer');
+	}
 }
