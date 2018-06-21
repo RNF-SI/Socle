@@ -17,7 +17,7 @@ header .subtitle {
 
 #logo {
   width: 125px;
-  position:fixed;
+  position: absolute;
   height: 100%;
 }
 
