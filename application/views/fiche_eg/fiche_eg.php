@@ -45,6 +45,7 @@
   <?php foreach ($eg->affleurements as $affl): ?>
     <tr><td><?= $affl->nom ?></td>
       <td><?= $affl->type ?></td>
+      <td><?= $affl->description ?></td>
       <td><?php if ($editable): ?>
         <a href="<?= site_url('site/modification_affleurement/' . $affl->id . '/' . $eg->id) ?>" title="modifier"><span class="glyphicon glyphicon-edit"> </span></a>
       <?php endif; ?></td></tr>
