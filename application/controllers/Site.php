@@ -73,9 +73,8 @@ class Site extends CI_Controller {
     $data['commentaire'] = empty($comment) ? (object)array('commentaire' => '') : $comment;
 
     if ($rubrique == 'infos_preliminaires') {
-      $data['site']->feuilles_cartes = $this->espace_protege_model->getFeuillesCartes($id);
+      $data['site']->feuilles_cartes = $this->site_model->getFeuillesCartes($id);
     }
-
 
     $this->output->set_output($this->load->view('fiche_site/rubriques/' . $rubrique . '.php', $data, TRUE));
   }

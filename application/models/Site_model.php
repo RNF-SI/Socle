@@ -36,9 +36,8 @@ class Site_model extends Entite_abstract_model {
   public function getFeuillesCartes($id_site) {
     $query = $this->db
       ->select(['emprise_cartes_geol.numero', 'emprise_cartes_geol.nom'])
-      ->join('espace_protege_ref', 'espace_protege_ref.id_mnhn=espace_protege.code_national_ep')
-      ->join('emprise_cartes_geol', 'st_intersects(emprise_cartes_geol.geom, espace_protege_ref.geom)')
-      ->where('espace_protege.id', $id_site)
+      ->join('emprise_cartes_geol', 'st_intersects(emprise_cartes_geol.geom, site.geom)')
+      ->where('site.id', $id_site)
       ->get($this->tableName);
     return $query->result();
   }
@@ -113,7 +112,7 @@ class Site_model extends Entite_abstract_model {
       ->join('photo AS photo_site', 'site.id=photo_site.site_id', 'left')
       ->join('photo AS photo_eg', 'eg.id=photo_eg.eg_id', 'left');
     $query = $this->db->get_where('site', ['site.id'=>$id]);
-    
+
     $data = ['egs'=>[], 'qcms'=>[], 'photos'=>[]];
     foreach ($query->result() as $li) {
       if (!isset($data['nom'])) {
