@@ -11,6 +11,7 @@ function load_content(evt) {
   $.ajax(site_url("site/rubrique_content/" + entite_id + "/" + id_rubrique + '/' + type_rubrique), {
     success: function(data) {
       $container.html(data);
+      activate_popover($rubrique);
     },
     error: function(xhr, status) {
       $container.html('<p class="error">Erreur de chargement :' + status + '</p>');
@@ -62,6 +63,7 @@ function load_form(evt) {
   $.get(site_url("site/rubrique_form/" + entite_id + "/" + id_rubrique + '/' + type_rubrique), function(data) {
     var form = $(data);
     $rubrique.find(".rubrique-content").empty().append(form);
+    activate_popover($rubrique);
   });
 }
 

@@ -132,17 +132,32 @@ function base_map(id_map, id_ep, baseLayerToDisplay="Carte géologique") {
   return mainMap;
 }
 
+function activate_popover(parent) {
+  $(parent).find(".description-tooltip").popover({
+    title: "Définition",
+    html: true,
+    trigger: 'manual',
+    animation: false
+  }).on('mouseenter', function () {
+    var _this = this;
+    $(this).popover('show');
+    $('.popover').on('mouseleave', function () {
+        $(_this).popover('hide');
+    });
+  }).on('mouseleave', function () {
+      var _this = this;
+      setTimeout(function () {
+          if (!$('.popover:hover').length) {
+              $(_this).popover('hide');
+          }
+      }, 300);
+  });
+}
+
 
 $(function() {
   // tooltip
-  $(document).on({
-    mouseenter: function(evt) {
-      $(evt.target).children('.description-tooltip-content').show();
-    },
-    mouseout: function(evt) {
-      $(evt.target).children('.description-tooltip-content').hide();
-    }
-  }, '.description-tooltip');
+  activate_popover("body");
 
     // identification
     $("#login-link").click(function(e) {

@@ -7,9 +7,9 @@ function help_tooltip($choice) {
   if (empty($choice->description)) {
     return '';
   }
-  $s = '<span class="description-tooltip">?<div class="description-tooltip-content">';
-  $s .= '<p>'.$choice->description.'</p>';
-  $s .= '</div></span>';
+  $s = '<span class="description-tooltip" data-toggle="popover" data-content="';
+  $s .= '<p>'.htmlspecialchars($choice->description).'</p>';
+  $s .= '">?</span>';
   return $s;
 }
 
@@ -74,7 +74,7 @@ function qcm_caracteristiques($choices) {
     $li .= '"><a href="#" class="coche-remarquable" title="Signaler cet élément comme remarquable">&starf;</a>
       <a href="#" class="remarquable-edit" title="Critères de remarquabilité"><span class="glyphicon glyphicon-edit">
       </span></a></span></div>';
-      
+
     foreach ($hidden_fields as $hf => $type) {
       $input = '<input type="hidden" id="'. $hf . '-' . $choice->id . '" name="' . $hf . '[]" ';
       if ($choice->remarquable && $choice->$hf) {

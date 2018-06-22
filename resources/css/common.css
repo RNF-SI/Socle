@@ -19,6 +19,7 @@ header .subtitle {
   width: 125px;
   position: absolute;
   height: 100%;
+  z-index: 0;
 }
 
 .block-title {
@@ -27,6 +28,7 @@ header .subtitle {
 
 #cont-title-nav {
   padding-left: 150px;
+  z-index: 1;
 }
 
 #footer {
@@ -192,15 +194,6 @@ img.photo-gallerie {
   font-size: 90%;
   vertical-align: super;
   cursor: help;
-}
-
-.description-tooltip-content {
-  display: none;
-  border: 1px solid;
-  padding: 5px;
-  position: absolute;
-  z-index: 100;
-  background-color: white;
 }
 
 .last_modified {
