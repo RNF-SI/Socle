@@ -18,7 +18,6 @@ header .subtitle {
 #logo {
   width: 125px;
   position: absolute;
-  height: 100%;
   z-index: 0;
 }
 
