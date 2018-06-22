@@ -107,13 +107,13 @@ class Site_model extends Entite_abstract_model {
       ->join('qcm AS qcm_site', 'qcm_site.id = site_qcm.qcm_id')
       ->join('entite_geol AS eg', 'eg.site_id=site.id', 'left')
       ->join('entite_geol_qcm AS eg_qcm', 'eg.id=eg_qcm.entite_geol_id', 'left')
-      ->join('qcm AS qcm_eg', 'eg_qcm.qcm_id = qcm_eg.id')
+      ->join('qcm AS qcm_eg', 'eg_qcm.qcm_id = qcm_eg.id', 'left')
       ->join('echelle_geol', 'ere_geol_id=echelle_geol.id', 'left')
       ->join('affleurement', 'affleurement.eg_id=eg.id', 'left')
       ->join('photo AS photo_site', 'site.id=photo_site.site_id', 'left')
       ->join('photo AS photo_eg', 'eg.id=photo_eg.eg_id', 'left');
     $query = $this->db->get_where('site', ['site.id'=>$id]);
-
+    
     $data = ['egs'=>[], 'qcms'=>[], 'photos'=>[]];
     foreach ($query->result() as $li) {
       if (!isset($data['nom'])) {

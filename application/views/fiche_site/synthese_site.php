@@ -36,7 +36,6 @@ Fiche de synthèse
 </div>
 
 <h2>Approche géographique</h2>
-
 <h3>Contexte géographique général</h3>
 <?php
   reponses($elements['qcms'], 'Q1.1', 'Type de territoire');
