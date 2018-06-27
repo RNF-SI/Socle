@@ -62,7 +62,9 @@ class Site_model extends Entite_abstract_model {
   }
 
   public function getAllSubelements($id, $with_geom=FALSE) {
-    $this->db->select('site.nom as site_nom, site_qcm.info_complement AS siteqcm_complement, site_qcm.remarquable AS siteqcm_remarquable,
+    $this->db->select('site.nom as site_nom,
+      site_qcm.info_complement AS siteqcm_complement,
+      site_qcm.remarquable AS siteqcm_remarquable,
       site_qcm.interet_scientifique As siteqcm_interet_scientifique,
       site_qcm.interet_historique As siteqcm_interet_historique,
       site_qcm.interet_pedagogique As siteqcm_interet_pedagogique,
@@ -73,8 +75,10 @@ class Site_model extends Entite_abstract_model {
       qcm_site.label As siteqcm_label,
       qcm_site.description As siteqcm_description,
       qcm_site.rubrique As siteqcm_rubrique,
+      qcm_site.intitule_complement AS siteqcm_intitule_complement,
       eg.id AS eg_id,
-      eg.intitule as eg_nom, eg_qcm.info_complement AS egqcm_complement, eg_qcm.remarquable AS egqcm_remarquable,
+      eg.intitule as eg_nom, eg_qcm.info_complement AS egqcm_complement,
+      eg_qcm.remarquable AS egqcm_remarquable,
       eg_qcm.interet_scientifique As egqcm_interet_scientifique,
       eg_qcm.interet_historique As egqcm_interet_historique,
       eg_qcm.interet_pedagogique As egqcm_interet_pedagogique,
@@ -85,6 +89,7 @@ class Site_model extends Entite_abstract_model {
       qcm_eg.label As egqcm_label,
       qcm_eg.description As egqcm_description,
       qcm_eg.rubrique As egqcm_rubrique,
+      qcm_eg.intitule_complement AS egqcm_intitule_complement,
       echelle_geol.label AS eg_age_roches,
       affleurement.nom AS affleurement_nom,
       affleurement.id AS affleurement_id,
@@ -104,6 +109,8 @@ class Site_model extends Entite_abstract_model {
     }
     $this->db->join('site_qcm', 'site.id=site_qcm.site_id', 'left')
       ->join('qcm AS qcm_site', 'qcm_site.id = site_qcm.qcm_id')
+      ->join('complement_site', 'complement_site.site_id=site.id', 'left')
+      ->join('commentaire', 'commentaire.site_id=site.id', 'left')
       ->join('entite_geol AS eg', 'eg.site_id=site.id', 'left')
       ->join('entite_geol_qcm AS eg_qcm', 'eg.id=eg_qcm.entite_geol_id', 'left')
       ->join('qcm AS qcm_eg', 'eg_qcm.qcm_id = qcm_eg.id', 'left')
@@ -122,8 +129,9 @@ class Site_model extends Entite_abstract_model {
       if (!isset($data['qcms'][$li->siteqcm_question][$li->siteqcm_id_qcm]) && !is_null($li->siteqcm_question)) {
         $data['qcms'][$li->siteqcm_question][$li->siteqcm_id_qcm] = ['id'=>$li->siteqcm_id_qcm, 'label'=>$li->siteqcm_label,
         'description'=>$li->siteqcm_description, 'rubrique'=>$li->siteqcm_rubrique,
-        'remarquable'=>$li->siteqcm_remarquable, 'historique'=>$li->siteqcm_interet_historique, 'scientifique'=>$li->siteqcm_interet_scientifique,
-        'pedagogique'=>$li->siteqcm_interet_pedagogique, 'esthetique'=>$li->siteqcm_interet_esthetique, 'remarquable_info'=>$li->siteqcm_remarquable_info];
+        'info_complement' => $li->siteqcm_complement, 'intitule_complement' => $li->siteqcm_intitule_complement,
+        'remarquable'=>$li->siteqcm_remarquable, 'interet_historique'=>$li->siteqcm_interet_historique, 'interet_scientifique'=>$li->siteqcm_interet_scientifique,
+        'interet_pedagogique'=>$li->siteqcm_interet_pedagogique, 'interet_esthetique'=>$li->siteqcm_interet_esthetique, 'remarquable_info'=>$li->siteqcm_remarquable_info];
       }
       if (!isset($data['egs'][$li->eg_id]) && !is_null($li->eg_id)) {
         $data['egs'][$li->eg_id] = ['nom'=>$li->eg_nom, 'age_roches'=>$li->eg_age_roches, 'qcms'=>[], 'affleurements'=>[], 'photos'=>[]];
@@ -132,8 +140,9 @@ class Site_model extends Entite_abstract_model {
       if (!isset($data['egs'][$li->eg_id]['qcms'][$li->egqcm_question][$li->egqcm_id_qcm]) && !is_null($li->egqcm_question)) {
         $data['egs'][$li->eg_id]['qcms'][$li->egqcm_question][$li->egqcm_id_qcm] = ['id'=>$li->egqcm_id_qcm, 'label'=>$li->egqcm_label,
         'description'=>$li->egqcm_description, 'rubrique'=>$li->egqcm_rubrique,
-        'remarquable'=>$li->egqcm_remarquable, 'historique'=>$li->egqcm_interet_historique, 'scientifique'=>$li->egqcm_interet_scientifique,
-        'pedagogique'=>$li->egqcm_interet_pedagogique, 'esthetique'=>$li->egqcm_interet_esthetique, 'remarquable_info'=>$li->egqcm_remarquable_info];
+        'info_complement' => $li->egqcm_complement, 'intitule_complement' => $li->egqcm_intitule_complement,
+        'remarquable'=>$li->egqcm_remarquable, 'interet_historique'=>$li->egqcm_interet_historique, 'interet_scientifique'=>$li->egqcm_interet_scientifique,
+        'interet_pedagogique'=>$li->egqcm_interet_pedagogique, 'interet_esthetique'=>$li->egqcm_interet_esthetique, 'remarquable_info'=>$li->egqcm_remarquable_info];
       }
       if (!isset($data['egs'][$li->eg_id]['affleurements'][$li->affleurement_id]) && !is_null($li->affleurement_id)) {
         $data['egs'][$li->eg_id]['affleurements'][$li->affleurement_id] = ['nom' => $li->affleurement_nom, 'description'=>$li->affleurement_description];
