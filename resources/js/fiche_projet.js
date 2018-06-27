@@ -92,20 +92,21 @@ $(function() {
   }).on('click', '.remarquable-edit', function() {
     // affichage du sous-formulaire remarquable
     var $cont = $(this).parents('.choix-container');
-    var checkbox = function(name, label) {
+    var checkbox = function(name, label, icon) {
       var val = $cont.find("input[name='" + name + "[]']").val();
-      return '<label><input type="checkbox" data-name="' + name + '" ' + (val ? 'checked' : '') + ' />' + label + '</label></br />';
+      return '<div class="checkbox"><label><input type="checkbox" data-name="' + name + '" ' + (val ? 'checked' : '') + ' /> <span class="fas fa-'
+        + icon + '"> </span> ' + label + '</label></div>';
     };
     var modal = '<div class="modal remarquable-dialog" role="dialog"><div class="modal-dialog"><div class="modal-content">'
       + '<div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4>Elément remarquable : informations complémentaires</h4></div>'
       + '<div class="modal-body"><form class="form-horizontal">'
       + '<p>Cet élément est intéressant d\'un point de vue :</p>'
-      + checkbox('interet_scientifique', 'scientifique')
-      + checkbox('interet_pedagogique', 'pédagogique')
-      + checkbox('interet_esthetique', 'esthétique')
-      + checkbox('interet_historique', 'historique/culturel')
-      + '<label>Commentaires :</label><textarea name="remarquable_info">' + $cont.find("input[name='remarquable_info[]']").val()
-      + '</textarea>'
+      + checkbox('interet_scientifique', 'scientifique', 'flask')
+      + checkbox('interet_pedagogique', 'pédagogique', 'chalkboard-teacher')
+      + checkbox('interet_esthetique', 'esthétique', 'image')
+      + checkbox('interet_historique', 'historique/culturel', 'book')
+      + '<br /><div class="form-group"><label>Commentaires :</label><textarea name="remarquable_info" class="form-control">' + $cont.find("input[name='remarquable_info[]']").val()
+      + '</textarea></div>'
       + '</form></div><div class="modal-footer"><button type="button" id="button-ok" class="btn btn-default" data-dismiss="modal">OK</button></div>'
       + '</div></div></div>';
     var $mymodal = $(modal).appendTo($cont);

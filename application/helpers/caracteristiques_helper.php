@@ -14,17 +14,19 @@ function help_tooltip($choice) {
 }
 
 // permet de faire une liste de caractéristiques
-function liste_caracteristiques($list, $question) {
+function liste_caracteristiques($list, $question, $titre=NULL) {
+  if ($titre) echo "<h4>$titre&nbsp;:</h4>";
   if (! isset($list[$question]))
     return '<i>&lt;Aucun élément&gt;</i>';
   $txt = '<ul>';
   $interets = [
-    'interet_scientifique' => 'scientifique',
-    'interet_esthetique' => 'esthétique',
-    'interet_pedagogique' => 'pédagogique',
-    'interet_historique' => 'historique/culturel'
+    'interet_scientifique' => ['scientifique', 'flask'],
+    'interet_esthetique' => ['esthétique', 'image'],
+    'interet_pedagogique' => ['pédagogique', 'chalkboard-teacher'],
+    'interet_historique' => ['historique/culturel', 'book']
   ];
   foreach ($list[$question] as $car) {
+    if (is_array($car)) $car = (object) $car;
     $txt .= '<li>' . $car->label . help_tooltip($car);
 
     if ($car->remarquable == 't') {
@@ -32,13 +34,12 @@ function liste_caracteristiques($list, $question) {
       $item_interets = array();
       foreach ($interets as $key => $value) {
         if (isset($car->$key) && $car->$key == 't')
-          $item_interets[] = $value;
+          $item_interets[] = '<span class="fas fa-' . $value[1] .'" title="intérêt ' . $value[0] . '"> </span>';
       }
       if (count($item_interets) > 0 || $car->remarquable_info) {
-        $txt .= ' (intérêts identifiés : ' . implode(', ', $item_interets);
+        $txt .= ' ' . implode(' ', $item_interets);
         if ($car->remarquable_info)
-          $txt .= ' ; ' . $car->remarquable_info;
-       $txt .= ')';
+          $txt .= ' ' . $car->remarquable_info;
       }
     }
     $txt .=  ($car->info_complement ? ' (' . $car->intitule_complement . '&nbsp;: ' . $car->info_complement . ')' : '')

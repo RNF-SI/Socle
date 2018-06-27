@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="<?= base_url('resources/lib/bootstrap/css/bootstrap-cerulean.min.css') ?>" />
         <link rel="stylesheet" href="<?= base_url('resources/lib/leaflet/leaflet.css') ?>" />
         <link rel="stylesheet" href="<?= base_url('resources/lib/leaflet/easy-button.css') ?>" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
    <?php
        if (isset($styles)):
           foreach ($styles as $style): ?>
@@ -20,8 +21,7 @@
         <script src="<?= base_url('resources/lib/leaflet/leaflet.js') ?>"></script>
         <script src="<?= base_url('resources/lib/leaflet/easy-button.js') ?>"></script>
         <script>var base_url = '<?= base_url() ?>';</script>
-
-        <script src="<?php echo base_url("resources/js/common.js") ?>"></script>
+        <script src="<?= base_url("resources/js/common.js") ?>"></script>
         <?php
         if (isset($scripts)):
            foreach ($scripts as $script): ?>
