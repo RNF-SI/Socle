@@ -16,8 +16,8 @@
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
                   <h4 class="modal-title">Site non illustré</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
                   <p>Si vous n'ajoutez pas au moins une image représentative du site, il n'aparaîtra pas en page d'accueil.</p>

@@ -100,7 +100,7 @@ $(function() {
         + icon + '"> </span> ' + label + '</label></div>';
     };
     var modal = '<div class="modal remarquable-dialog" role="dialog"><div class="modal-dialog"><div class="modal-content">'
-      + '<div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4>Elément remarquable : informations complémentaires</h4></div>'
+      + '<div class="modal-header"><h4>Elément remarquable : informations complémentaires</h4><button type="button" class="close" data-dismiss="modal">&times;</button></div>'
       + '<div class="modal-body"><form class="form-horizontal">'
       + '<p>Cet élément est intéressant d\'un point de vue :</p>'
       + checkbox('interet_scientifique', 'scientifique', 'flask')
