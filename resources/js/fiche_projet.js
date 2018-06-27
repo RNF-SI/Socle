@@ -7,7 +7,8 @@ function load_content(evt) {
   var $rubrique = $(evt.target).parents(".rubrique");
   var id_rubrique = $rubrique.attr('id');
   var $container  = $rubrique.find(".rubrique-content");
-  $rubrique.find(".rubrique-toolbar .btn-group").html('<button class="btn btn-primary button-edit-form">Editer</button>');
+  $rubrique.find(".rubrique-toolbar .btn-group")
+    .html('<button class="btn btn-primary button-edit-form"><span class="fas fa-edit"></span> Editer</button>');
   $.ajax(site_url("site/rubrique_content/" + entite_id + "/" + id_rubrique + '/' + type_rubrique), {
     success: function(data) {
       $container.html(data);
@@ -58,8 +59,9 @@ function load_form(evt) {
   // Affichage du formulaire
   var $rubrique = $(evt.target).parents(".rubrique").first();
   var id_rubrique = $rubrique.attr('id');
-  $rubrique.find(".rubrique-toolbar .btn-group").html('<button class="btn btn-primary button-save">Enregistrer</button>'
-    + '<button class="btn btn-primary button-cancel">Annuler</button>');
+  $rubrique.find(".rubrique-toolbar .btn-group")
+    .html('<button class="btn btn-primary button-save"><span class="fas fa-save"></span> Enregistrer</button>'
+    + '<button class="btn btn-primary button-cancel"><span class="fas fa-times"></span> Annuler</button>');
   $.get(site_url("site/rubrique_form/" + entite_id + "/" + id_rubrique + '/' + type_rubrique), function(data) {
     var form = $(data);
     $rubrique.find(".rubrique-content").empty().append(form);

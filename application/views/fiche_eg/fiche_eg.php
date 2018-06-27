@@ -9,9 +9,9 @@
 <p>
 	<div class="btn-group">
 		<a href="<?= site_url('site/ajout_eg/'.$site->id.'/'.$eg->id) ?>" class="btn btn-primary">
-			<span class="glyphicon glyphicon-pencil"></span> Modifier</a>
+			<span class="fas fas-edit"></span> Modifier</a>
 		<a href="<?= site_url('site/ajout_eg/'.$site->id) ?>" class="btn btn-primary">
-			<span class="glyphicon glyphicon-plus"></span> Créer une nouvelle entité</a>
+			<span class="fas fa-plus"></span> Créer une nouvelle entité</a>
 	</div>
 </p>
 <?php endif; ?>
@@ -47,7 +47,7 @@
       <td><?= $affl->type ?></td>
       <td><?= $affl->description ?></td>
       <td><?php if ($editable): ?>
-        <a href="<?= site_url('site/modification_affleurement/' . $affl->id . '/' . $eg->id) ?>" title="modifier"><span class="glyphicon glyphicon-edit"> </span></a>
+        <a href="<?= site_url('site/modification_affleurement/' . $affl->id . '/' . $eg->id) ?>" title="modifier"><span class="fas fa-edit"> </span></a>
       <?php endif; ?></td></tr>
   <?php endforeach; ?>
 </table>

@@ -21,11 +21,15 @@
   </div>
   <div class="row">
     <?php foreach ($espaces as $ep): ?>
-      <div class="col-md-2 home-gallerie-item thumbnail">
+      <div class="col-sm-3 home-gallerie-item card">
+        <div class="card-body">
         <a href="<?= site_url('espace/fiche_espace/'.$ep->espace_id) ?>">
-          <img src="<?= $this->image_lib->thumbnail_url($ep->url, 200) ?>" />
+          <div>
+          <img class="card-img-top" src="<?= $this->image_lib->thumbnail_url($ep->url, 200) ?>" />
           <div class="home-image-caption"><?= $ep->nom_espace ?></div>
+        </div>
         </a>
+      </div>
       </div>
     <?php endforeach; ?>
   </div>

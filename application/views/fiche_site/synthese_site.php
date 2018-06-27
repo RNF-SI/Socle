@@ -1,4 +1,4 @@
- <script>
+<script>
   var site_id = <?= $site->id ?>;
 </script>
 <div class="container">
@@ -26,7 +26,6 @@ Fiche de synthèse
 
 <h3>Contexte hydrographique général</h3>
 <?php
-  echo liste_caracteristiques($elements['qcms'], 'Q1.2', 'Éléments hydrographiques observables sur le territoire');
   print liste_caracteristiques($elements['qcms'], 'Q1.2', 'Éléments hydrographiques observables sur le territoire');
  ?>
 
@@ -84,7 +83,8 @@ Fiche de synthèse
           print liste_caracteristiques($eg['qcms'], 'Q3.B.8', 'Matériaux d\'origine anthropique');
           print liste_caracteristiques($eg['qcms'], 'Q3.C', 'Minéraux et cristaux');
           for ($i=1; $i<=20; $i++) {
-            print liste_caracteristiques($eg['qcms'], 'Q3.D.' . $i, NULL);
+            $rep = liste_caracteristiques($eg['qcms'], 'Q3.D.' . $i, NULL);
+            if ($rep != '<i>&lt;Aucun élément&gt;</i>') print $rep;
           }
           ?>
         </td>
@@ -93,5 +93,4 @@ Fiche de synthèse
   </tbody>
 </table>
 
-<?php //var_dump($elements) ?>
 </div>

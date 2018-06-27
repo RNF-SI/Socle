@@ -4,7 +4,7 @@
       <div class="thumbnail">
         <?php if ($editable): ?>
           <div class="photo-remove-button" data-photo_id="<?= $phot->id ?>">
-            <span class="glyphicon glyphicon-remove" title="Supprimer"> </span>
+            <span class="fas fa-times" title="Supprimer"> </span>
           </div>
         <?php endif; ?>
         <a href="<?= base_url('photos/' . $phot->url) ?>">
