@@ -1,3 +1,4 @@
+<h1>Liste des espaces naturels enregistrés</h1>
 <div>
   <ul>
     <?php foreach ($espaces as $ep): ?>
