@@ -71,7 +71,7 @@ function load_form(evt) {
 
 
 $(function() {
-  $("#alert-image.modal").modal("show");
+  $("#alert-image.modal").appendTo("body").modal("show");
 
   $(".rubrique-collapse")
     .on("show.bs.collapse", load_content)
