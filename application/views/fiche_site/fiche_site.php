@@ -40,7 +40,7 @@
         <li><a href="#Q-1">Q-1 / Approche géographique du territoire</a>
           <ul>
             <li><a href="#points_de_vue">Q-1 /0 Images et documents</a></li>
-            <!--<li><a href="#contexte_general">Q-1 /1 Contexte général</a></li>-->
+            <li><a href="#contexte_general">Q-1 /1 Contexte général</a></li>
             <li><a href="#contexte_hydro">Q-1 /2 Contexte hydrographique général</a></li>
             <li><a href="#contexte_littoral">Q-1 /3 Contexte général littoral et marin</a></li>
             <li><a href="#contexte_anthropique">Q-1 /4 Contexte anthropique général - Aménagements</a></li>
@@ -146,10 +146,10 @@ chaque territoire.</p>
       'ep' => $site,
       'id_rubrique' => 'points_de_vue']);
 
-    /*$this->load->view('fiche_site/base_rubrique', [
+    $this->load->view('fiche_site/base_rubrique', [
       'titre' => 'Q-1 /1 Contexte général',
       'ep' => $site,
-      'id_rubrique' => 'contexte_general']); */
+      'id_rubrique' => 'contexte_general']); 
 
     $this->load->view('fiche_site/base_rubrique', [
       'titre' => 'Q-1 /2 Contexte hydrographique général',
