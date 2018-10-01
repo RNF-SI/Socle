@@ -149,7 +149,7 @@ chaque territoire.</p>
     $this->load->view('fiche_site/base_rubrique', [
       'titre' => 'Q-1 /1 Contexte général',
       'ep' => $site,
-      'id_rubrique' => 'contexte_general']); 
+      'id_rubrique' => 'contexte_general']);
 
     $this->load->view('fiche_site/base_rubrique', [
       'titre' => 'Q-1 /2 Contexte hydrographique général',
@@ -235,13 +235,12 @@ chaque territoire.</p>
    'titre' => 'Q-2 /3 Contexte sismique',
    'ep' => $site,
    'id_rubrique' => 'contexte_sismique',
-    'editable' => FALSE]);
+    'modifiable' => FALSE]);
 
  $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /4 Structures et morphologies liées au volcanisme',
    'ep' => $site,
-   'id_rubrique' => 'volcanisme',
-   'editable' => TRUE]);
+   'id_rubrique' => 'volcanisme']);
 
  $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /5 Morphologies liées à l’érosion générale',
@@ -410,7 +409,7 @@ pas à vous rapprocher de votre DREAL.</p>
 $this->load->view('fiche_site/base_rubrique', [
   'titre' => 'Q4 /1 Eléments remarquables identifiés précédemment',
   'site' => $site,
-  'editable' => FALSE,
+  'modifiable' => FALSE,
   'id_rubrique' => 'elements_remarquables']);
 ?>
 
