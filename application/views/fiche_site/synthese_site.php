@@ -53,7 +53,8 @@ Fiche de synthèse
    print liste_caracteristiques($elements['qcms'], 'Q2.2', 'Structures géologiques à l\'échelle du territoire');
    print liste_caracteristiques($elements['qcms'], 'Q2.4', 'Structures et morphologies liées au volcanisme');
    print liste_caracteristiques($elements['qcms'], 'Q2.5', 'Morphologies liées à l’érosion générale');
-   print liste_caracteristiques($elements['qcms'], 'Q2.6', 'Morphologies karstiques');
+   print liste_caracteristiques($elements['qcms'], 'Q2.6.1', 'Morphologies karstiques : Exokarst');
+   print liste_caracteristiques($elements['qcms'], 'Q2.6.2', 'Morphologies karstiques : Endokarst');
    print liste_caracteristiques($elements['qcms'], 'Q2.7', 'Morphologies glaciaires');
    print liste_caracteristiques($elements['qcms'], 'Q2.8', 'Morphologies alluvionnaires des cours d’eau');
    print liste_caracteristiques($elements['qcms'], 'Q2.9', 'Plages littorales : sable, galets et vase');
