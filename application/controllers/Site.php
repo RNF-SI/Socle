@@ -14,19 +14,6 @@ class Site extends CI_Controller {
     $data = array();
     $site = $this->site_model->get($id);
 
-    // validation des droits d'affichage selon statut
-    /*if ($site->statut_validation == 'attente') {
-      $groups = ['admin', $ep->group_id];
-    } elseif ( $site->statut_validation == 'validation') {
-      $groups = ['admin', 'validators', $site->group_id];
-    }*/
-
-    /* if ($ep->statut_validation != 'publié' && !$this->auth->in_group($groups)) {
-      $this->session->set_flashdata('message', 'Vous n\'avez pas les droits pour voir cette page.<br />Veuillez vous identifier.');
-      $this->session->set_flashdata('message-class', 'danger');
-      redirect('accueil/index');
-    } */
-
     $site->photos = $this->photo_model->getBySite($id, TRUE);
     $data['site'] = $site;
     $data['editable'] = $this->site_model->is_editable($id);
