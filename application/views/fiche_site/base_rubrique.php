@@ -1,4 +1,7 @@
-<?php $modifiable = isset($modifiable) && $modifiable; ?>
+<?php
+  $modifiable = isset($modifiable) ? $modifiable : TRUE;
+  $editable = $modifiable && (isset($editable) ? $editable : FALSE);
+?>
 <div class="rubrique card" id="<?= $id_rubrique ?>">
   <div class="card-header">
     <a href="#navigation" title="Haut de page" class="link-gotop">&uarr;</a>
@@ -7,7 +10,7 @@
   <div id="collapse-<?=$id_rubrique ?>" class="rubrique-collapse collapse">
     <div class="card-body">
       <div class="rubrique-toolbar">
-        <?php if ($modifiable || (isset($editable) && $editable)): ?>
+        <?php if ($editable): ?>
           <div class="btn-group btn-group-sm">
             <button class="btn btn-default button-edit-form"><span class="fas fa-edit"> </span> Editer</button>
           </div>
