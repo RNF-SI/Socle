@@ -380,7 +380,7 @@ $config['encryption_key'] = '';
 $config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'ci_session';
 $config['sess_expiration'] = 7200;
-$config['sess_save_path'] = 'C:/Users/aroche/Documents/dev/www/geologie2/application/sessions';
+$config['sess_save_path'] = '';
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
@@ -527,4 +527,4 @@ $config['proxy_ips'] = '';
 $config['photo_folder'] = 'photos';
 $config['thumbnail_folder'] = 'photos/thumb';
 
-$config['admin_email'] = 'augustin.roche-rnf@espaces-naturels.fr';
+$config['admin_email'] = 'admin@admin.fr';
