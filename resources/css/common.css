@@ -6,7 +6,6 @@ h2, h3 {
 header h1 {
   color: #ca7b3e;
   font-weight: bold;
-
 }
 
 header .subtitle {
@@ -71,6 +70,8 @@ li::marker {
   width: 100%;
   bottom: 0;
   padding: 5px;
+  font-size: 80%;
+  color: black;
 }
 
 .home-gallerie-item img {
@@ -204,4 +205,12 @@ li.qcm-patrimonial {
 
 table#table-liens img {
   max-height: 50px;
+}
+
+.synthese h2, .synthese h3 {
+  margin-top: 20px;
+}
+
+.table-synthese h4 {
+  font-size: 1.1rem;
 }

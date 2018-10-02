@@ -14,11 +14,17 @@ function help_tooltip($choice) {
 }
 
 // permet de faire une liste de caractéristiques
-function liste_caracteristiques($list, $question, $titre=NULL) {
-  if ($titre) echo "<h4>$titre&nbsp;:</h4>";
-  if (! isset($list[$question]))
-    return '<i>&lt;Aucun élément&gt;</i>';
-  $txt = '<ul>';
+function liste_caracteristiques($list, $question, $titre=NULL, $suppr_vide=FALSE) {
+  $txt = '';
+  if ($titre) $txt = "<h4>$titre&nbsp;:</h4>";
+  if (! isset($list[$question])) {
+    if ($suppr_vide) {
+      return '';
+    } else {
+      return $txt . '<i>&lt;Aucun élément&gt;</i>';
+    }
+  }
+  $txt .= '<ul>';
   $interets = [
     'interet_scientifique' => ['scientifique', 'flask'],
     'interet_esthetique' => ['esthétique', 'image'],
