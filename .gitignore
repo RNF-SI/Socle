@@ -17,6 +17,7 @@ application/config/database.php
 !application/logs/index.html
 !application/logs/.htaccess
 application/sessions/
+application/cache/
 system/
 user_guide/
 /vendor/
