@@ -3,6 +3,10 @@ h2, h3 {
   color: #0c8da6;
 }
 
+.popover {
+  max-width: 40em;
+}
+
 header h1 {
   color: #ca7b3e;
   font-weight: bold;
@@ -78,6 +82,8 @@ li::marker {
   width: 100%;
 }
 
+
+/* Fiche site */
 .qcm input[type=checkbox] {
   border-color: #0c8da6;
 }
@@ -207,6 +213,7 @@ table#table-liens img {
   max-height: 50px;
 }
 
+/* Synthèse */
 .synthese h2, .synthese h3 {
   margin-top: 20px;
 }
