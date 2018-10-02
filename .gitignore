@@ -17,6 +17,8 @@ application/config/database.php
 !application/logs/index.html
 !application/logs/.htaccess
 application/sessions/
+system/
+user_guide/
 /vendor/
 resources/lib/
 photos/
