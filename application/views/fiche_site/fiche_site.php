@@ -90,8 +90,10 @@
         ?>
       </div>
     <?php endif; ?> -->
+  <?php if ($site->last_modified && $site->modified_by_userid): ?>
 <div class="last_modified">Modifié le <?= date('d/m/Y', strtotime($site->last_modified)) ?>
-  par <?= $this->auth->user($site->modified_by_userid)->row()->username ?>.</div>
+  par <?= $this->auth->user($site->modified_by_userid)->row()->last_name ?>.</div>
+<?php endif; ?>
 <p>
   <a href="<?= site_url('site/resume/' . $site->id) ?>">Accès à la fiche synthétique</a>
 </p>

@@ -45,7 +45,7 @@ class Utilisateurs extends CI_Controller {
       $this->form_validation->set_rules('pwd_confirm', 'confirmation du mot de passe', 'required|matches[password]');
 
       if ($this->form_validation->run()) {
-        $moredata = ['username'=>$this->input->post('nom')];
+        $moredata = ['last_name'=>$this->input->post('nom')];
         $res = $this->auth->register($this->input->post('email'), $this->input->post('password'), $this->input->post('email'), $moredata);
         if ($res) {
           // envoi de mail
@@ -207,7 +207,7 @@ class Utilisateurs extends CI_Controller {
   public function user_delete($id) {
     $this->check_admin();
     $res = $this->auth->delete_user($id);
-    
+
     $this->output->set_content_type('application/json');
     $this->output->set_output(json_encode(['success'=>$res]));
   }

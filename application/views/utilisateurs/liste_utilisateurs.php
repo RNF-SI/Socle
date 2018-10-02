@@ -32,7 +32,7 @@
   <tbody>
     <?php foreach ($users as $user): ?>
     <tr data-user-id="<?= $user->id ?>">
-      <td><?= $user->username ?></td>
+      <td><?= $user->last_name ?></td>
       <td><?= $user->email ?></td>
       <td><a href="#" class="action-groups">Afficher/modifier</a></td>
       <td class="col-active"><?= $user->active ? 'oui' : 'non' ?></td>

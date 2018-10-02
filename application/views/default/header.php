@@ -58,7 +58,7 @@
                      <li class="nav-item"><a class="nav-link" href="<?= site_url('utilisateurs/subscribe') ?>"><span class="fas fa-user"></span> S'inscrire</a></li>
                      <li class="nav-item"><a class="nav-link" href="#" id="login-link"><span class="fas fa-sign-in-alt"></span> Se connecter</a></li>
                    <?php else: ?>
-                     <li class="nav-item"><a class="nav-link" href="<?= site_url('utilisateurs/utilisateur/' . $user->id ) ?>"><span class="fas fa-user"></span> <?=$user->username ?></a></li>
+                     <li class="nav-item"><a class="nav-link" href="<?= site_url('utilisateurs/utilisateur/' . $user->id ) ?>"><span class="fas fa-user"></span> <?=$user->last_name ?></a></li>
                      <li class="nav-item"><a class="nav-link" href="#" id="logout-link"><span class="fas fa-sign-out-alt"></span> Se déconnecter</a></li>
                    <?php endif;
                    if ($this->auth->is_admin()): ?>
