@@ -7,7 +7,8 @@ function load_content(evt) {
   var $rubrique = $(evt.target).parents(".rubrique");
   var id_rubrique = $rubrique.attr('id');
   var $container  = $rubrique.find(".rubrique-content");
-  $rubrique.find(".rubrique-toolbar .btn-group").html('<button class="btn btn-primary button-edit-form">Editer</button>');
+  $rubrique.find(".rubrique-toolbar .btn-group")
+    .html('<button class="btn btn-primary button-edit-form"><span class="fas fa-edit"></span> Editer</button>');
   $.ajax(site_url("site/rubrique_content/" + entite_id + "/" + id_rubrique + '/' + type_rubrique), {
     success: function(data) {
       $container.html(data);
@@ -58,8 +59,9 @@ function load_form(evt) {
   // Affichage du formulaire
   var $rubrique = $(evt.target).parents(".rubrique").first();
   var id_rubrique = $rubrique.attr('id');
-  $rubrique.find(".rubrique-toolbar .btn-group").html('<button class="btn btn-primary button-save">Enregistrer</button>'
-    + '<button class="btn btn-primary button-cancel">Annuler</button>');
+  $rubrique.find(".rubrique-toolbar .btn-group")
+    .html('<button class="btn btn-primary button-save"><span class="fas fa-save"></span> Enregistrer</button>'
+    + '<button class="btn btn-primary button-cancel"><span class="fas fa-times"></span> Annuler</button>');
   $.get(site_url("site/rubrique_form/" + entite_id + "/" + id_rubrique + '/' + type_rubrique), function(data) {
     var form = $(data);
     $rubrique.find(".rubrique-content").empty().append(form);
@@ -69,7 +71,7 @@ function load_form(evt) {
 
 
 $(function() {
-  $("#alert-image.modal").modal("show");
+  $("#alert-image.modal").appendTo("body").modal("show");
 
   $(".rubrique-collapse")
     .on("show.bs.collapse", load_content)
@@ -98,7 +100,7 @@ $(function() {
         + icon + '"> </span> ' + label + '</label></div>';
     };
     var modal = '<div class="modal remarquable-dialog" role="dialog"><div class="modal-dialog"><div class="modal-content">'
-      + '<div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4>Elément remarquable : informations complémentaires</h4></div>'
+      + '<div class="modal-header"><h4>Elément remarquable : informations complémentaires</h4><button type="button" class="close" data-dismiss="modal">&times;</button></div>'
       + '<div class="modal-body"><form class="form-horizontal">'
       + '<p>Cet élément est intéressant d\'un point de vue :</p>'
       + checkbox('interet_scientifique', 'scientifique', 'flask')

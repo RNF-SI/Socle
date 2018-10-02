@@ -3,10 +3,13 @@ h2, h3 {
   color: #0c8da6;
 }
 
+.popover {
+  max-width: 40em;
+}
+
 header h1 {
   color: #ca7b3e;
   font-weight: bold;
-
 }
 
 header .subtitle {
@@ -71,12 +74,16 @@ li::marker {
   width: 100%;
   bottom: 0;
   padding: 5px;
+  font-size: 80%;
+  color: black;
 }
 
 .home-gallerie-item img {
   width: 100%;
 }
 
+
+/* Fiche site */
 .qcm input[type=checkbox] {
   border-color: #0c8da6;
 }
@@ -157,10 +164,6 @@ li.qcm-patrimonial {
   font-size: 80%;
 }
 
-img.photo-gallerie {
-  height: 100px;
-}
-
 #main_image img {
   width: 100%;
   margin-bottom: 5px;
@@ -208,4 +211,13 @@ img.photo-gallerie {
 
 table#table-liens img {
   max-height: 50px;
+}
+
+/* Synthèse */
+.synthese h2, .synthese h3 {
+  margin-top: 20px;
+}
+
+.table-synthese h4 {
+  font-size: 1.1rem;
 }

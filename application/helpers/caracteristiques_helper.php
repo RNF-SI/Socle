@@ -14,11 +14,17 @@ function help_tooltip($choice) {
 }
 
 // permet de faire une liste de caractéristiques
-function liste_caracteristiques($list, $question, $titre=NULL) {
-  if ($titre) echo "<h4>$titre&nbsp;:</h4>";
-  if (! isset($list[$question]))
-    return '<i>&lt;Aucun élément&gt;</i>';
-  $txt = '<ul>';
+function liste_caracteristiques($list, $question, $titre=NULL, $suppr_vide=FALSE) {
+  $txt = '';
+  if ($titre) $txt = "<h4>$titre&nbsp;:</h4>";
+  if (! isset($list[$question])) {
+    if ($suppr_vide) {
+      return '';
+    } else {
+      return $txt . '<i>&lt;Aucun élément&gt;</i>';
+    }
+  }
+  $txt .= '<ul>';
   $interets = [
     'interet_scientifique' => ['scientifique', 'flask'],
     'interet_esthetique' => ['esthétique', 'image'],
@@ -34,7 +40,7 @@ function liste_caracteristiques($list, $question, $titre=NULL) {
       $item_interets = array();
       foreach ($interets as $key => $value) {
         if (isset($car->$key) && $car->$key == 't')
-          $item_interets[] = '<span class="fas fa-' . $value[1] .'" title="intérêt ' . $value[0] . '"> </span>';
+          $item_interets[] = '<span class="badge badge-secondary fas fa-' . $value[1] .'" title="intérêt ' . $value[0] . '"> </span>';
       }
       if (count($item_interets) > 0 || $car->remarquable_info) {
         $txt .= ' ' . implode(' ', $item_interets);
@@ -60,11 +66,13 @@ function qcm_caracteristiques($choices) {
     'remarquable_info' => 't'
   ];
 
-  $txt = '<div class="qcm form-group">';
+  $txt = '<div class="qcm form-group row"><div class="col-md-4">';
+  $n = 0;
+  $nbycol = floor(count($choices) / 3) + 1;
   foreach ($choices as $choice) {
-    $li = '<div class="choix-container col-sm-4">
-      <div class="checkbox"><label>
-        <input type="checkbox" name="caracteristiques[]" value="'. $choice->id . '"';
+    $li = '<div class="choix-container">
+      <div class="form-check"><label class="form-check-label">
+        <input type="checkbox" class="form-check-input" name="caracteristiques[]" value="'. $choice->id . '"';
     if ($choice->checked)
       $li .= ' checked';
     $li .= '>' . $choice->label . help_tooltip($choice) . '</label> <span class="remarquable-control';
@@ -73,7 +81,7 @@ function qcm_caracteristiques($choices) {
     if ($choice->remarquable)
       $li .= ' remarquable';
     $li .= '"><a href="#" class="coche-remarquable" title="Signaler cet élément comme remarquable">&starf;</a>
-      <a href="#" class="remarquable-edit" title="Critères de remarquabilité"><span class="glyphicon glyphicon-edit">
+      <a href="#" class="remarquable-edit" title="Critères de remarquabilité"><span class="fas fa-edit">
       </span></a></span></div>';
 
     foreach ($hidden_fields as $hf => $type) {
@@ -81,7 +89,6 @@ function qcm_caracteristiques($choices) {
       if ($choice->remarquable && $choice->$hf) {
         $input .= 'value ="' . $choice->id . '"';
       } elseif ($type == 't') {
-        //print_r($choice);
         $input .= 'value ="' . $choice->$hf . '"';
       }
       $input .= ' />';
@@ -95,8 +102,12 @@ function qcm_caracteristiques($choices) {
         <input type="hidden" name="info_complement_id[]" value="' . $choice->id . '" /></div>';
     $li .= '</div>';
     $txt .= $li;
+
+    if ((++$n % $nbycol) == 0) {
+      $txt .= '</div><div class="col-md-4">';
+    }
   }
-  $txt .= '</div>';
+  $txt .= '</div></div>';
   return $txt;
 }
 

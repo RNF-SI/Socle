@@ -59,7 +59,7 @@ class Entite_abstract_model extends CI_Model {
     if (empty($this->entity) || $id != $this->entity->id) {
       $this->db->select($this->tableName . '.*');
       if ($this->has_geometry) {
-        $this->db->select('st_asGeoJson(geom) as geom');
+        $this->db->select('st_asGeoJson(geom) as geom, st_area(st_transform(geom, 2154)) AS surface');
       }
       $query = $this->db->get_where($this->tableName, array('id' => $id));
       $this->entity = $query->row();

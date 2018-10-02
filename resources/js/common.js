@@ -22,7 +22,8 @@ function addVectorLayer(map, url, options, callback) {
 
 
 // crée une carte de base avec les couches qu'il faut
-function base_map(id_map, id_ep, baseLayerToDisplay="Carte géologique") {
+function base_map(id_map, id_ep, baseLayerToDisplay) {
+  baseLayerToDisplay = typeof baseLayerToDisplay !== 'undefined' ? baseLayerToDisplay : "Carte géologique";
   var mainMap = L.map(id_map);
 
   var baseLayers = {};
@@ -102,7 +103,7 @@ function base_map(id_map, id_ep, baseLayerToDisplay="Carte géologique") {
     var reduceButton = L.easyButton({
       states: [{
         stateName: 'magnify',
-        icon: 'glyphicon-fullscreen',
+        icon: 'fa-expand-arrows-alt',
         title: 'aggrandir la carte',
         onClick: function(btn, map) {
           mapheight =  mapcont.height();
@@ -116,7 +117,7 @@ function base_map(id_map, id_ep, baseLayerToDisplay="Carte géologique") {
         }
       }, {
         stateName: 'minify',
-        icon: 'glyphicon-resize-small',
+        icon: 'fa-window-minimize',
         title: 'réduire',
         onClick: function(btn, map) {
           $("#carto-full").modal("hide");

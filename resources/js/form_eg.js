@@ -36,7 +36,7 @@ $(function() {
     });
   });
 
-  L.easyButton('glyphicon-remove', function(btn, map) {
+  L.easyButton('fa-times', function(btn, map) {
     lyr.clearLayers();
     $('input[name=geom]').val(undefined);
   }).addTo(map);

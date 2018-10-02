@@ -2,10 +2,12 @@
 <html>
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <title>SOCLE <?= isset($title) ? ' - '.$title : '' ?></title>
         <link rel="icon" type="image/x-icon" href="<?= base_url('resources/images/icone_RNF.png') ?>" />
 
-        <link rel="stylesheet" href="<?= base_url('resources/lib/bootstrap/css/bootstrap-cerulean.min.css') ?>" />
+        <link rel="stylesheet" href="<?= base_url('resources/lib/bootstrap/css/bootstrap4-cerulean.min.css') ?>">
         <link rel="stylesheet" href="<?= base_url('resources/lib/leaflet/leaflet.css') ?>" />
         <link rel="stylesheet" href="<?= base_url('resources/lib/leaflet/easy-button.css') ?>" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -17,7 +19,8 @@
      endif; ?>
      <link rel="stylesheet" href="<?php echo base_url("resources/css/common.css") ?>" />
         <script src="<?= base_url('resources/lib/jquery-3.2.1.min.js') ?>"></script>
-        <script src="<?= base_url('resources/lib/bootstrap/js/bootstrap.min.js') ?>"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="<?= base_url('resources/lib/leaflet/leaflet.js') ?>"></script>
         <script src="<?= base_url('resources/lib/leaflet/easy-button.js') ?>"></script>
         <script>var base_url = '<?= base_url() ?>';</script>
@@ -40,26 +43,26 @@
                 <h1>SOCLE</h1>
                 <span class="subtitle">Regards sur la géodiversité des espaces naturels</span>
               </div>
-              <nav class="navbar navbar-default">
+              <nav class="navbar navbar-expand-md navbar-light bg-light">
                <div class="container-fluid">
                  <ul class="nav navbar-nav">
-                   <li class="active"><a href="<?= site_url() ?>">Accueil</a></li>
-                   <li><a href="<?= site_url('espace/liste_espaces') ?>">Explorer</a></li>
-                   <li><a href="<?= site_url('accueil/aide') ?>">Aide</a></li>
-                   <li><a href="<?= site_url('accueil/liens') ?>">Liens</a></li>
+                   <li class="active nav-item"><a class="nav-link" href="<?= site_url() ?>">Accueil</a></li>
+                   <li class="nav-item"><a class="nav-link" href="<?= site_url('espace/liste_espaces') ?>">Explorer</a></li>
+                   <li class="nav-item"><a class="nav-link" href="<?= site_url('accueil/aide') ?>">Aide</a></li>
+                   <li class="nav-item"><a class="nav-link" href="<?= site_url('accueil/liens') ?>">Liens</a></li>
                  </ul>
                  <ul class="nav navbar-nav navbar-right">
                    <?php
                    $user = $this->auth->user()->row();
                    if (is_null($user)): ?>
-                     <li><a href="<?= site_url('utilisateurs/subscribe') ?>"><span class="glyphicon glyphicon-user"></span> S'inscrire</a></li>
-                     <li><a href="#" id="login-link"><span class="glyphicon glyphicon-log-in"></span> Se connecter</a></li>
+                     <li class="nav-item"><a class="nav-link" href="<?= site_url('utilisateurs/subscribe') ?>"><span class="fas fa-user"></span> S'inscrire</a></li>
+                     <li class="nav-item"><a class="nav-link" href="#" id="login-link"><span class="fas fa-sign-in-alt"></span> Se connecter</a></li>
                    <?php else: ?>
-                     <li><a href="<?= site_url('utilisateurs/utilisateur/' . $user->id ) ?>"><span class="glyphicon glyphicon-user"></span> <?=$user->username ?></a></li>
-                     <li><a href="#" id="logout-link"><span class="glyphicon glyphicon-log-out"></span> Se déconnecter</a></li>
+                     <li class="nav-item"><a class="nav-link" href="<?= site_url('utilisateurs/utilisateur/' . $user->id ) ?>"><span class="fas fa-user"></span> <?=$user->username ?></a></li>
+                     <li class="nav-item"><a class="nav-link" href="#" id="logout-link"><span class="fas fa-sign-out-alt"></span> Se déconnecter</a></li>
                    <?php endif;
                    if ($this->auth->is_admin()): ?>
-                    <li><a href="<?= site_url('utilisateurs/gestion') ?>"><span class="glyphicon glyphicon-user"></span> Utilisateurs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= site_url('utilisateurs/gestion') ?>"><span class="fas fa-users"></span> Utilisateurs</a></li>
                   <?php endif; ?>
                  </ul>
                </div>
@@ -70,11 +73,11 @@
         <div class="container-fluid">
 
           <div class="modal" id="carto-full">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
                   <h4 class="modal-title">Carte</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
 
@@ -85,15 +88,14 @@
           <div class="row">
             <div class="col-md-12">
               <div class="breadcrumb" id="navigation">
-                <a href="<?= site_url() ?>">Accueil</a>
+                <a class="breadcrumb-item" href="<?= site_url() ?>">Accueil</a>
                 <?php
                 if (isset($path)) {
                   for ($i=0; $i<count($path); $i++) {
-                    echo ' > ';
                     if ($i+1 == count($path)) {
-                      echo $path[$i]['title'];
+                      echo '<span clas="breadcrumb-item">' . $path[$i]['title'] . '</span>';
                     } else {
-                      echo '<a href="'. site_url($path[$i]['path']) . '">' .$path[$i]['title'] . '</a>';
+                      echo '<a class="breadcrumb-item" href="'. site_url($path[$i]['path']) . '">' . $path[$i]['title'] . '</a>';
                     }
                   }
                 }

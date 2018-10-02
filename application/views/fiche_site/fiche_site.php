@@ -5,43 +5,42 @@
 </script>
 <div class="container-fluid">
 <div class="row">
-<div class="col-sm-2" id="col-menu">
-  <div id="col-menu-content" class="panel panel-default"  data-spy="affix" data-offset-top="200">
-    <div class="panel-body">
-  <div id="main_image">
-    <?php if (count($site->photos) > 0): ?>
-      <img src="<?= $this->image_lib->thumbnail_url($site->photos[0]->url, 200) ?>" class="img-rounded" />
-    <?php elseif ($editable): ?>
-      <div id="alert-image" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Site non illustré</h4>
-            </div>
-            <div class="modal-body">
-              <p>Si vous n'ajoutez pas au moins une image représentative du site, il n'aparaîtra pas en page d'accueil.</p>
-              <p>Pour ajouter une image, ouvrez le panneau "<a href="#points_de_vue">Images / documents</a>"
-                et cliquez sur "éditer".</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Compris</button>
+<div class="col-lg-2" id="col-menu">
+  <div id="col-menu-content" class="card"  data-offset-top="200">
+    <div class="card-body">
+      <div id="main_image">
+        <?php if (count($site->photos) > 0): ?>
+          <img src="<?= $this->image_lib->thumbnail_url($site->photos[0]->url, 200) ?>" class="img-rounded" />
+        <?php elseif ($editable): ?>
+          <div id="alert-image" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Site non illustré</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                  <p>Si vous n'ajoutez pas au moins une image représentative du site, il n'aparaîtra pas en page d'accueil.</p>
+                  <p>Pour ajouter une image, ouvrez le panneau "<a href="#points_de_vue">Images / documents</a>"
+                    et cliquez sur "éditer".</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Compris</button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        <?php endif; ?>
       </div>
-    <?php endif; ?>
-  </div>
-  <div id="carto">
-    <div id="map-main" class="minimap"></div>
-
-  </div>
-  <div class="" id="tdm">
+    <div id="carto">
+      <div id="map-main" class="minimap"></div>
+    </div>
+    <div id="tdm">
       <ul>
         <li><a href="#Q-1">Q-1 / Approche géographique du territoire</a>
           <ul>
             <li><a href="#points_de_vue">Q-1 /0 Images et documents</a></li>
-            <!--<li><a href="#contexte_general">Q-1 /1 Contexte général</a></li>-->
+            <li><a href="#contexte_general">Q-1 /1 Contexte général</a></li>
             <li><a href="#contexte_hydro">Q-1 /2 Contexte hydrographique général</a></li>
             <li><a href="#contexte_littoral">Q-1 /3 Contexte général littoral et marin</a></li>
             <li><a href="#contexte_anthropique">Q-1 /4 Contexte anthropique général - Aménagements</a></li>
@@ -73,11 +72,11 @@
         <li><a href="#Q-4">Q-4 / Objets géologiques remarquables</a></li>
       </ul>
     </div>
-</div>
+  </div>
 </div>
 </div>
 
-<div id="page-content" class="container-fluid col-sm-10">
+<div id="page-content" class="container-fluid col-lg-10">
     <div id="entete">
       <h1><?= $site->nom ?></h1>
     </div><!--
@@ -147,10 +146,10 @@ chaque territoire.</p>
       'ep' => $site,
       'id_rubrique' => 'points_de_vue']);
 
-    /*$this->load->view('fiche_site/base_rubrique', [
+    $this->load->view('fiche_site/base_rubrique', [
       'titre' => 'Q-1 /1 Contexte général',
       'ep' => $site,
-      'id_rubrique' => 'contexte_general']); */
+      'id_rubrique' => 'contexte_general']);
 
     $this->load->view('fiche_site/base_rubrique', [
       'titre' => 'Q-1 /2 Contexte hydrographique général',
@@ -236,13 +235,12 @@ chaque territoire.</p>
    'titre' => 'Q-2 /3 Contexte sismique',
    'ep' => $site,
    'id_rubrique' => 'contexte_sismique',
-    'editable' => FALSE]);
+    'modifiable' => FALSE]);
 
  $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /4 Structures et morphologies liées au volcanisme',
    'ep' => $site,
-   'id_rubrique' => 'volcanisme',
-   'editable' => TRUE]);
+   'id_rubrique' => 'volcanisme']);
 
  $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /5 Morphologies liées à l’érosion générale',
@@ -354,7 +352,7 @@ $this->load->view('fiche_site/base_rubrique', [
   <p>Aucune entité enregistrée.</p>
 <?php else: ?>
   <p>Cliquez sur une entité pour voir le détail.</p>
-  <div class="list-group">
+  <div class="list-group mb-3">
     <?php foreach ($entites_geol as $eg) {
       echo '<a href="' . site_url('site/fiche_entite_geol/' . $eg->id) .'" class="list-group-item">' . $eg->intitule . '</a>';
     } ?>
@@ -406,12 +404,12 @@ National du Patrimoine Géologique (INPG)</a> est aujourd’hui en cours. Savoir
 votre territoire est concerné par cet inventaire est aussi chose importante ! Pour
 en savoir plus et connaitre le patrimoine identifié dans votre région, n’hésitez
 pas à vous rapprocher de votre DREAL.</p>
-<p><a class="btn btn-primary" href="https://inpn.mnhn.fr/accueil/recherche-de-donnees/inpg/" target="_blank">Faire une recherche sur l'INPG</a></p>
+<p><a class="btn btn-secondary" href="https://inpn.mnhn.fr/accueil/recherche-de-donnees/inpg/" target="_blank">Faire une recherche sur l'INPG</a></p>
 <?php
 $this->load->view('fiche_site/base_rubrique', [
   'titre' => 'Q4 /1 Eléments remarquables identifiés précédemment',
   'site' => $site,
-  'editable' => FALSE,
+  'modifiable' => FALSE,
   'id_rubrique' => 'elements_remarquables']);
 ?>
 
