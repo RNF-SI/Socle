@@ -29,4 +29,4 @@ Installation
 Please see the `installation section <https://codeigniter.com/user_guide/installation/index.html>`_
 of the CodeIgniter User Guide.
 
-Après avoir téléchargé CodeIgniter, ajouter uniquement le dossiet "system" à la racine de l'application.
+Après avoir téléchargé CodeIgniter, ajouter uniquement le dossier "system" à la racine de l'application.
