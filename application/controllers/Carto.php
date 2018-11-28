@@ -93,6 +93,12 @@ class Carto extends CI_Controller {
     $url = $base_url . '?' . http_build_query($params);
     $cont = file_get_contents($url);
 
+    // Echappement des caractères spéciaux
+    if (preg_match('/<description>(.*)<\\/description>/', $cont, $matches)) {
+      $cont = preg_replace('/<description>.*<\\/description>/', '<description>' . htmlspecialchars($matches[1]) . '</description>',
+        $cont);
+    }
+
     return new SimpleXMLElement($cont);
   }
 
