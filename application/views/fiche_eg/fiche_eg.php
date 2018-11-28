@@ -20,7 +20,7 @@
   <a href="<?= site_url('site/fiche_site/' . $site->id) ?>"><?= $site->nom ?></a>
 </strong></p>
 <div class="last_modified">Modifié le <?= date('d/m/Y', strtotime($eg->last_modified)) ?>
-  par <?= $this->auth->user($eg->modified_by_userid)->row()->username ?>.</div>
+  par <?= $eg->modified_by_userid ? $this->auth->user($eg->modified_by_userid)->row()->username : '&lt;inconnu&gt;' ?>.</div>
 <div id="map"></div>
 <div>
     <h3>Identification sur la carte géologique</h3>
