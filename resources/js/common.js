@@ -28,7 +28,7 @@ function base_map(id_map, id_ep, baseLayerToDisplay) {
 
   var baseLayers = {};
 
-  baseLayers['Photos aériennes'] = L.tileLayer("http://wxs.ign.fr/qi0jtcvtmn01lkt0621p5yci/geoportail/wmts?" +
+  baseLayers['Photos aériennes'] = L.tileLayer("http://wxs.ign.fr/qi0jtcvtmn01lkt0621p5yci/wmts?" +
         "REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0" +
         "&STYLE=normal" +
         "&TILEMATRIXSET=PM" +
@@ -42,12 +42,12 @@ function base_map(id_map, id_ep, baseLayerToDisplay) {
       tileSize: 256
   });
 
-  var ignLayer = L.tileLayer("http://wxs.ign.fr/qi0jtcvtmn01lkt0621p5yci/geoportail/wmts?" +
+  var ignLayer = L.tileLayer("http://wxs.ign.fr/qi0jtcvtmn01lkt0621p5yci/wmts?" +
         "REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0" +
         "&STYLE=normal" +
         "&TILEMATRIXSET=PM" +
         "&FORMAT=image/jpeg"+
-        "&LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS"+
+        "&LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD"+
 	       "&TILEMATRIX={z}" +
         "&TILEROW={y}" +
         "&TILECOL={x}", {
@@ -84,6 +84,20 @@ function base_map(id_map, id_ep, baseLayerToDisplay) {
         mainMap.fitBounds(lyr.getBounds());
       });
   }
+
+  // popup infos géol
+  var popup = L.popup({maxWidth: 200});
+  mainMap.on("click", function(evt) {
+    if (mainMap.getZoom() < 11) return false;
+    popup.setLatLng(evt.latlng);
+    getGeolInfo(mainMap, evt, function(data) {
+      var cont = '<p><b>Entité géologique :</b><br />' + data.notation + ' : <i>'
+        + data.description + '</i></p><p><a href="http://ficheinfoterre.brgm.fr/Notices/' 
+        + ("0000" + data.carte).slice(-4)
+        + 'N.pdf" target="_blank">consulter la notice</a></p>';
+      popup.setContent(cont).openOn(mainMap);
+    });
+  });
 
   // traitement de la mini carte agrandissable
   if ($("#" + id_map).hasClass("minimap")) {

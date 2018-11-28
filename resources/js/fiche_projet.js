@@ -154,16 +154,6 @@ $(function() {
   // CARTO
   if ($('#map-main').length > 0) {
     var map = base_map('map-main', site.ep_id);
-    var popup = L.popup({maxWidth: 200});
-    map.on("click", function(evt) {
-      if (map.getZoom() < 11) return false;
-      popup.setLatLng(evt.latlng);
-      getGeolInfo(map, evt, function(data) {
-        var cont = '<p><b>Entité géologique :</b><br />' + data.notation + ' : <i>'
-          + data.description + '</i></p>';
-        popup.setContent(cont).openOn(map);
-      });
-    });
 
     if (map.monosite != 't') {
       $.get(site_url("carto/site_geom/" + site.id), function(data) {
