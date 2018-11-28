@@ -242,7 +242,8 @@ chaque territoire.</p>
  $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /4 Structures et morphologies liées au volcanisme',
    'ep' => $site,
-   'id_rubrique' => 'volcanisme']);
+   'id_rubrique' => 'volcanisme' ,
+   'modifiable' => TRUE]); // NB: hack pour pallier au scope des variables
 
  $this->load->view('fiche_site/base_rubrique', [
    'titre' => 'Q-2 /5 Morphologies liées à l’érosion générale',
