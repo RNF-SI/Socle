@@ -38,7 +38,7 @@ class Entite_abstract_model extends CI_Model {
       return;
     }
     $g = html_entity_decode($g);
-    if (preg_match('/^[A-Z]+\(/', $g) == 1) { // WKT
+    if (preg_match('/^[A-Z]+\\(/', $g) == 1) { // WKT
       $func = 'st_geomFromText';
       $s = $g;
     } else { // geojson
@@ -252,6 +252,12 @@ class Entite_abstract_model extends CI_Model {
       }
 
       unset($data['caracteristiques']);
+    } else {
+      // on s'assure que toutes les infos secondaires sont retirées
+      unset($data['remarquable']);
+      foreach ($link_fields as $field => $type) {
+        unset($data[$field]);
+      }
     }
 
     // complements
@@ -290,7 +296,7 @@ class Entite_abstract_model extends CI_Model {
 
     // traitement des QCM
 
-    // enrgistrement des champs specifiques
+    // enregistrement des champs specifiques
     if(!empty($data))
       $this->db->where('id', $id)->update($this->tableName, $data);
 
@@ -311,7 +317,9 @@ class Entite_abstract_model extends CI_Model {
         $template = array_combine($keys, array_fill(0, count($keys), NULL));
         $toinsert = array();
         foreach ($cars as $li) {
-          $toinsert[] = array_merge($template, $li);
+          if (!empty($li['qcm_id'])) {
+            $toinsert[] = array_merge($template, $li);
+          }          
         }
 
         $this->db->insert_batch($this->qcmLinkTable, $toinsert);
