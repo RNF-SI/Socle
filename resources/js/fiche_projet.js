@@ -29,7 +29,7 @@ function submit_form(evt) {
 
   var params = {
     url: $form.attr("action"),
-    data: $form.serialize(),
+    data: {data: JSON.stringify($form.serializeArray())},
     type: 'POST',
     success: function(response) {
         var messageBox = $container.siblings(".message");

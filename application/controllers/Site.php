@@ -66,6 +66,24 @@ class Site extends CI_Controller {
     $this->output->set_output($this->load->view('fiche_site/rubriques/' . $rubrique . '.php', $data, TRUE));
   }
 
+  // convertit les données encodées vers un tableau semblable aux paramètres POST
+  private static function deserialize_js_array($datastr) {
+    $data = json_decode($datastr, TRUE);
+    $struct = array();
+    foreach ($data as $k => $field) {
+      $fname = $field['name'];
+      if (substr($field['name'], -2) == '[]') {
+        $fname = substr($fname, 0, -2);
+        if (!isset($struct[$fname])) {
+          $struct[$fname] = [];
+        }
+        $struct[$fname][] = $field['value'];
+      } else {
+        $struct[$fname] = $field['value'];
+      }
+    }
+    return $struct;
+  }
 
   public function rubrique_form($id, $rubrique, $type = 'Site') {
     $this->load->helper('caracteristiques_helper');
@@ -86,8 +104,12 @@ class Site extends CI_Controller {
       $config = array();
 
       $this->form_validation->set_rules(element($rubrique, $config));
+
+      $data = $this->deserialize_js_array($this->input->post("data"));
+      $this->form_validation->set_data($data);
+
       if (!isset($config[$rubrique]) || $this->form_validation->run()) {
-        $model->update_rubrique($id, $this->input->post(), $rubrique);
+        $model->update_rubrique($id, $data, $rubrique);
         $this->output->set_content_type('application/json')
           ->set_output(json_encode(array('success' => TRUE)));
         return;
