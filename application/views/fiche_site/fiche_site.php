@@ -97,9 +97,21 @@
 <p>
   <a href="<?= site_url('site/resume/' . $site->id) ?>">Accès à la fiche synthétique</a>
 </p>
+
+<div class="row" id="site-progression">
+        <div class="col-sm-2">Avancement du remplissage :</div>
+        <div class="col-sm-4">
+          <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" aria-valuenow="<?=$avancement ?>"
+            aria-valuemin="0" aria-valuemax="100" style="width:<?=$avancement ?>%"><?=$avancement ?>&nbsp;%</div>
+          </div>
+        </div>
+        <div class="col-sm-6"></div>
+</div>
+
 <?php if ($editable): ?>
   <div>
-    <a href="<?=site_url('site/creation/' . $site->ep_id . '/' . $site->id) ?>" class="btn btn-default">Modifier le site</a>
+    <a href="<?=site_url('site/creation/' . $site->ep_id . '/' . $site->id) ?>" class="btn btn-primary">Modifier le site</a>
   </div>
 <?php endif; ?>
 <div id="rubriques" class="panel-group">

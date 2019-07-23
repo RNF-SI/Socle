@@ -247,4 +247,65 @@ class Site_model extends Entite_abstract_model {
   }
 
 
+  // indicateur d'avancement du remplissage
+  public function getAdvancement($id) {
+    $id = $this->db->escape($id);
+    $req = "WITH eg_ids AS (select id from entite_geol eg where eg.site_id={$id})
+    SELECT site_id, eg_id, rubrique, niveau, bool_or(done) done FROM (
+      SELECT site_qcm.site_id, entite_geol_qcm.entite_geol_id AS eg_id, rubrique.id AS rubrique, rubrique.niveau, site_qcm.id is not null AS done
+      FROM qcm
+        LEFT JOIN site_qcm ON site_qcm.qcm_id=qcm.id AND site_qcm.site_id={$id}
+        LEFT JOIN entite_geol_qcm ON entite_geol_qcm.qcm_id=qcm.id AND entite_geol_qcm.entite_geol_id IN (SELECT * FROM eg_ids)
+        JOIN rubrique ON rubrique=rubrique.id
+      WHERE rubrique.obligatoire
+      UNION ALL
+      SELECT complement_site.site_id, complement_eg.entite_geol_id, rubrique.id, rubrique.niveau, complement_eg.id is not null
+      FROM qcm LEFT JOIN complement_site ON complement_site.question = qcm.question AND complement_site.site_id = {$id}
+      LEFT JOIN complement_eg ON complement_eg.question = qcm.question AND complement_eg.entite_geol_id in (SELECT * FROM eg_ids)
+      JOIN rubrique ON qcm.rubrique=rubrique.id
+      WHERE rubrique.obligatoire
+    ) sr1
+    GROUP BY site_id, eg_id, rubrique, niveau";
+
+    $res = $this->db->query($req)->result();
+    return $res;
+  }
+
+  // indicateur de remplissage pour tous les sites
+  public function getAdvancementAll() {
+    $req = 'SELECT site_id, eg_id, rubrique, niveau, bool_or(done) done FROM (
+      SELECT site_qcm.site_id, entite_geol_qcm.entite_geol_id AS eg_id, rubrique.id AS rubrique, rubrique.niveau, site_qcm.id is not null AS done
+      FROM qcm
+        LEFT JOIN site_qcm ON site_qcm.qcm_id=qcm.id
+        LEFT JOIN entite_geol_qcm ON entite_geol_qcm.qcm_id=qcm.id
+        JOIN rubrique ON rubrique=rubrique.id
+      WHERE rubrique.obligatoire
+      UNION ALL
+      SELECT complement_site.site_id, complement_eg.entite_geol_id, rubrique.id, rubrique.niveau, complement_eg.id is not null
+      FROM qcm LEFT JOIN complement_site ON complement_site.question = qcm.question
+      LEFT JOIN complement_eg ON complement_eg.question = qcm.question
+      JOIN rubrique ON qcm.rubrique=rubrique.id
+      WHERE rubrique.obligatoire
+    ) sr1
+    GROUP BY site_id, eg_id, rubrique, niveau';
+
+    $res = $this->db->query($req)->rersult();
+
+    $rates = [];
+
+    $total_sites = 0;
+    foreach ($res as $li) {
+      if ($li->site_id != NULL && !isset($rates[$li->site_id])) {
+        $rates[$li->site_id] = ['nb_eg'=>0, 'nb_q'=>0, 'nb_q_eg'=>0, 'nb_done'=>0, 'nb_done_eg'=>0];
+      }
+      if ($li->niveau == 'site' && $li->site_id == NULL) $total_sites++;
+      if ($li->niveau == 'site' && $li->done) $n_sites++;
+      if ($li->niveau == 'EG' && $li->eg_id == NULL) $total_eg++;
+      if ($li->niveau == 'EG' && $li->done) $n_eg++;
+    }
+    $taux_adv = $n_sites / $total_sites * 0.5 + ($n_eg / $total_eg) * (0.5 / count($data['entites_geol']));
+    $data['avancement'] = round($taux_adv * 100);
+  }
+
+
 }

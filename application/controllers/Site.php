@@ -19,6 +19,22 @@ class Site extends CI_Controller {
     $data['editable'] = $this->site_model->is_editable($id);
     $data['entites_geol'] = $this->site_model->getEntitesGeol($id);
 
+    // calcul taux avancement
+    $adv = $this->site_model->getAdvancement($id);
+    $n_sites = 0;
+    $total_sites = 0;
+    $n_eg = 0;
+    $total_eg = 0;
+    foreach ($adv as $li) {
+      if ($li->niveau == 'site' && $li->site_id == NULL) $total_sites++;
+      if ($li->niveau == 'site' && $li->done) $n_sites++;
+      if ($li->niveau == 'EG' && $li->eg_id == NULL) $total_eg++;
+      if ($li->niveau == 'EG' && $li->done) $n_eg++;
+    }
+    $taux_adv = $n_sites / $total_sites * 0.5 + ($n_eg / $total_eg) * (0.5 / count($data['entites_geol']));
+    $data['avancement'] = round($taux_adv * 100);
+
+
     $this->load->view('default/header', ['scripts' => ['js/fiche_projet.js'], 'title' => $site->nom,
       'path'=>$this->site_model->getPath($id)]);
     $this->load->view('fiche_site/fiche_site', $data);
