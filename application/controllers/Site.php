@@ -41,6 +41,22 @@ class Site extends CI_Controller {
     $this->load->view('default/footer');
   }
 
+  public function tree_site($id) {
+    // Affichage des données sous forme arborescente
+    $site = $this->site_model->get($id);
+
+    $scripts = [ // WARNING : penser à changer ces scripts en production
+      'https://unpkg.com/react@16/umd/react.development.js',
+      'https://unpkg.com/react-dom@16/umd/react-dom.development.js',
+      'https://unpkg.com/babel-standalone@6.15.0/babel.min.js',
+      //'js/React/treeview.js'
+    ];
+    $this->load->view('default/header', ['scripts' => $scripts, 'title' => $site->nom,
+      'path'=>$this->site_model->getPath($id)]);
+    $this->load->view('fiche_site/tree_site', $site);
+    $this->load->view('default/footer');
+  }
+
   public function rubrique_content($id, $rubrique, $type = 'Site') {
     // chargement asynchrone du contenu du panel
 

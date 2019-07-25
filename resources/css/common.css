@@ -225,3 +225,12 @@ table#table-liens img {
 .table-synthese h4 {
   font-size: 1.1rem;
 }
+
+
+.node-visible {
+  display: block;
+}
+
+.node-hidden {
+  display: none;
+}

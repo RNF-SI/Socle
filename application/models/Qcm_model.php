@@ -22,4 +22,11 @@ class Qcm_model extends CI_Model {
     return $query->result();
   }
 
+  public function getChildNodes($parent_id) {
+    $query = $this->db->where('id_parent', $parent_id)
+      ->order_by('id')
+      ->get('ontology');
+    return $query->result();
+  }
+
 }

@@ -132,6 +132,25 @@ class Entite_abstract_model extends CI_Model {
   }
 
 
+  public function getReponses($id) {
+    // caractéristiques cochées
+    $this->db->from($this->qcmLinkTable)
+      ->where($this->linkColumnName(), $id);
+
+    $query = $this->db->get();
+
+    $res = $query->result();
+    //$this->log_debug($res);
+
+    $data = array();
+    foreach ($res as $car) {
+      $data[$car->qcm_id] = $car;
+    }
+
+    return $data;
+  }
+
+
   // recupère toutes les caractéristiques pour une rubriques
   // et précise si elles sont sélectionnées
   public function getCaracteristiquesForm($id, $rubrique = NULL) {
@@ -319,7 +338,7 @@ class Entite_abstract_model extends CI_Model {
         foreach ($cars as $li) {
           if (!empty($li['qcm_id'])) {
             $toinsert[] = array_merge($template, $li);
-          }          
+          }
         }
 
         $this->db->insert_batch($this->qcmLinkTable, $toinsert);

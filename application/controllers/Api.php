@@ -26,5 +26,18 @@ class Api extends CI_Controller {
 
   }
 
+  public function get_child_nodes($id_parent) {
+    $this->load->model('qcm_model');
+    $data = $this->qcm_model->getChildNodes($id_parent);
+    $this->send($data);
+  }
+
+  // récupère toutes les association qcm - réponse pour un site
+  public function get_responses_site($id) {
+    $this->load->model('site_model');
+    $data = $this->site_model->getReponses($id);
+    $this->send($data);
+  }
+
 
 }
