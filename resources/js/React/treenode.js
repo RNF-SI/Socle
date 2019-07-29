@@ -48,13 +48,6 @@ class TreeNode extends React.Component {
         }
     }
 
-    getChildren = (toAppend, subnodes) => {
-        subnodes.forEach((elt) => {
-            toAppend.push(elt);
-            this.getChildren(toAppend, elt.subnodes)
-        })
-    }
-
     onChildChecked = () => {
         this.setState({checked: true});
         this.props.onChecked();
