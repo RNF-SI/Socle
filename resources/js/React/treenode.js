@@ -84,8 +84,8 @@ class TreeNode extends React.Component {
 
         return (
             <li key={this.props.node_id} onClick={this.fetchSubNodes} className={this.props._class}>
-                {checkbox}{checkbox ? " " : ""}<label htmlFor={"chkbx-" + this.props.node_id}>
-                {this.props.label}</label>&nbsp;
+                {checkbox}{checkbox ? " " : ""}
+                {this.props.label}&nbsp;
                 {this.state.terminal ? "" : (this.isExpanded()  ? <span className="fas fa-chevron-down"></span> : <span className="fas fa-chevron-right"></span>) }
                 {description}
                 <ul key={'cont-' + this.props.node_id.toString()} className={this.isExpanded() ? "node-visible" : "node-hidden"}>

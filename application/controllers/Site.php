@@ -448,4 +448,26 @@ class Site extends CI_Controller {
       ->set_output(json_encode($espace));
   }
 
+
+  public function save_qcm($type, $id) {
+    $resp = ['success' => false];
+
+    if ($type == 'Site') {
+      $model = $this->site_model;
+    } elseif ($type == 'EG') {
+      $this->load->model('entite_geol_model');
+      $model = $this->entite_geol_model;
+    }
+
+    if ($this->input->post('data')) {
+      $data = json_decode($this->input->post('data'));
+      $success = $model->saveChanges($id, $data);
+      $resp['success'] = $success;
+    }
+
+    $this->output->set_content_type('application/json')
+      ->set_output(json_encode($resp));
+
+  }
+
 }

@@ -386,4 +386,30 @@ class Entite_abstract_model extends CI_Model {
     return $res;
   }
 
+
+  public function saveChanges($id, $data) {
+    // Enregistre les changements dans les données des QCM
+    $to_delete = [];
+    $to_insert = [];
+    $linkColumn = $this->linkColumnName();
+    foreach ($data as $i => $item) {
+      $to_delete[] = "($id, $i)";
+      if ($item->checked) {
+        $li = [
+          $linkColumn => $id,
+          'qcm_id' => $i
+        ];
+        // TODO: autres infos
+        $to_insert[] = $li;
+      }
+    }
+
+    $this->db->where("($linkColumn, qcm_id) IN (" . implode(',', $to_delete) . ')');
+    $this->db->delete($this->qcmLinkTable);
+    if (count($to_insert) > 0) {
+      $this->db->insert_batch($this->qcmLinkTable, $to_insert);
+    }
+    return TRUE;
+  }
+
 }

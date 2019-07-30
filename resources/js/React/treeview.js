@@ -12,6 +12,7 @@ class TreeView extends React.Component {
         };
         this.state = {
             isLoaded: false,
+            inTransaction: false,
             nodes: nodes
         };
     }
@@ -55,7 +56,7 @@ class TreeView extends React.Component {
     changeElement = (id, data) => {
         let nodes = this.state.nodes;
         let elt = nodes[id];
-        let changed_ids = [];
+        let changed_ids = [id];
 
         elt = Object.assign(elt, data);
 
@@ -94,20 +95,34 @@ class TreeView extends React.Component {
         }
 
         nodes[id] = elt;
-        this.setState({nodes: nodes});
 
-        // TODO: enregistrement des changements
+        // enregistrement des changements
+        if (elt.checkable && 'checked' in data) {
+            this.setState({inTransaction: true});
+            let post_data = {};
+            changed_ids.forEach(i => post_data[i] = nodes[i])
+            $.post(site_url('Site/save_qcm/' + this.props.level + '/' + this.props.id), {
+                data: JSON.stringify(post_data)
+            }, (response) => {
+                this.setState({inTransaction: false, nodes: nodes});
+            });
+        } else {
+            this.setState({nodes: nodes});
+        }
     }
 
     addElement = (parent_id, data) => {
         let nodes = this.state.nodes;
         data.forEach(e => {
+            if (e.id in this.responses) {
+                e.checked = true;
+            }
             nodes[e.id] = {
                 parent_id: parent_id,
                 checked: e.checked || false,
                 checkable: e.checkable,
                 expanded: e.expanded || false,
-                active: e.active,
+                active: true,
                 nullying: e.nullying
             };
         });
