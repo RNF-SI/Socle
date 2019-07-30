@@ -19,7 +19,6 @@ class TreeNode extends React.Component {
             subnodes: [],
             loadingSubnodes: false,
             expanded: false,
-            checked: props.node_id in responses && ( props.parentChecked ),
             terminal: false,
             active: this.props.active,
             childrenNulled: false
@@ -28,57 +27,55 @@ class TreeNode extends React.Component {
 
     fetchSubNodes = (e) => {
         e.stopPropagation();
-        if (this.state.expanded) {
-            this.setState({expanded: false});
+        //debugger;
+        if (this.isExpanded()) {
+            this.setExpanded(false);
         } else {
-            if (this.state.subnodes.length > 0 || this.state.terminal || (this.state.active === false)) {
-                this.setState({expanded: true});
+            if (this.state.subnodes.length > 0 || this.state.terminal || (this.isActive() === false)) {
+                this.setExpanded(true);
                 return
             }
             this.setState({loadingSubnodes: true});
             const url = site_url('api/get_child_nodes/' + this.props.node_id);
             $.get(url, (data) => {
+                this.props.addCallback(this.props.node_id, data);
                 this.setState({
                     subnodes: data,
                     loadingSubnodes: false,
-                    expanded: true,
                     terminal: data.length == 0
                 });
+                this.setExpanded(true);
             })
         }
     }
 
-    onChildChecked = () => {
-        this.setState({checked: true});
-        this.props.onChecked();
-    }
-
-    onNullChildChecked = (rep) => {
-        this.setState({childrenNulled: rep});
-    }
+    setExpanded = (exp) => { this.props.changeCallback(this.props.node_id, {expanded: exp}) }
 
     onCheckboxChecked = (e) => {
-        if (! this.state.active) return;
-        var checked = !this.state.checked;
-        this.setState({checked: checked});
-        if (checked && this.props.onChecked && ! this.props.nullying) { // propagation du cochage enfant -> parent
-            this.props.onChecked();
-        }
-        if (this.props.nullying && this.props.onNullChecked) {
-            // propagates unchecked to siblings
-            this.props.onNullChecked(checked);
-        }
-        if (checked) {
-            this.setState({expanded: true});
-        }
+        if (! this.isActive()) return;
+        let checked = !this.isChecked();
+        let changes = {checked: checked};
 
-        // TODO: enregistrement des changements
+        this.props.changeCallback(this.props.node_id, changes);
+    }
+
+    isExpanded = () => this.props.data[this.props.node_id].expanded
+
+    isChecked = () => this.props.data[this.props.node_id].checked
+
+    isActive = () => {
+        let active = this.props.data[this.props.node_id].active;
+        if (active === undefined)
+            return true;
+        return active;
     }
 
     render() {
         let checkbox, description;
         if (this.props.checkable) {
-            checkbox = <NodeCheckBox id={"chkbx-" + this.props.node_id} checked={this.state.checked} onChange={this.onCheckboxChecked} active={this.props.active} />
+            checkbox = <NodeCheckBox id={"chkbx-" + this.props.node_id}
+                checked={this.isChecked()}
+                onChange={this.onCheckboxChecked} active={this.isActive()} />
         }
 
         if (this.props.description) {
@@ -89,16 +86,17 @@ class TreeNode extends React.Component {
             <li key={this.props.node_id} onClick={this.fetchSubNodes} className={this.props._class}>
                 {checkbox}{checkbox ? " " : ""}<label htmlFor={"chkbx-" + this.props.node_id}>
                 {this.props.label}</label>&nbsp;
-                {this.state.terminal ? "" : (this.state.expanded  ? <span className="fas fa-chevron-down"></span> : <span className="fas fa-chevron-right"></span>) }
+                {this.state.terminal ? "" : (this.isExpanded()  ? <span className="fas fa-chevron-down"></span> : <span className="fas fa-chevron-right"></span>) }
                 {description}
-                <ul key={'cont-' + this.props.node_id.toString()} className={this.state.expanded ? "node-visible" : "node-hidden"}>
+                <ul key={'cont-' + this.props.node_id.toString()} className={this.isExpanded() ? "node-visible" : "node-hidden"}>
                     {this.state.subnodes.map(node => (
                         <TreeNode label={node.label} node_id={node.id} key={'node-' + node.id}
                             description={node.description}
-                            checkable={node.checkable} parentChecked={this.state.checked}
-                            onChecked={this.onChildChecked} active={!this.state.childrenNulled || node.nullying}
+                            checkable={node.checkable}
                             nullying={node.nullying}
-                            onNullChecked={this.onNullChildChecked} />
+                            data={this.props.data}
+                            changeCallback={this.props.changeCallback}
+                            addCallback={this.props.addCallback} />
                     ))}
                 </ul>
             </li>
