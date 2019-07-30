@@ -71,7 +71,7 @@ class TreeNode extends React.Component {
     }
 
     render() {
-        let checkbox, description;
+        let checkbox, description, definition;
         if (this.props.checkable) {
             checkbox = <NodeCheckBox id={"chkbx-" + this.props.node_id}
                 checked={this.isChecked()}
@@ -82,16 +82,23 @@ class TreeNode extends React.Component {
             description = <div className="rubrique-description" dangerouslySetInnerHTML={{__html: this.props.description}}></div>
         }
 
+        if (this.props.definition) {
+            definition = <span className="description-tooltip" data-toggle="popover" data-content={this.props.definition}>?</span>
+        }
+
+        activate_popover("body");
+
         return (
             <li key={this.props.node_id} onClick={this.fetchSubNodes} className={this.props._class}>
                 {checkbox}{checkbox ? " " : ""}
-                {this.props.label}&nbsp;
+                {this.props.label}{definition}&nbsp;
                 {this.state.terminal ? "" : (this.isExpanded()  ? <span className="fas fa-chevron-down"></span> : <span className="fas fa-chevron-right"></span>) }
                 {description}
                 <ul key={'cont-' + this.props.node_id.toString()} className={this.isExpanded() ? "node-visible" : "node-hidden"}>
                     {this.state.subnodes.map(node => (
                         <TreeNode label={node.label} node_id={node.id} key={'node-' + node.id}
                             description={node.description}
+                            definition={node.definition}
                             checkable={node.checkable}
                             nullying={node.nullying}
                             data={this.props.data}
