@@ -45,11 +45,13 @@ class Site extends CI_Controller {
     // Affichage des données sous forme arborescente
     $site = $this->site_model->get($id);
 
-    $scripts = [ // WARNING : penser à changer ces scripts en production
-      'https://unpkg.com/react@16/umd/react.development.js',
-      'https://unpkg.com/react-dom@16/umd/react-dom.development.js',
-      'https://unpkg.com/babel-standalone@6.15.0/babel.min.js',
-      //'js/React/treeview.js'
+    $scripts = [
+      'https://unpkg.com/react@16/umd/react.production.min.js',
+      'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js',
+      //'https://unpkg.com/babel-standalone@6.15.0/babel.min.js',
+      'js/React/dist/treeview.js',
+      'js/React/dist/treenode.js',
+      'js/React/dist/fiche_terrain.js'
     ];
     $this->load->view('default/header', ['scripts' => $scripts, 'title' => $site->nom,
       'path'=>$this->site_model->getPath($id)]);
