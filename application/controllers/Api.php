@@ -14,7 +14,7 @@ class Api extends CI_Controller {
     $this->output->set_output(json_encode($data));
   }
 
-  //récupere le nom est la geom de l'espace de reference
+  //récupere le nom et la geom de l'espace de reference
   public function get_espace_ref($code) {
     $this->load->model('espace_ref_model');
     $data = $this->espace_ref_model->getEspaceWkt($code);
@@ -37,6 +37,17 @@ class Api extends CI_Controller {
     $this->load->model('site_model');
     $data = $this->site_model->getReponses($id);
     $this->send($data);
+  }
+
+  public function create_qcm_item($id_parent) {
+    $response = ['success' => FALSE];
+    $label = $this->input->post_get('label');
+    if ($label) {
+      $this->load->model('qcm_model');
+      $this->qcm_model->createItem($id_parent, $label);
+      $response['success'] = TRUE;
+    }
+    $this->send($response);
   }
 
 

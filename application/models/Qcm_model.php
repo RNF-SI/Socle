@@ -29,4 +29,16 @@ class Qcm_model extends CI_Model {
     return $query->result();
   }
 
+  // crée un nouvel item checkable simple
+  public function createItem($id_parent, $label) {
+    $data = [
+      'label' => $label,
+      'id_parent' => $id_parent,
+      'checkable' => TRUE,
+      'nullying' => FALSE,
+      'attached_to' => 'Site'
+    ];
+    $this->db->insert('ontology', $data);
+  }
+
 }

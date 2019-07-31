@@ -235,3 +235,7 @@ table#table-liens img {
 .node-hidden {
   display: none;
 }
+
+.tree-add-item div {
+  display: inline;
+}
