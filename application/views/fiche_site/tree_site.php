@@ -1,3 +1,6 @@
+<div id="map">
+
+</div>
 <div id="main_tree" class="container">
 </div>
 
