@@ -1,7 +1,7 @@
 // Composant affichant une carte Leaflet de base
 
 const {Map: LeafletMap, TileLayer, WMSTileLayer,
-    LayersControl, Marker, Popup, DivOverlay,
+    LayersControl, Marker, Popup, DivOverlay, GeoJSON,
     withLeaflet } = window.ReactLeaflet;
 const BaseLayer = LayersControl.BaseLayer;
 
@@ -71,14 +71,32 @@ const MapPopup = withLeaflet(_MapPopup);
 class GeologyMap extends React.Component {
     state = {
         infoPaneActivated: true,
-        clickPosition: [48.2, 0.3],
+        clickPosition: L.latLng(48.2, 0.3),
         center: [48.2, 0.3]
+    }
+
+    constructor(props) {
+        super(props);
+        this.siteGeomRef = React.createRef();
     }
 
     onClick = (e) => {
         // Affichage popup infos geol
         if (! this.props.geolInfoActivated) return;
         this.setState({clickPosition: e.latlng})
+    }
+
+    onSiteAdded = (e) => {
+        const bounds = e.target.getBounds();
+        this.setState({mapBounds: bounds});
+    }
+
+    polygonStyle = () => {
+        return {
+            color: "green",
+            width: 4,
+            fill: false
+        }
     }
 
     render() {
@@ -88,7 +106,7 @@ class GeologyMap extends React.Component {
         }
 
         return (<div id="map-container">
-            <LeafletMap center={this.state.center} zoom={12} onClick={this.onClick}>
+            <LeafletMap bounds={this.state.mapBounds} center={[48.2, 0.3]} zoom={12} onClick={this.onClick}>
                 {geolPopup}
                 <LayersControl position="topright">
                     <BaseLayer name="Orthophotos IGN">
@@ -100,12 +118,13 @@ class GeologyMap extends React.Component {
                             maxZoom="18" tileSize="256" />
                     </BaseLayer>
                     <BaseLayer checked name="Carte géologique">
-                    <WMSTileLayer url="http://geoservices.brgm.fr/geologie" attribution="&copy; BRGM"
-                        layers="GEOLOGIE"
-                        format="image/jpeg"
-                        maxZoom="15" />
+                        <WMSTileLayer url="http://geoservices.brgm.fr/geologie" attribution="&copy; BRGM"
+                            layers="GEOLOGIE"
+                            format="image/jpeg"
+                            maxZoom="15" />
                     </BaseLayer>
                 </LayersControl>
+                <GeoJSON ref={this.siteGeomRef} data={this.props.siteGeom} style={this.polygonStyle} onAdd={this.onSiteAdded} />
             </LeafletMap>
         </div>)
     }

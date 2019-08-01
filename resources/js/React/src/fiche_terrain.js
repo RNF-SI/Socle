@@ -4,6 +4,9 @@ $(() => {
     ReactDOM.render(mytree, $("#main_tree").get(0));
 
     // ajout de la carte
-    const theMap = <GeologyMap />;
-    ReactDOM.render(theMap, $("#map").get(0));
+    $.get(site_url("carto/site_geom/" + id_site), data => {
+        const theMap = <GeologyMap site_id={id_site} siteGeom={data.features} />;
+        ReactDOM.render(theMap, $("#map").get(0));
+    });
+
 });
