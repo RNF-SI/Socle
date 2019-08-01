@@ -44,7 +44,7 @@ class NewNode extends React.Component {
     }
 
     render() {
-        let inputWidget = <div><input type="text" value={this.state.label} onChange={this.handleChange} />
+        let inputWidget = <div><input type="text" placeholder="Intitulé de l'item" value={this.state.label} onChange={this.handleChange} />
             &nbsp;<a href="#" onClick={this.onClickSave}><span className="fas fa-save"></span></a></div>;
 
         return (<li className="tree-add-item" onClick={(e) => {e.stopPropagation()}}>
@@ -66,7 +66,6 @@ class TreeNode extends React.Component {
             loadingSubnodes: false,
             expanded: false,
             terminal: false,
-            active: this.props.active,
             childrenNulled: false
         }
     }
