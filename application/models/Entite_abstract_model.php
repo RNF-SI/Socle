@@ -14,6 +14,7 @@ class Entite_abstract_model extends CI_Model {
   protected $entity;
 
   protected $has_geometry = TRUE;
+  protected $geometry_format = 'POINT';
   protected $store_user_info = FALSE;
 
 
@@ -50,7 +51,11 @@ class Entite_abstract_model extends CI_Model {
       }
       $func = 'st_geomFromGeojson';
     }
-    $procgeom = 'st_multi(st_setsrid(' . $func . '(' . $this->db->escape($s) . '), 4326))';
+    $procgeom = 'st_setsrid(' . $func . '(' . $this->db->escape($s) . '), 4326)';
+    if (substr($this->geometry_format, 0, 4) == 'MULTI') {
+      $procgeom = 'st_multi(' . $procgeom . ')';
+    }
+
     $this->db->set('geom', $procgeom, FALSE);
   }
 
@@ -319,7 +324,7 @@ class Entite_abstract_model extends CI_Model {
         foreach ($cars as $li) {
           if (!empty($li['qcm_id'])) {
             $toinsert[] = array_merge($template, $li);
-          }          
+          }
         }
 
         $this->db->insert_batch($this->qcmLinkTable, $toinsert);

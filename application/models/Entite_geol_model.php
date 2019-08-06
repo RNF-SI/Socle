@@ -8,6 +8,7 @@ class Entite_geol_model extends Entite_abstract_model {
 
   protected $commentTableName = 'commentaire_eg';
   protected $complementTableName = 'complement_eg';
+  protected $geometry_format = 'MULTIPOINT';
 
 
   public function get($id_eg) {
