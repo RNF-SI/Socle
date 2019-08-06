@@ -75,11 +75,6 @@ class GeologyMap extends React.Component {
         center: [48.2, 0.3]
     }
 
-    constructor(props) {
-        super(props);
-        this.siteGeomRef = React.createRef();
-    }
-
     onClick = (e) => {
         // Affichage popup infos geol
         if (! this.props.geolInfoActivated) return;
@@ -117,14 +112,20 @@ class GeologyMap extends React.Component {
                         <TileLayer url={ignScanUrl} attribution="IGN-F/Geoportail"
                             maxZoom="18" tileSize="256" />
                     </BaseLayer>
-                    <BaseLayer checked name="Carte géologique">
+                    <BaseLayer name="Carte géologique harmonisée">
+                        <WMSTileLayer url="http://geoservices.brgm.fr/geologie" attribution="&copy; BRGM"
+                            layers="SCAN_H_GEOL50"
+                            format="image/jpeg"
+                            maxZoom="15" />
+                    </BaseLayer>
+                    <BaseLayer checked name="Carte géologique scannée">
                         <WMSTileLayer url="http://geoservices.brgm.fr/geologie" attribution="&copy; BRGM"
                             layers="GEOLOGIE"
                             format="image/jpeg"
                             maxZoom="15" />
                     </BaseLayer>
                 </LayersControl>
-                <GeoJSON ref={this.siteGeomRef} data={this.props.siteGeom} style={this.polygonStyle} onAdd={this.onSiteAdded} />
+                <GeoJSON data={this.props.siteGeom} style={this.polygonStyle} onAdd={this.onSiteAdded} />
             </LeafletMap>
         </div>)
     }

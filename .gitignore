@@ -6,6 +6,7 @@
 !*/cache/.htaccess
 **/node_modules/
 **/package-lock.json
+*.backup
 
 user_guide_src/build/*
 user_guide_src/cilexer/build/*

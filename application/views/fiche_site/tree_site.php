@@ -1,7 +1,7 @@
 <div id="map">
 
 </div>
-<div id="main_tree" class="container">
+<div id="main_tree" class="container qcm-tree">
 </div>
 
 <script type="text/javascript">

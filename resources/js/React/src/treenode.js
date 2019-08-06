@@ -146,12 +146,14 @@ class TreeNode extends React.Component {
         return (
             <li key={this.props.node_id} onClick={this.onClickExpand} className={this.props._class}>
                 {checkbox}{checkbox ? " " : ""}
-                {this.props.label}{definition}&nbsp;
+                <span className="tree-item-label">{this.props.label}{definition}&nbsp;
                 {this.state.terminal ? "" : <span className={this.isExpanded()  ? "fas fa-chevron-down" : "fas fa-chevron-right"}></span>}
+                </span>
                 {description}
                 <ul key={'cont-' + this.props.node_id.toString()} className={this.isExpanded() ? "node-visible" : "node-hidden"}>
                     {this.state.subnodes.map(node => (
                         <TreeNode label={node.label} node_id={node.id} key={'node-' + node.id}
+                            className={node.class}
                             description={node.description}
                             definition={node.definition}
                             checkable={node.checkable}
