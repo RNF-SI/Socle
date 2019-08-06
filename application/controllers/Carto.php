@@ -104,23 +104,30 @@ class Carto extends CI_Controller {
 
   // proxy pour contourner le cross-origin avec le BRGM
   // et simplifier le traitement
+  // recherche d'abord dans la table s_fgeol
   public function featureInfoProxy() {
     $params = $this->input->get();
     // params: height, width, x, y, bbox
-    $params += [
-      'SERVICE' => 'WMS',
-      'VERSION'=> '1.1.1',
-      'REQUEST' => 'GetFeatureInfo',
-      'LAYERS' => 'SCAN_GEOL50',
-      'SRS' => 'EPSG:4326',
-      'QUERY_LAYERS' => 'SCAN_GEOL50',
-      'FEATURE_COUNT' => 100
-    ];
-    $base_url = 'http://infoterre.brgm.fr/services/gfi';
-    $xml = $this->getServiceXML($base_url, $params);
-    $struct = $xml->SCAN_GEOL50_layer->SCAN_GEOL50_feature;
+    $this->load->model('infoterre_model');
+    $res = $this->infoterre_model->get_eg_point($params['lat'], $params['lng']);
+    if (count($res) > 0) {
+      $json = $this->_create_geoJson($res);
+    } else {
+       $params += [
+        'SERVICE' => 'WMS',
+        'VERSION'=> '1.1.1',
+        'REQUEST' => 'GetFeatureInfo',
+        'LAYERS' => 'SCAN_GEOL50',
+        'SRS' => 'EPSG:4326',
+        'QUERY_LAYERS' => 'SCAN_GEOL50',
+        'FEATURE_COUNT' => 100
+      ];
+      $base_url = 'http://infoterre.brgm.fr/services/gfi';
+      $xml = $this->getServiceXML($base_url, $params);
+      $json = json_encode($xml->SCAN_GEOL50_layer->SCAN_GEOL50_feature);
+    }
 
-    $this->output->set_output(json_encode($struct));
+    $this->output->set_output($json);
   }
 
   // proxy pour le WFS INPN

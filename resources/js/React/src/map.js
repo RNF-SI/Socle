@@ -1,7 +1,7 @@
 // Composant affichant une carte Leaflet de base
 
 const {Map: LeafletMap, TileLayer, WMSTileLayer,
-    LayersControl, Marker, Popup, DivOverlay, GeoJSON,
+    LayersControl, Marker, Popup, DivOverlay, GeoJSON, Polygon,
     withLeaflet } = window.ReactLeaflet;
 const BaseLayer = LayersControl.BaseLayer;
 
@@ -34,7 +34,7 @@ class _MapPopup extends DivOverlay {
     }
 
     // téléchargement des infos BRGM sur un point cliqué
-    getGeolInfo = (map, position, callback) => {
+    getGeolInfo = (map, position, callback, errorCallback) => {
         const url = site_url('carto/featureInfoProxy');
         const size = map.getSize();
         const xy = map.latLngToLayerPoint(position);
@@ -43,9 +43,18 @@ class _MapPopup extends DivOverlay {
             WIDTH: size.x,
             HEIGHT: size.y,
             X: Math.round(xy.x),
-            Y: Math.round(xy.y)
+            Y: Math.round(xy.y),
+            lat: position.lat,
+            lng: position.lng
         };
-        $.get(url, params, callback);
+        $.ajax(url, {data: params, success: (data) => {
+            if (data.features) {
+                callback(data);
+            } else {
+                errorCallback();
+            }
+
+        }, error: errorCallback});
     }
 
     updateLeafletElement(fromProps, toProps) {
@@ -53,14 +62,24 @@ class _MapPopup extends DivOverlay {
             const map = toProps.leaflet.map;
             if (map.getZoom() < 11) return false;
             var popup = this.leafletElement;
+            var onDataFetch = this.props.onDataFetch;
             popup.setContent("Chargement...").setLatLng(toProps.position).openOn(map);
             this.getGeolInfo(map, toProps.position, function(data) {
-                var cont = '<p><b>Entité géologique :</b><br />' + data.notation + ' : <i>'
-                    + data.description + '</i></p><p><a href="http://ficheinfoterre.brgm.fr/Notices/'
-                    + ("0000" + data.carte).slice(-4)
-                    + 'N.pdf" target="_blank">consulter la notice</a></p>';
-                popup.setContent(cont);
-            });
+                if (data.features.length > 0) {
+                    const props = data.features[0].properties;
+                    const cont = `<p><b>Entité géologique :</b><br />${props.descr}</p>
+                        <table class="table table-sm">
+                            <tr><th>Appellation locale</th><td>${props.ap_locale}</td></tr>
+                            <tr><th>Notation sur la carte</td><td>${props.notation}</td></tr>
+                            <tr><th>Type de formation géologique</th><td>${props.type_geol}</td></tr>
+                            <tr><th>Age des roches</th><td>${props.label}</td></tr>
+                            <tr><th>Lithologie</th><td>${props.lithologie}</td></tr>
+                            <tr><th>Géochimie</th><td>${props.geochimie}</td></tr>
+                        </table>`;
+                    popup.setContent(cont);
+                }
+                onDataFetch(data);
+            }, () => { popup.setContent("Erreur de requête !") });
         }
     }
 }
@@ -72,7 +91,8 @@ class GeologyMap extends React.Component {
     state = {
         infoPaneActivated: true,
         clickPosition: L.latLng(48.2, 0.3),
-        center: [48.2, 0.3]
+        center: [48.2, 0.3],
+        geolPg: []
     }
 
     onClick = (e) => {
@@ -86,6 +106,11 @@ class GeologyMap extends React.Component {
         this.setState({mapBounds: bounds});
     }
 
+    onPopupDataFetched = (data) => {
+        var coords = data.features[0].geometry.coordinates.map(p => p.map(c => c.reverse()));
+        this.setState({geolPg: coords});
+    }
+
     polygonStyle = () => {
         return {
             color: "green",
@@ -95,9 +120,10 @@ class GeologyMap extends React.Component {
     }
 
     render() {
-        let geolPopup;
+        let geolPopup, geolPg;
         if (this.props.geolInfoActivated) {
-            geolPopup = <MapPopup position={this.state.clickPosition} />
+            geolPopup = <MapPopup position={this.state.clickPosition} onDataFetch={this.onPopupDataFetched} />;
+            geolPg = <Polygon positions={this.state.geolPg} />;
         }
 
         return (<div id="map-container">
@@ -126,6 +152,7 @@ class GeologyMap extends React.Component {
                     </BaseLayer>
                 </LayersControl>
                 <GeoJSON data={this.props.siteGeom} style={this.polygonStyle} onAdd={this.onSiteAdded} />
+                {geolPg}
             </LeafletMap>
         </div>)
     }
