@@ -235,9 +235,7 @@ class Entite_abstract_model extends CI_Model {
 
       $corresp_id = $data['remarquable'];
       foreach ($data['remarquable'] as $numli => $qcm_id) {
-        if (!empty($qcm_id)) {
-          $cars[$qcm_id]['remarquable'] = TRUE;
-        }
+          $cars[$qcm_id]['remarquable'] = !empty($qcm_id);
       }
       unset($data['remarquable']);
 
