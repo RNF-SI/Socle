@@ -86,6 +86,60 @@ class _MapPopup extends DivOverlay {
 
 const MapPopup = withLeaflet(_MapPopup);
 
+// Composant permettant d'afficher la position sur l'échelle stratigraphique
+class BRGMScale extends React.Component {
+    state = {
+        indicatorPosition: 0,
+        indicatorHeight: 5
+    }
+
+    constructor(props) {
+        super(props);
+
+        this.contRef = React.createRef();
+    }
+
+    componentDidUpdate() {
+        // Ajuste l'affichage de l'image sur le marqueur
+        if (this.props.indicatorPosition && this.props.indicatorPosition.min) {
+            const factor = this.state.imgWidth / this.originalWidth;
+            const hgt = (this.props.indicatorPosition.max - this.props.indicatorPosition.min) * factor + 2;
+            const containerOffset = this.props.indicatorPosition.min * factor - 100 + hgt / 2;
+            this.contRef.current.scrollTop = containerOffset
+        }
+    }
+
+    originalWidth = 2624
+
+    onImgLoad = (e) => {
+        // recupère la largeur effective de l'image
+        this.setState({imgWidth: e.target.offsetWidth})
+    }
+
+    render() {
+        let indicatorStyle = {
+            display: "none"
+        };
+        if (this.props.indicatorPosition && this.props.indicatorPosition.min) {
+            // placement du marqueur
+            const factor = this.state.imgWidth / this.originalWidth;
+            const hgt = (this.props.indicatorPosition.max - this.props.indicatorPosition.min) * factor + 2;
+            indicatorStyle = {
+                top: this.props.indicatorPosition.min * factor,
+                height: hgt,
+                display: "block"
+            }
+        }
+
+        return (<div className="strat-scale-frame" ref={this.contRef}>
+            <div className="strat-scale-container">
+                <div className="strat-scale-indicator" style={indicatorStyle}></div>
+                <img onLoad={this.onImgLoad} src={base_url + "resources/images/echelle_brgm.png"} />
+            </div>
+        </div>)
+    }
+}
+
 
 class GeologyMap extends React.Component {
     state = {
@@ -107,8 +161,15 @@ class GeologyMap extends React.Component {
     }
 
     onPopupDataFetched = (data) => {
-        var coords = data.features[0].geometry.coordinates.map(p => p.map(c => c.reverse()));
-        this.setState({geolPg: coords});
+        const ft = data.features[0];
+        var coords = ft.geometry.coordinates.map(p => p.map(c => c.reverse()));
+        this.setState({
+            geolPg: coords,
+            indicatorPosition: {
+                min: ft.properties.pix_min,
+                max: ft.properties.pix_max,
+            }
+        });
     }
 
     polygonStyle = () => {
@@ -154,6 +215,7 @@ class GeologyMap extends React.Component {
                 <GeoJSON data={this.props.siteGeom} style={this.polygonStyle} onAdd={this.onSiteAdded} />
                 {geolPg}
             </LeafletMap>
+            <BRGMScale indicatorPosition={this.state.indicatorPosition} />
         </div>)
     }
 }
