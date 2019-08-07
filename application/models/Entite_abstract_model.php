@@ -220,7 +220,7 @@ class Entite_abstract_model extends CI_Model {
     if (isset($data['caracteristiques'])) {
       $cars = array();
       foreach ($data['caracteristiques'] as $car) {
-        $cars[$car] = array('qcm_id' => $car, $colname => $id);
+        $cars[$car] = array('qcm_id' => $car, $colname => $id, 'remarquable' => FALSE);
       }
       unset($data['caracteristiques']);
 
