@@ -12,7 +12,7 @@
         echo form_hidden('geom', set_value_obj('geojson', $eg, FALSE));
         echo form_input('intitule', 'Nom de l\'entité (libre)', set_value_obj('intitule', $eg));
         echo form_input('code', 'code de l\'entité sur la carte géologique', set_value_obj('code', $eg));
-        echo form_input('intitule', 'nom de l\'entité sur la légende de la carte', set_value_obj('intitule', $eg));
+        echo form_input('nom_carte', 'nom de l\'entité sur la légende de la carte', set_value_obj('nom_carte', $eg));
         ?>
     </div>
     <div class="col-sm-5">

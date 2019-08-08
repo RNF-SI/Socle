@@ -32,7 +32,10 @@ $(function() {
 
     getGeolInfo(map, evt, function(response) {
       $('input#code').val(response.notation);
-      $('input#intitule').val(response.description);
+      if ($('input#intitule').val() == "") {
+        $('input#intitule').val(response.description);
+      }
+      $('input#nom_carte').val(response.description);
     });
   });
 
