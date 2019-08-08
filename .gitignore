@@ -4,6 +4,8 @@
 */cache/*
 !*/cache/index.html
 !*/cache/.htaccess
+**/node_modules/
+*.backup
 
 user_guide_src/build/*
 user_guide_src/cilexer/build/*
@@ -23,3 +25,5 @@ user_guide/
 /vendor/
 resources/lib/
 photos/
+resources/js/React/dist/
+resources/js/React/package-lock.json
