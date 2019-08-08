@@ -1,7 +1,7 @@
 // Composant affichant une carte Leaflet de base
 
-const {Map: LeafletMap, TileLayer, WMSTileLayer,
-    LayersControl, Marker, Popup, DivOverlay, GeoJSON, Polygon,
+const {Map: LeafletMap, TileLayer, WMSTileLayer, DivOverlay,
+    LayersControl, Marker, Popup, GeoJSON, Polygon,
     withLeaflet } = window.ReactLeaflet;
 const BaseLayer = LayersControl.BaseLayer;
 
@@ -24,6 +24,31 @@ const ignScanUrl = "http://wxs.ign.fr/qi0jtcvtmn01lkt0621p5yci/wmts?" +
     "&TILEROW={y}" +
     "&TILECOL={x}";
 
+
+function pointInPolygon (point, vs) {
+    // adapted from https://github.com/substack/point-in-polygon/blob/master/index.js
+    // ray-casting algorithm based on
+    // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+
+    var x = point.lng, y = point.lat;
+
+    var inside = false;
+    for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+        var xi = vs[i][0], yi = vs[i][1];
+        var xj = vs[j][0], yj = vs[j][1];
+
+        var intersect = ((yi > y) != (yj > y))
+            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+    }
+
+    return inside;
+};
+
+function pointInMultiPolygon (pt, geom) {
+    // calcule si un point est inclus dans un polygone GeoJson
+
+}
 
 class _MapPopup extends DivOverlay {
     // composant custom pour le popup des infos géologiques
@@ -48,7 +73,8 @@ class _MapPopup extends DivOverlay {
             lng: position.lng
         };
         $.ajax(url, {data: params, success: (data) => {
-            if (data.features) {
+            if (data && data.features) {
+                this.polygon = data.features[0].geometry;
                 callback(data);
             } else {
                 errorCallback();
@@ -58,6 +84,7 @@ class _MapPopup extends DivOverlay {
     }
 
     updateLeafletElement(fromProps, toProps) {
+        // TODO: eviter plusieurs requetes sur la même entité (vérifier si on est tjrs ds le polygone)
         if ("position" in toProps && ! toProps.position.equals(fromProps.position)) {
             const map = toProps.leaflet.map;
             if (map.getZoom() < 11) return false;
@@ -67,12 +94,13 @@ class _MapPopup extends DivOverlay {
             this.getGeolInfo(map, toProps.position, function(data) {
                 if (data.features.length > 0) {
                     const props = data.features[0].properties;
+                    const age = props.label_age_deb + (props.label_age_fin ? ' - ' + props.label_age_fin : '');
                     const cont = `<p><b>Entité géologique :</b><br />${props.descr}</p>
                         <table class="table table-sm">
                             <tr><th>Appellation locale</th><td>${props.ap_locale}</td></tr>
                             <tr><th>Notation sur la carte</td><td>${props.notation}</td></tr>
                             <tr><th>Type de formation géologique</th><td>${props.type_geol}</td></tr>
-                            <tr><th>Age des roches</th><td>${props.label}</td></tr>
+                            <tr><th>Age des roches</th><td>${age}</td></tr>
                             <tr><th>Lithologie</th><td>${props.lithologie}</td></tr>
                             <tr><th>Géochimie</th><td>${props.geochimie}</td></tr>
                         </table>`;
@@ -113,7 +141,8 @@ class BRGMScale extends React.Component {
 
     onImgLoad = (e) => {
         // recupère la largeur effective de l'image
-        this.setState({imgWidth: e.target.offsetWidth})
+        this.setState({imgWidth: e.target.offsetWidth});
+        this.contRef.current.scrollTop = 394 * this.state.imgWidth / this.originalWidth;
     }
 
     render() {
@@ -166,8 +195,8 @@ class GeologyMap extends React.Component {
         this.setState({
             geolPg: coords,
             indicatorPosition: {
-                min: ft.properties.pix_min,
-                max: ft.properties.pix_max,
+                min: ft.properties.pix_min_fin ? ft.properties.pix_min_fin : ft.properties.pix_min_deb,
+                max: ft.properties.pix_max_deb
             }
         });
     }
