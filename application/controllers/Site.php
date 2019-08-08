@@ -46,6 +46,9 @@ class Site extends CI_Controller {
     $site = $this->site_model->get($id);
 
     $scripts = [
+      'https://unpkg.com/react@16/umd/react.production.min.js',
+      'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js',
+      'https://unpkg.com/react-leaflet/dist/react-leaflet.min.js',
       'js/React/dist/treeview.js',
       'js/React/dist/treenode.js',
       'js/React/dist/map.js',

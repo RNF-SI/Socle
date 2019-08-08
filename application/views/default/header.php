@@ -24,9 +24,11 @@
         <script src="<?= base_url('resources/lib/leaflet/leaflet.js') ?>"></script>
         <script src="<?= base_url('resources/lib/leaflet/easy-button.js') ?>"></script>
 
+        <?php /*
         <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
         <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
         <script src="https://unpkg.com/react-leaflet/dist/react-leaflet.min.js"></script>
+        */ ?>
 
         <script>var base_url = '<?= base_url() ?>';</script>
         <script src="<?= base_url("resources/js/common.js") ?>"></script>

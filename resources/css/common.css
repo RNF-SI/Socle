@@ -208,16 +208,17 @@ li.qcm-patrimonial {
 }
 
 #map {
-  /* height: 400px; */
+  height: 400px;
   width: 100%;
   margin: 10px;
   border: 1px solid gray;
 }
 
-.leaflet-container {
+#map-container .leaflet-container {
   height: 600px;
   width: 100%;
   margin: 0 auto;
+  border: 1px solid gray;
 }
 
 table#table-liens img {
