@@ -60,7 +60,7 @@ class _MapPopup extends DivOverlay {
 
     // téléchargement des infos BRGM sur un point cliqué
     getGeolInfo = (map, position, callback, errorCallback) => {
-        const url = site_url('carto/featureInfoProxy');
+        const url = site_url('carto/featureInfo');
         const size = map.getSize();
         const xy = map.latLngToLayerPoint(position);
         const params = {
