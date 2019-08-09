@@ -26,5 +26,5 @@ user_guide/
 /vendor/
 resources/lib/
 photos/
-
 resources/js/React/dist/
+resources/js/React/package-lock.json

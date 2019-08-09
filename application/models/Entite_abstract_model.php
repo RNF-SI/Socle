@@ -14,6 +14,7 @@ class Entite_abstract_model extends CI_Model {
   protected $entity;
 
   protected $has_geometry = TRUE;
+  protected $geometry_format = 'POINT';
   protected $store_user_info = FALSE;
 
 
@@ -50,7 +51,11 @@ class Entite_abstract_model extends CI_Model {
       }
       $func = 'st_geomFromGeojson';
     }
-    $procgeom = 'st_multi(st_setsrid(' . $func . '(' . $this->db->escape($s) . '), 4326))';
+    $procgeom = 'st_setsrid(' . $func . '(' . $this->db->escape($s) . '), 4326)';
+    if (substr($this->geometry_format, 0, 4) == 'MULTI') {
+      $procgeom = 'st_multi(' . $procgeom . ')';
+    }
+
     $this->db->set('geom', $procgeom, FALSE);
   }
 
@@ -234,7 +239,7 @@ class Entite_abstract_model extends CI_Model {
     if (isset($data['caracteristiques'])) {
       $cars = array();
       foreach ($data['caracteristiques'] as $car) {
-        $cars[$car] = array('qcm_id' => $car, $colname => $id);
+        $cars[$car] = array('qcm_id' => $car, $colname => $id, 'remarquable' => FALSE);
       }
       unset($data['caracteristiques']);
 
@@ -249,9 +254,7 @@ class Entite_abstract_model extends CI_Model {
 
       $corresp_id = $data['remarquable'];
       foreach ($data['remarquable'] as $numli => $qcm_id) {
-        if (!empty($qcm_id)) {
-          $cars[$qcm_id]['remarquable'] = TRUE;
-        }
+          $cars[$qcm_id]['remarquable'] = !empty($qcm_id);
       }
       unset($data['remarquable']);
 

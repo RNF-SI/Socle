@@ -5,6 +5,7 @@ class Site_model extends Entite_abstract_model {
   protected $qcmLinkTable = 'site_qcm';
   protected $complementTableName = 'complement_site';
   protected $store_user_info = TRUE;
+  protected $geometry_format = 'MULTIPOLYGON';
 
 
   public function getByEspace($id_ep) {

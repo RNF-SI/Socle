@@ -6,6 +6,7 @@ Représente un espace sur lequel on peut gérer les droits
 
 class Espace_model extends Entite_abstract_model {
   protected $tableName = 'espace_protege';
+  protected $geometry_format = 'MULTIPOLYGON';
 
   public function __construct() {
     $this->load->database();

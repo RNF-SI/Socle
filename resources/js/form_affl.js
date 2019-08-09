@@ -6,7 +6,7 @@ $(function() {
     var geojsonstr = $("input[name=geom]").val();
     if (geojsonstr) {
       var geojson = JSON.parse(geojsonstr.replace(/&quot;/g, '"'));
-      ptlyr.setLatLng(geojson.coordinates[0].reverse());
+      ptlyr.setLatLng(geojson.coordinates.reverse());
     } else {
       ptlyr.setLatLng(lyr.getBounds().getCenter());
     }
