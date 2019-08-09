@@ -397,7 +397,8 @@ class Entite_abstract_model extends CI_Model {
       if ($item->checked) {
         $li = [
           $linkColumn => $id,
-          'qcm_id' => $i
+          'qcm_id' => $i,
+          'remarquable' => isset($item->remarquable) ? $item->remarquable : FALSE
         ];
         // TODO: autres infos
         $to_insert[] = $li;

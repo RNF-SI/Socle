@@ -243,6 +243,11 @@ table#table-liens img {
   display: none;
 }
 
+.node-visible .remarquable-control {
+  /* retablit la visibilité pour le cas arborescent */
+  display: inline;
+}
+
 .tree-add-item div {
   display: inline;
 }

@@ -466,6 +466,7 @@ class Site extends CI_Controller {
       $data = json_decode($this->input->post('data'));
       $success = $model->saveChanges($id, $data);
       $resp['success'] = $success;
+      $resp['new_data'] = $model->getReponses($id);
     }
 
     $this->output->set_content_type('application/json')
