@@ -47,7 +47,6 @@ class Espace extends CI_Controller {
     // enregistrement du site
     if ($this->input->post()) {
       $this->form_validation->set_rules('nom', 'nom', 'required');
-      //$this->form_validation->set_rules('code_national_ep', '' 'required');
       if ($this->form_validation->run()) {
         $data = $this->input->post();
         if (!isset($data['monosite']) || !$data['monosite']) $data['monosite'] = FALSE;
