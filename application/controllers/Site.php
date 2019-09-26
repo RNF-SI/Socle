@@ -20,6 +20,7 @@ class Site extends CI_Controller {
     $data['entites_geol'] = $this->site_model->getEntitesGeol($id);
 
     // calcul taux avancement
+    /*
     $adv = $this->site_model->getAdvancement($id);
     $n_sites = 0;
     $total_sites = 0;
@@ -33,6 +34,7 @@ class Site extends CI_Controller {
     }
     $taux_adv = $n_sites / $total_sites * 0.5 + ($n_eg / $total_eg) * (0.5 / count($data['entites_geol']));
     $data['avancement'] = round($taux_adv * 100);
+    */
 
 
     $this->load->view('default/header', ['scripts' => ['js/fiche_projet.js'], 'title' => $site->nom,

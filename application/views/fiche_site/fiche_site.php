@@ -97,10 +97,11 @@
 <p>
   <a href="<?= site_url('site/resume/' . $site->id) ?>">Accès à la fiche synthétique</a>
   <?php if ($editable): ?>
-    <a href="<?= site_url('site/tree_site/' . $site->id) ?>">Voir la nouvelle disposition (Version alpha)</a>
+    <br /><a href="<?= site_url('site/tree_site/' . $site->id) ?>">Voir la nouvelle disposition (Version alpha)</a>
   <?php endif; ?>
 </p>
 
+<?php /*
 <div class="row" id="site-progression">
         <div class="col-sm-2">Avancement du remplissage :</div>
         <div class="col-sm-4">
@@ -111,6 +112,7 @@
         </div>
         <div class="col-sm-6"></div>
 </div>
+*/ ?>
 
 <?php if ($editable): ?>
   <div>
