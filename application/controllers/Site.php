@@ -14,6 +14,10 @@ class Site extends CI_Controller {
     $data = array();
     $site = $this->site_model->get($id);
 
+    if (! $site) {
+      show_404();
+    }
+
     $site->photos = $this->photo_model->getBySite($id, TRUE);
     $data['site'] = $site;
     $data['editable'] = $this->site_model->is_editable($id);
@@ -123,6 +127,11 @@ class Site extends CI_Controller {
   }
 
   public function rubrique_form($id, $rubrique, $type = 'Site') {
+    if (! $id) {
+      show_404();
+    }
+
+
     $this->load->helper('caracteristiques_helper');
     $this->load->helper('form_helper');
     $this->load->model('qcm_model');
@@ -162,6 +171,10 @@ class Site extends CI_Controller {
 
     $qcms = $model->getCaracteristiquesForm($id, $rubrique);
 
+    if (! $qcms) {
+      show_404();
+    }
+
     $data['site']->caracteristiques = $qcms;
     $data['site']->complements = $model->getComplementsRubrique($id, $rubrique);
     $comment = $model->getCommentaire($id, $rubrique);
@@ -174,12 +187,16 @@ class Site extends CI_Controller {
   }
 
 
-  // enregistrement d'un nouveau site
+  // enregistrement / modification d'un site
   public function creation($id_ep, $id=NULL) {
     if (! $this->auth->logged_in()) {
       $this->session->set_flashdata('message', 'Connectez-vous pour pouvoir accéder à cette page.');
       $this->session->set_flashdata('message-class', 'warning');
       redirect('accueil/index');
+    }
+
+    if (! $id_ep) {
+      show_404();
     }
 
     $this->load->model('espace_model');
@@ -212,6 +229,10 @@ class Site extends CI_Controller {
       $data['site'] = $this->site_model->get($id);
     }
     $data['ep'] = $this->espace_model->get($id_ep);
+
+    if (! $data['ep']) {
+      show_404();
+    }
 
     $this->load->view('default/header', [
       'scripts' => ['lib/leaflet/pm/leaflet.pm.min.js', 'js/ajout_site.js'],
@@ -249,6 +270,10 @@ class Site extends CI_Controller {
   public function rubrique_contexte_sismique($id) {
     $data = $this->site_model->getSeismes($id);
 
+    if (! $data) {
+      show_404();
+    }
+
     $this->output->set_output($this->load->view('fiche_site/rubriques/contexte_sismique', $data, TRUE));
   }
 
@@ -261,6 +286,10 @@ class Site extends CI_Controller {
   // ajout d'une photo au site ou EG (ajax)
   public function ajout_photo($id, $type='Site') {
     $this->load->helper('form_helper');
+
+    if (! $id) {
+      show_404();
+    }
 
     if ($this->input->post()) {
       $config = [
@@ -332,6 +361,7 @@ class Site extends CI_Controller {
       'id_eg' => $id_eg,
       'eg' => $this->entite_geol_model->get($id_eg)
     );
+
     $data['echelle_geol'] = $this->entite_geol_model->echelle_geol();
 
     $this->load->view('default/header', ['scripts' => ['lib/jquery.bonsai/jquery.bonsai.js', 'js/form_eg.js'],
@@ -345,6 +375,11 @@ class Site extends CI_Controller {
     $this->load->model('affleurement_model');
     $data = array();
     $eg = $this->entite_geol_model->get($id_eg);
+
+    if (! $eg) {
+      show_404();
+    }
+
     $eg->affleurements = $this->affleurement_model->getByEG($id_eg);
     if ($eg->geom_bdcharm && !$eg->geojson) {
       $eg->geojson = $eg->geom_bdcharm;
@@ -370,6 +405,11 @@ class Site extends CI_Controller {
     $this->load->model('affleurement_model');
     $data = array();
     $affl = $this->affleurement_model->get($id_affl);
+
+    if (! $affl) {
+      show_404();
+    }
+
     $data['affl'] = $affl;
     $data['eg'] = $this->entite_geol_model->get($affl->eg_id);
     $data['editable'] = TRUE; //$this->espace_protege_model->is_editable($eg->espace_protege_id);
@@ -431,6 +471,10 @@ class Site extends CI_Controller {
     $this->load->library('image_lib');
     $this->load->helper('caracteristiques');
     $site = $this->site_model->get($id);
+
+    if (! $site) {
+      show_404();
+    }
 
     $data = new stdClass();
     $siteElements = $this->site_model->getAllSubelements($id);

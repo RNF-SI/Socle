@@ -22,6 +22,10 @@ class Espace extends CI_Controller {
     $this->load->model('site_model');
 
     $ep = $this->espace_model->get($id_ep);
+    if (! $ep) {
+      show_404();
+    }
+
     $sites = $this->site_model->getByEspace($id_ep);
 
     $data = array('ep' => $ep, 'sites' => $sites);
