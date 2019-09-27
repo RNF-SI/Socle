@@ -7,6 +7,8 @@ function load_content(evt) {
   var $rubrique = $(evt.target).parents(".rubrique");
   var id_rubrique = $rubrique.attr('id');
   var $container  = $rubrique.find(".rubrique-content");
+  var $messageBox = $container.siblings(".message");
+  $messageBox.html("");
   $rubrique.find(".rubrique-toolbar .btn-group")
     .html('<button class="btn btn-primary button-edit-form"><span class="fas fa-edit"></span> Editer</button>');
   $.ajax(site_url("site/rubrique_content/" + entite_id + "/" + id_rubrique + '/' + type_rubrique), {
@@ -15,7 +17,7 @@ function load_content(evt) {
       activate_popover($rubrique);
     },
     error: function(xhr, status) {
-      $container.html('<p class="error">Erreur de chargement :' + status + '</p>');
+      $messageBox.html('<div class="alert alert-danger">Erreur de chargement :' + status + '</div>');
     }
   });
 }
@@ -25,6 +27,7 @@ function submit_form(evt) {
   evt.preventDefault();
   $('.remarquable-dialog').remove();
   var $container = $(evt.target).parents(".rubrique").find(".rubrique-content");
+  var messageBox = $container.siblings(".message");
   var $form = $container.find("form");
 
   var params = {
@@ -32,13 +35,15 @@ function submit_form(evt) {
     data: {data: JSON.stringify($form.serializeArray())},
     type: 'POST',
     success: function(response) {
-        var messageBox = $container.siblings(".message");
         messageBox.empty();
         if (! response.success) { // echec de validation (retourne du json)
           messageBox.html('<div class="alert alert-warning">' + response.message + '</div>')
         } else {
           load_content(evt);
         }
+    },
+    error: function(req, status, message) {
+      messageBox.html('<div class="alert alert-danger">Erreur d\'enregistrement : <br />' + status + ': ' + message);
     }
   }
   // traitement de l'upload
