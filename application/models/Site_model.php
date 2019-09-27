@@ -23,6 +23,25 @@ class Site_model extends Entite_abstract_model {
     return $query->result();
   }
 
+  public function add($data) {
+    $id = parent::add($data);
+
+    // Ajout auto des entités géologiques
+    $infos = $this->getRockAges($id);
+    $this->load->model('entite_geol_model');
+    foreach ($infos as $eg) {
+      $data_eg = [
+        'site_id' => $id,
+        'intitule' => $eg->descr,
+        'code'=> $eg->notation,
+        's_fgeol_id' => $eg->ogc_fid
+      ];
+      $this->entite_geol_model->add($data_eg);
+    }
+
+    return $id;
+  }
+
 
   // renvoie les éléments remarquables du site et des EG associées
   public function getAllElementsRemarquables($id) {

@@ -421,13 +421,17 @@ class Entite_abstract_model extends CI_Model {
     // récupère les données BRGM intersectant l'entité
     if (! $this->has_geometry) return;
 
-    $this->db->join('infoterre.s_fgeol',
-      "st_intersects(s_fgeol.wkb_geometry, \"$this->tableName\".geom")
-      ->join('infoterre.echelle AS echelle_deb', 'age_deb_id=echelle.id', 'left')
-      ->join('infoterre.echelle AS echelle_fin', 'age_fin_id=echelle.id', 'left')
+    $query = $this->db->join('infoterre.s_fgeol',
+      "st_intersects(s_fgeol.wkb_geometry, \"$this->tableName\".geom)")
+      ->join('infoterre.echelle AS echelle_deb', 'age_deb_id=echelle_deb.id', 'left')
+      ->join('infoterre.echelle AS echelle_fin', 'age_fin_id=echelle_fin.id', 'left')
+      ->select('*')
       ->select('ogc_fid, descr, age_deb_id, echelle_deb.label AS label_age_deb,
         age_fin_id, echelle_fin.label AS label_age_fin, st_asgeojson(s_fgeol.wkb_geometry) AS geom')
-      ->get_where($this->tableName, ['id' => $id]);
+      ->get_where($this->tableName, [$this->tableName . '.id' => $id]);
+
+    return $query->result();
   }
+
 
 }
