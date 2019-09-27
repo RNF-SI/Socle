@@ -26,6 +26,9 @@
     <h3>Identification sur la carte géologique</h3>
     <p>code <?= $eg->code ?> : <?= $eg->intitule ?></p>
     <p>Âge des roches : <?= $eg->ere_geol_label ?></p>
+    <?php if ($eg->age_debut && $eg->ere_geol_label != $eg->age_debut): ?>
+      <p style="margin-left: 4em"><?= $eg->age_debut . ($eg->age_fin ? ' - ' . $eg->age_fin : '') ?></p>
+    <?php endif; ?>
 </div>
 <?php
   $this->load->view('fiche_site/base_rubrique', [

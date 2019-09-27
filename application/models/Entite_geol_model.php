@@ -15,8 +15,18 @@ class Entite_geol_model extends Entite_abstract_model {
     if (is_null($id_eg)) return;
     return $this->db
       ->join('echelle_geol', 'echelle_geol.id = ere_geol_id', 'left')
-      ->select([$this->tableName.'.*', 'echelle_geol.label AS ere_geol_label'])
-      ->select('st_asGeoJson(geom) AS geojson')
+      ->join('infoterre.s_fgeol', 's_fgeol.ogc_fid=s_fgeol_id', 'left')
+      ->join('infoterre.echelle as echelle_deb', 's_fgeol.age_deb_id=echelle_deb.id', 'left')
+      ->join('infoterre.echelle as echelle_fin', 's_fgeol.age_fin_id=echelle_fin.id', 'left')
+      ->select([
+        $this->tableName.'.*',
+        'echelle_geol.label AS ere_geol_label',
+        'echelle_deb.label AS age_debut',
+        'echelle_fin.label AS age_fin',
+        's_fgeol.ogc_fid AS id_fgeol',
+        'st_asGeoJson(s_fgeol.wkb_geometry) AS geom_bdcharm',
+        'st_asGeoJson(geom) AS geojson'
+      ])
       ->get_where($this->tableName, array($this->tableName.'.id'=>$id_eg))
       ->row();
   }
