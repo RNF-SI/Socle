@@ -11,25 +11,6 @@
       <div id="main_image">
         <?php if (count($site->photos) > 0): ?>
           <img src="<?= $this->image_lib->thumbnail_url($site->photos[0]->url, 200) ?>" class="img-rounded" />
-        <?php elseif ($editable): ?>
-          <div id="alert-image" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title">Site non illustré</h4>
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                  <p>Si vous n'ajoutez pas au moins une image représentative du site, il n'aparaîtra pas en page d'accueil.</p>
-                  <p>Pour ajouter une image, ouvrez le panneau "<a href="#points_de_vue">Images / documents</a>"
-                    et cliquez sur "éditer".</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Compris</button>
-                </div>
-              </div>
-            </div>
-          </div>
         <?php endif; ?>
       </div>
     <div id="carto">
@@ -118,7 +99,19 @@
   <div>
     <a href="<?=site_url('site/creation/' . $site->ep_id . '/' . $site->id) ?>" class="btn btn-primary">Modifier le site</a>
   </div>
-<?php endif; ?>
+  <?php if (count($site->photos) == 0): ?>
+    <div id="alert-image" class="card border-warning" style="margin: 20px;">
+      <div class="card-header">
+        <h4 class="card-title text-warning">Site non illustré</h4>
+      </div>
+      <div class="card-body">
+        <p>Si vous n'ajoutez pas au moins une image représentative du site, il n'aparaîtra pas en page d'accueil.</p>
+        <p>Pour ajouter une image, ouvrez le panneau "<a href="#points_de_vue">Images / documents</a>"
+          et cliquez sur "éditer".</p>
+      </div>
+    </div>
+  <?php endif; endif; ?>
+
 <div id="rubriques" class="panel-group">
   <h2>Q-1 / Approche géographique du territoire</h2>
   <div class="explication">
