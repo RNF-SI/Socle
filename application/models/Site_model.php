@@ -8,6 +8,15 @@ class Site_model extends Entite_abstract_model {
   protected $geometry_format = 'MULTIPOLYGON';
 
 
+  public function set_nouvelle_version($v) {
+    // sert à indiquer qu'on est sur le schéma hiérarchisé
+    // (utilisé pour la fonction expérimentale d'arbre de QCM
+    // mais à supprimer par la suite)
+    if ($v) {
+      $this->qcmLinkTable = 'site_ontology';
+    }
+  }
+
   public function getByEspace($id_ep) {
     $query = $this->db
       ->get_where($this->tableName, ['ep_id' => $id_ep]);

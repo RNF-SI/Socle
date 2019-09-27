@@ -463,6 +463,7 @@ class Site extends CI_Controller {
       $this->load->model('entite_geol_model');
       $model = $this->entite_geol_model;
     }
+    $model->set_nouvelle_version(TRUE);
 
     if ($this->input->post('data')) {
       $data = json_decode($this->input->post('data'));
