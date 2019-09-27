@@ -5,7 +5,7 @@
 <?php
   /*echo form_input('nombre_morcellement', 'En combien de parties le territoire est-il fractionné ? (1 = non morcellé)',
     set_value('nombre_morcellement', $site->nombre_morcellement ?: 1)); */
-  echo form_checkbox('site_anthropique', 'un site anthropique');
+  echo qcm_caracteristiques($site->caracteristiques['Q1.0']);
 ?>
 <h3>Votre territoire se situe-t-il en&nbsp;:</h3>
 <?php

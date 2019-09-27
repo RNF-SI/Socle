@@ -391,7 +391,8 @@ class Entite_abstract_model extends CI_Model {
 
 
   public function saveChanges($id, $data) {
-    // Enregistre les changements dans les données des QCM
+    // Enregistre les changements dans les données des QCM pour un unique item
+    // (Pour tree view)
     $to_delete = [];
     $to_insert = [];
     $linkColumn = $this->linkColumnName();
