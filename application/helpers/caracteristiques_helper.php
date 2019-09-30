@@ -13,6 +13,15 @@ function help_tooltip($choice) {
   return $s;
 }
 
+
+function load_structure() {
+  $CI =& get_instance();
+  $CI->load->helper('file');
+  $json = read_file('./application/views/structure.json');
+  return json_decode($json, TRUE);
+}
+
+
 // permet de faire une liste de caractéristiques
 function liste_caracteristiques($list, $question, $titre=NULL, $suppr_vide=FALSE) {
   $txt = '';
