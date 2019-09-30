@@ -11,6 +11,9 @@ class Espace extends CI_Controller {
 
   public function liste_espaces() {
     $data['espaces'] = $this->espace_model->getAll();
+    usort($data['espaces'], function($a, $b) {
+      return strcmp($a->nom, $b->nom);
+    });
 
     $this->load->view('default/header');
     $this->load->view('liste_espaces', $data);

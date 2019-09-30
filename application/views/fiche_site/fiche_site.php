@@ -100,7 +100,7 @@
     <a href="<?=site_url('site/creation/' . $site->ep_id . '/' . $site->id) ?>" class="btn btn-primary">Modifier le site</a>
   </div>
   <?php if (count($site->photos) == 0): ?>
-    <div id="alert-image" class="card border-warning" style="margin: 20px;">
+    <div id="alert-image" class="card border-warning m-3">
       <div class="card-header">
         <h4 class="card-title text-warning">Site non illustré</h4>
       </div>
