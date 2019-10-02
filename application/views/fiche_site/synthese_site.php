@@ -6,7 +6,7 @@
 Fiche de synthèse
 <p><a href="<?= site_url('site/fiche_site/' . $site->id) ?>">Fiche détaillée</a></p>
 <div class="export-buttons">
-  <a href="<?= site_url("site/export_synthese/$site->id/docx") ?>">Export au format Word</a>
+  <a class="btn btn-primary" href="<?= site_url("site/export_synthese/$site->id/docx") ?>">Export au format Word</a>
 </div>
 <div id="map"></div>
 <div id="photo_gallery" class="card-deck">

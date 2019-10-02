@@ -45,11 +45,11 @@ class Word {
         }
 
         $this->CI->load->helper('download');
-        $file = 'output.' . $format;
+        $file = 'photos/output.' . $format;
 
         $xmlWriter = \PhpOffice\PhpWord\IOFactory::createWriter($this->word, $formats[$format]);
         $xmlWriter->save($file);
-        force_download($file, file_get_contents($file));
+        force_download('output.' . $format, file_get_contents($file));
         unlink($file);
     }
 

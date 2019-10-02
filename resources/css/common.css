@@ -230,6 +230,10 @@ table#table-liens img {
   margin-top: 20px;
 }
 
+.export-buttons {
+  margin-bottom: 20px;
+}
+
 .table-synthese h4 {
   font-size: 1.1rem;
 }
