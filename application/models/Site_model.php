@@ -28,15 +28,17 @@ class Site_model extends Entite_abstract_model {
 
     // Ajout auto des entités géologiques
     $infos = $this->getRockAges($id);
-    $this->load->model('entite_geol_model');
-    foreach ($infos as $eg) {
-      $data_eg = [
-        'site_id' => $id,
-        'intitule' => $eg->descr,
-        'code'=> $eg->notation,
-        's_fgeol_id' => $eg->ogc_fid
-      ];
-      $this->entite_geol_model->add($data_eg);
+    if (count($infos) <= 20) { // restriction pour éviter la création de trop d'EG
+      $this->load->model('entite_geol_model');
+      foreach ($infos as $eg) {
+        $data_eg = [
+          'site_id' => $id,
+          'intitule' => $eg->descr,
+          'code'=> $eg->notation,
+          's_fgeol_id' => $eg->ogc_fid
+        ];
+        $this->entite_geol_model->add($data_eg);
+      }
     }
 
     return $id;
