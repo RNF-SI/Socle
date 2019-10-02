@@ -7,6 +7,7 @@
 **/node_modules/
 **/package-lock.json
 *.backup
+output.*
 
 user_guide_src/build/*
 user_guide_src/cilexer/build/*
@@ -21,6 +22,7 @@ application/config/database.php
 !application/logs/.htaccess
 application/sessions/
 application/cache/
+application/vendor/
 system/
 user_guide/
 /vendor/
