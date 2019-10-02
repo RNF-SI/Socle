@@ -1,6 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/*
+Simplifie le création de documents avec PHPWord
+
+*/
+
+
 use PhpOffice\PhpWord\PhpWord;
 
 class Word {
@@ -12,8 +18,10 @@ class Word {
 
         $this->word = new PhpWord();
 
-        // Style preparation
+        // default styles
         $this->word->addFontStyle('globalFont', ['name' => $this::BASE_FONT, 'size' => 11]);
+        $this->word->addFontStyle('footer', ['size' => 9]);
+        $this->word->addFontStyle('link', ['color' => '3366ff', 'underline' => 'single']);
         $this->word->addTitleStyle(1, ['size' => 18], ['alignment' => 'center']);
         $this->word->addTitleStyle(2, ['size' => 16]);
         $this->word->addTableStyle('mainTable', [
@@ -49,7 +57,7 @@ class Word {
 
         $xmlWriter = \PhpOffice\PhpWord\IOFactory::createWriter($this->word, $formats[$format]);
         $xmlWriter->save($file);
-        force_download('output.' . $format, file_get_contents($file));
+        force_download('socle_export.' . $format, file_get_contents($file));
         unlink($file);
     }
 

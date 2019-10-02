@@ -560,6 +560,14 @@ class Site extends CI_Controller {
       $this->word->section->addTextBreak();
     }
 
+    // footer
+    $footer = $this->word->section->addFooter();
+    $txt = $footer->addTextRun('footer');
+    $txt->addText('Généré par l\'application ');
+    $txt->addLink(site_url(''), 'SOCLE', 'link');
+    $txt->addText(' - Réserves Naturelles de France le ' . date('d/m/Y') . '. ');
+    $txt->addLink(site_url('site/resume/' . $id), null, 'link');
+
     $this->word->out($format);
   }
 
