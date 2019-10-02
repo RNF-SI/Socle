@@ -1,0 +1,113 @@
+{
+  "site": [
+    {
+      "titre": "Approche géographique",
+      "rubriques": [
+          {
+            "titre": "Contexte géographique général",
+            "qcms": {
+                "Q1.0": "",
+                "Q1.1": "Type de territoire",
+                "Q1.1.2": "Éléments présents"
+            }
+          },
+          {
+            "titre": "Contexte hydrographique général",
+            "qcms": {
+                "Q1.2": "Éléments hydrographiques observables sur le territoire"
+            }
+          },
+          {
+            "titre": "Contexte général littoral et marin",
+            "qcms": {
+                "Q1.3.1": "Domaines dans lesquels se situe le site",
+                "Q1.3.2": "Éléments observables sur le territoire",
+                "Q1.3.3": "Aménagements littoraux"
+            }
+          },
+          {
+            "titre": "Contexte anthropique général - Aménagements",
+            "qcms": {
+                "Q1.4": "Aménagements observables sur le territoire"
+            }
+          }
+      ]
+    },
+
+    {
+      "titre": "Aspects morphologiques et structuraux des terrains",
+      "rubriques": [
+        {
+          "titre": "Contexte géologique régional et local",
+          "qcms": {
+            "Q2.0": "Éléments géologiques observables sur le territoire"
+          }
+        },
+        {
+          "titre": "Grandes structures géologiques régionales",
+          "qcms": {
+            "Q2.1": "Structures géologiques observables sur le territoire",
+            "Q2.2": "Structures géologiques à l'échelle du territoire",
+            "Q2.4": "Structures et morphologies liées au volcanisme",
+            "Q2.5": "Morphologies liées à l’érosion générale",
+            "Q2.6.1": "Morphologies karstiques : Exokarst",
+            "Q2.6.2": "Morphologies karstiques : Endokarst",
+            "Q2.7": "Morphologies glaciaires",
+            "Q2.8": "Morphologies alluvionnaires des cours d’eau",
+            "Q2.9": "Plages littorales : sable, galets et vase",
+            "Q2.10": "Systèmes dunaires littoraux",
+            "Q2.11": "Côtes rocheuses",
+            "Q2.12": "Structures et figurés rocheux particuliers à petite et moyenne échelle"
+          }
+        }
+      ]
+    }
+  ],
+
+  "entite": [
+    {
+      "titre": "Nature des roches",
+      "qcms": {
+        "Q3.B.1": "Roches sédimentaires",
+        "Q3.B.2": "Roches métamorphiques",
+        "Q3.B.3": "Roches magmatiques plutoniques",
+        "Q3.B.4": "Roches magmatiques volcaniques",
+        "Q3.B.5": "Sédiments meubles - Sables",
+        "Q3.B.6": "Sédiments meubles - Galets / graviers",
+        "Q3.B.7": "Sédiments meubles - Vases / sédiments très fins",
+        "Q3.B.8": "Matériaux d'origine anthropique"
+      }
+    },
+    {
+      "titre": "Minéraux et cristaux",
+      "qcms": {
+        "Q3.C": ""
+      }
+    },
+    {
+      "titre": "Fossiles et fossilisation",
+      "qcms": {
+        "Q3.D.1": "Type de fossile et de fossilisation",
+        "Q3.D.2": "Protistes",
+        "Q3.D.3": "Invertébrés - Spongiaires",
+        "Q3.D.4": "Invertébrés - Cnidaires",
+        "Q3.D.5": "Invertébrés - Graptolites",
+        "Q3.D.6": "Invertébrés - Pistes d’helminthoïdes",
+        "Q3.D.7": "Invertébrés - Mollusques - Lamellibranches (bivalves)",
+        "Q3.D.8": "Invertébrés - Mollusques - Gastéropodes",
+        "Q3.D.9": "Invertébrés - Mollusques - Céphalopodes",
+        "Q3.D.10": "Invertébrés - Echinodermes",
+        "Q3.D.11": "Invertébrés - Arthropodes",
+        "Q3.D.12": "Végétaux - Algues et mousses",
+        "Q3.D.13": "Végéteaux - Ptéridophytes",
+        "Q3.D.14": "Végétaux - Végétaux supérieurs",
+        "Q3.D.15": "Vertébrés - Poissons",
+        "Q3.D.16": "Vertébrés - Amphibiens",
+        "Q3.D.17": "Vertébrés - Reptiles",
+        "Q3.D.18": "Vertébrés - Reptiles dinausoriens",
+        "Q3.D.19": "Vertébrés - Oiseaux",
+        "Q3.D.20": "Vertébrés - Mammifères"
+      }
+    }
+  ]
+}
