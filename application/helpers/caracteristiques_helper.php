@@ -15,9 +15,7 @@ function help_tooltip($choice) {
 
 
 function load_structure() {
-  $CI =& get_instance();
-  $CI->load->helper('file');
-  $json = read_file('./application/views/structure.json');
+  $json = file_get_contents('./application/views/structure.json');
   return json_decode($json, TRUE);
 }
 

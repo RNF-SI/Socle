@@ -5,6 +5,9 @@
 <h1><?= $site->nom ?></h1>
 Fiche de synthèse
 <p><a href="<?= site_url('site/fiche_site/' . $site->id) ?>">Fiche détaillée</a></p>
+<div class="export-buttons">
+  <a href="<?= site_url("site/export_synthese/$site->id/docx") ?>">Export au format Word</a>
+</div>
 <div id="map"></div>
 <div id="photo_gallery" class="card-deck">
   <?php foreach ($elements['photos'] as $phot): ?>

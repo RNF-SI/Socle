@@ -1,5 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+
+
 class Site extends CI_Controller {
 
   public function __construct() {
@@ -487,6 +489,78 @@ class Site extends CI_Controller {
       'scripts'=>['js/synthese_site.js']]);
     $this->load->view('fiche_site/synthese_site', $data);
     $this->load->view('default/footer');
+  }
+
+    // Export de la synthèse avec PhpWord
+  public function export_synthese($id, $format) {
+    $this->load->library('word');
+    $this->load->helper('caracteristiques');
+
+    $site = $this->site_model->get($id);
+
+    if (! $site) {
+      show_404();
+    }
+
+    $this->word->addTitle('Site ' . $site->nom);
+    $this->word->addTitle('Caractéristiques du site', 2);
+
+
+    $siteElements = $this->site_model->getAllSubelements($id);
+
+    $structure = load_structure();
+
+    $table = $this->word->addTable();
+    $cellStyle = ['borderSize' => 6, 'valign'=>'center'];
+
+    foreach ($structure['site'] as $chapitre) {
+        $table->addRow();
+        $cell = $table->addCell(3000, $cellStyle + ['vMerge'=>'restart']);
+        $cell->addText($chapitre['titre']);
+        $i = 0;
+        foreach ($chapitre['rubriques'] as $rubrique) {
+          if($i++ > 0) {
+            $table->addRow();
+            $table->addCell(null, $cellStyle + ['vMerge'=>'continue']);
+          }
+          $cell = $table->addCell(3000, $cellStyle);
+          $cell->addText($rubrique['titre']);
+          $cell = $table->addCell(4000, $cellStyle );
+          foreach ($rubrique['qcms'] as $code => $titre) {
+            if (isset($siteElements['qcms'][$code])) {
+              $cell->addText($titre);
+              foreach ($siteElements['qcms'][$code] as $item) {
+                $cell->addListItem($item['label']);
+              }
+            }
+          }
+      }
+    }
+    $this->word->section->addTextBreak();
+
+    // EG
+    $this->word->addTitle('Identification des terrains, des roches et des fossiles', 2);
+
+    foreach ($siteElements['egs'] as $eg) {
+      $this->word->addTitle($eg['nom'], 3);
+      $table = $this->word->addTable();
+      foreach ($structure['entite'] as $rubrique) {
+        $table->addRow();
+        $table->addCell(3000, $cellStyle)->addText($rubrique['titre']);
+        $cell = $table->addCell(5000, $cellStyle);
+        foreach ($rubrique['qcms'] as $code => $titre) {
+          if (isset($eg['qcms'][$code])) {
+            if ($titre) $cell->addText($titre);
+            foreach ($eg['qcms'][$code] as $item) {
+              $cell->addListItem($item['label']);
+            }
+          }
+        }
+      }
+      $this->word->section->addTextBreak();
+    }
+
+    $this->word->out($format);
   }
 
 
