@@ -397,6 +397,27 @@ class Site extends CI_Controller {
     $this->load->view('default/footer');
   }
 
+  // Suppression EG
+  public function suppr_entite_geol($id) {
+    $this->load->model('entite_geol_model');
+    $this->load->model('affleurement_model');
+
+    $eg = $this->entite_geol_model->get($id);
+    $id_site = $eg->site_id;
+
+    if (! $this->site_model->is_editable($id_site)) {
+      $this->session->set_flashdata('message', 'Vous ne pouvez pas supprimer cette entité.');
+      $this->session->set_flashdata('message-class', 'error');
+      redirect('site/fiche_entite_geol/' . $id);
+    }
+
+    $this->entite_geol_model->delete($id);
+
+    $this->session->set_flashdata('message', 'Entité supprimée.');
+    $this->session->set_flashdata('message-class', 'success');
+    redirect('site/fiche_site/' . $id_site);
+  }
+
   public function soumission_validation($id_ep) {
     $this->espace_protege_model->change_status($id_ep, 'validation');
 

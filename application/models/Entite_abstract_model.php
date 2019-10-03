@@ -354,6 +354,30 @@ class Entite_abstract_model extends CI_Model {
   }
 
 
+  // Suppression
+  public function delete($id) {
+    $colname = $this->linkColumnName();
+    $this->db->trans_start();
+
+    // complements
+    $this->db->where($colname, $id)
+          ->delete($this->complementTableName);
+
+    // commentaires
+    $this->db->where([$colname => $id])
+          ->delete($this->commentTableName);
+
+    // qcm
+    $this->db->where($colname, $id)
+      ->delete($this->qcmLinkTable);
+
+    // Entite
+    $this->db->where('id', $id)
+      ->delete($this->tableName);
+    $this->db->trans_complete();
+  }
+
+
   public function update_user_date($id) {
     if ($this->store_user_info) {
       $uid = $this->auth->user()->row()->id;
