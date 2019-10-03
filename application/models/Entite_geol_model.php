@@ -79,4 +79,13 @@ class Entite_geol_model extends Entite_abstract_model {
     return $this->site_model->is_editable($id_site);
   }
 
+  public function delete($id) {
+    // suppression affleurements
+    $this->db->where('eg_id', $id)
+      ->delete('affleurement');
+    $this->db->where('eg_id', $id)
+      ->delete('photo');
+    parent::delete($id);
+  }
+
 }
