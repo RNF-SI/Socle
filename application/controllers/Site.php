@@ -415,7 +415,7 @@ class Site extends CI_Controller {
 
     $this->session->set_flashdata('message', 'Entité supprimée.');
     $this->session->set_flashdata('message-class', 'success');
-    redirect('site/fiche_site/' . $id_site);
+    redirect('site/fiche_site/' . $id_site . '#Q3-1');
   }
 
   public function soumission_validation($id_ep) {

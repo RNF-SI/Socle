@@ -80,7 +80,7 @@ class Entite_geol_model extends Entite_abstract_model {
   }
 
   public function delete($id) {
-    // suppression affleurements
+    // suppression affleurements + photos
     $this->db->where('eg_id', $id)
       ->delete('affleurement');
     $this->db->where('eg_id', $id)
