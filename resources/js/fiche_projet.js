@@ -83,7 +83,6 @@ $(function() {
     $("#dialog-remarquable-infos").toggleClass('inactive', !checked);
   }
 
-  var bounds;
   // carte de pointage (dialogue)
   if ($("#dialog-map").length > 0) {
     var drawnLayer;
@@ -103,7 +102,7 @@ $(function() {
 
     $("#collapseMap").on("shown.bs.collapse", function() {
       dlg_map.map.invalidateSize();
-      dlg_map.map.fitBounds(bounds);
+      dlg_map.zoomToInit();
     });
   }
 
@@ -117,7 +116,7 @@ $(function() {
       $chkbox.parents('.choix-container').find('.remarquable-control')
         .toggleClass('checked', $chkbox.is(':checked'));
   }).on('click', '.remarquable-edit', function() {
-    // affichage du sous-formulaire remarquable
+    // affichage du sous-formulaire complements
     var $cont = $(this).parents('.choix-container');
     var $mymodal = $("#complements-dialog");
     $mymodal.data('qcm-id', $cont.data('qcm-item-id'));
@@ -147,7 +146,7 @@ $(function() {
     $mymodal.modal("show");
 
     dlg_map.map.invalidateSize();
-    dlg_map.map.fitBounds(bounds);
+    dlg_map.zoomToInit();
 
     return false;
   }).on('click', '.photo-remove-button', function() {
@@ -209,14 +208,13 @@ $(function() {
         if (data.features[0].geometry) {
           lyr.setOptions({pmIgnore: true});
           lyr.bringToBack();
-          bounds = lyr.getBounds();
+          var bounds = lyr.getBounds();
           if (dlg_map) {
             lyr.addTo(dlg_map.map);
             dlg_map.map.fitBounds(bounds);
           }
-          map.fitBounds(bounds);
         }
-      });
+      }, true);
     }
   }
 });

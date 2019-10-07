@@ -6,6 +6,7 @@ function site_url(path) {
 // Objet à instancier pour une carte standardisée
 function BaseMap (id, options) {
   this.ignKey = "qi0jtcvtmn01lkt0621p5yci";
+
   this.options = {
     monosite: true,
     displayPopup: true,
@@ -55,9 +56,16 @@ function BaseMap (id, options) {
 
   this.id = id;
 
-  this.map = L.map(this.id);
+  this.map = L.map(this.id, options);
 
-  this.addVectorLayer = function(url, options, callback) {
+  this.initBounds = L.latLngBounds(L.latLng(51, -5), L.latLng(41, 8));
+
+  // zoom sur l'étendue fixée pour la carte
+  this.zoomToInit = function() {
+    this.map.fitBounds(this.initBounds);
+  }
+
+  this.addVectorLayer = function(url, options, callback, adjustView) {
     var this1 = this;
     $.get(site_url(url), function(data) {
       if (options === undefined) {
@@ -67,7 +75,11 @@ function BaseMap (id, options) {
           fill: false
         }
       }
-      var vectLayer = L.geoJSON(data, options).addTo(this1.map)
+      var vectLayer = L.geoJSON(data, options).addTo(this1.map);
+      if (adjustView) {
+        this1.initBounds = vectLayer.getBounds();
+        this1.zoomToInit();
+      }
       if (callback) {
         callback(vectLayer);
       }
@@ -109,10 +121,9 @@ function BaseMap (id, options) {
       lyr.eachLayer(function(slyr) {
         this1.options.monosite = slyr.feature.properties.monosite;
       });
-      this1.map.fitBounds(lyr.getBounds());
-    });
+    }, true);
   } else {
-    this.map.setView([47, 2], 8);
+    this.zoomToInit();
   }
 
   // popup infos géol
