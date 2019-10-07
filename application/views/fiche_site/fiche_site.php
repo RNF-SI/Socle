@@ -93,7 +93,12 @@
         </div>
         <div class="col-sm-6"></div>
 </div>
-*/ ?>
+*/
+  // formulaire modal de modification éléments
+ if ($editable) {
+  $this->load->view('fiche_site/form_qcm');
+ }
+?>
 
 <?php if ($editable): ?>
   <div>

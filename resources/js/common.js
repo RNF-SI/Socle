@@ -20,7 +20,6 @@ function addVectorLayer(map, url, options, callback) {
   });
 }
 
-
 // crée une carte de base avec les couches qu'il faut
 function base_map(id_map, id_ep, baseLayerToDisplay) {
   baseLayerToDisplay = typeof baseLayerToDisplay !== 'undefined' ? baseLayerToDisplay : "Carte géologique";
@@ -83,6 +82,8 @@ function base_map(id_map, id_ep, baseLayerToDisplay) {
         });
         mainMap.fitBounds(lyr.getBounds());
       });
+  } else {
+    mainMap.setView([47, 2], 8);
   }
 
   // popup infos géol
@@ -92,7 +93,7 @@ function base_map(id_map, id_ep, baseLayerToDisplay) {
     popup.setLatLng(evt.latlng);
     getGeolInfo(mainMap, evt, function(data) {
       var cont = '<p><b>Entité géologique :</b><br />' + data.notation + ' : <i>'
-        + data.description + '</i></p><p><a href="http://ficheinfoterre.brgm.fr/Notices/' 
+        + data.description + '</i></p><p><a href="http://ficheinfoterre.brgm.fr/Notices/'
         + ("0000" + data.carte).slice(-4)
         + 'N.pdf" target="_blank">consulter la notice</a></p>';
       popup.setContent(cont).openOn(mainMap);

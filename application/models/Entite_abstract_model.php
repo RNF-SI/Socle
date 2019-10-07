@@ -160,7 +160,8 @@ class Entite_abstract_model extends CI_Model {
   // et précise si elles sont sélectionnées
   public function getCaracteristiquesForm($id, $rubrique = NULL) {
     $subquery = $this->db
-      ->select('qcm_id, info_complement, remarquable, interet_esthetique, interet_historique, interet_pedagogique, interet_scientifique, remarquable_info')
+      ->select('qcm_id, info_complement, remarquable, interet_esthetique, interet_historique,
+        interet_pedagogique, interet_scientifique, remarquable_info, geom')
       ->where($this->linkColumnName(), $id)
       ->get_compiled_select($this->qcmLinkTable);
     $this->db->from('qcm')
@@ -230,7 +231,8 @@ class Entite_abstract_model extends CI_Model {
       'interet_esthetique' => 'b',
       'interet_historique' => 'b',
       'remarquable_info' => 't',
-      'info_complement' => 't'
+      'info_complement' => 't',
+      'geom' => 't',
     ];
     $colname = $this->linkColumnName();
 
@@ -238,6 +240,7 @@ class Entite_abstract_model extends CI_Model {
 
     if (isset($data['caracteristiques'])) {
       $cars = array();
+      $corresp_id = $data['caracteristiques'];
       foreach ($data['caracteristiques'] as $car) {
         $cars[$car] = array('qcm_id' => $car, $colname => $id, 'remarquable' => FALSE);
       }
@@ -252,7 +255,6 @@ class Entite_abstract_model extends CI_Model {
         unset($data['info_complement_id']);
       }
 
-      $corresp_id = $data['remarquable'];
       foreach ($data['remarquable'] as $numli => $qcm_id) {
           $cars[$qcm_id]['remarquable'] = !empty($qcm_id);
       }
@@ -260,12 +262,13 @@ class Entite_abstract_model extends CI_Model {
 
       foreach ($data as $field => $val) {
         if (is_array($val) && isset($link_fields[$field])) {
+          $i = 0;
           foreach ($val as $pos => $iid) {
             if (! empty($iid)) {
               if ($link_fields[$field] == 'b') {
                 $cars[$iid][$field] = TRUE;
               } else {
-                $cars[$corresp_id[$pos]][$field] = $iid;
+                $cars[$corresp_id[$i++]][$field] = $iid;
               }
             }
           }

@@ -42,9 +42,16 @@ class Site extends CI_Controller {
     $data['avancement'] = round($taux_adv * 100);
     */
 
-
-    $this->load->view('default/header', ['scripts' => ['js/fiche_projet.js'], 'title' => $site->nom,
-      'path'=>$this->site_model->getPath($id)]);
+    $data_header = [
+      'scripts' => ['js/fiche_projet.js'],
+      'title' => $site->nom,
+      'path'=>$this->site_model->getPath($id),
+    ];
+    if ($data['editable']) {
+      $data_header['scripts'] = array_merge(['lib/leaflet/pm/leaflet.pm.min.js'], $data_header['scripts']);
+      $data_header['styles'] = ['lib/leaflet/pm/leaflet.pm.css'];
+    }
+    $this->load->view('default/header', $data_header);
     $this->load->view('fiche_site/fiche_site', $data);
     $this->load->view('default/footer');
   }
@@ -400,7 +407,6 @@ class Site extends CI_Controller {
   // Suppression EG
   public function suppr_entite_geol($id) {
     $this->load->model('entite_geol_model');
-    $this->load->model('affleurement_model');
 
     $eg = $this->entite_geol_model->get($id);
     $id_site = $eg->site_id;

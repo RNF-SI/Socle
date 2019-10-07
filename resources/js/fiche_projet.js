@@ -25,7 +25,6 @@ function load_content(evt) {
 // soumission du formulaire
 function submit_form(evt) {
   evt.preventDefault();
-  $('.remarquable-dialog').remove();
   var $container = $(evt.target).parents(".rubrique").find(".rubrique-content");
   var messageBox = $container.siblings(".message");
   var $form = $container.find("form");
@@ -75,8 +74,104 @@ function load_form(evt) {
 }
 
 
+function destinationVincenty(lonlat, brng, dist) { //rewritten to work with leaflet
+  var ct = {
+      a: 6378137,
+      b: 6356752.3142,
+      f: 1/298.257223563
+  };
+  var a = ct.a, b = ct.b, f = ct.f;
+  var lon1 = lonlat.lng;
+  var lat1 = lonlat.lat;
+  var s = dist;
+  var pi = Math.PI;
+  var alpha1 = brng * pi/180 ; //converts brng degrees to radius
+  var sinAlpha1 = Math.sin(alpha1);
+  var cosAlpha1 = Math.cos(alpha1);
+  var tanU1 = (1-f) * Math.tan( lat1 * pi/180 /* converts lat1 degrees to radius */ );
+  var cosU1 = 1 / Math.sqrt((1 + tanU1*tanU1)), sinU1 = tanU1*cosU1;
+  var sigma1 = Math.atan2(tanU1, cosAlpha1);
+  var sinAlpha = cosU1 * sinAlpha1;
+  var cosSqAlpha = 1 - sinAlpha*sinAlpha;
+  var uSq = cosSqAlpha * (a*a - b*b) / (b*b);
+  var A = 1 + uSq/16384*(4096+uSq*(-768+uSq*(320-175*uSq)));
+  var B = uSq/1024 * (256+uSq*(-128+uSq*(74-47*uSq)));
+  var sigma = s / (b*A), sigmaP = 2*Math.PI;
+  while (Math.abs(sigma-sigmaP) > 1e-12) {
+      var cos2SigmaM = Math.cos(2*sigma1 + sigma);
+      var sinSigma = Math.sin(sigma);
+      var cosSigma = Math.cos(sigma);
+      var deltaSigma = B*sinSigma*(cos2SigmaM+B/4*(cosSigma*(-1+2*cos2SigmaM*cos2SigmaM)-
+          B/6*cos2SigmaM*(-3+4*sinSigma*sinSigma)*(-3+4*cos2SigmaM*cos2SigmaM)));
+      sigmaP = sigma;
+      sigma = s / (b*A) + deltaSigma;
+  }
+  var tmp = sinU1*sinSigma - cosU1*cosSigma*cosAlpha1;
+  var lat2 = Math.atan2(sinU1*cosSigma + cosU1*sinSigma*cosAlpha1,
+      (1-f)*Math.sqrt(sinAlpha*sinAlpha + tmp*tmp));
+  var lambda = Math.atan2(sinSigma*sinAlpha1, cosU1*cosSigma - sinU1*sinSigma*cosAlpha1);
+  var C = f/16*cosSqAlpha*(4+f*(4-3*cosSqAlpha));
+  var lam = lambda - (1-C) * f * sinAlpha *
+      (sigma + C*sinSigma*(cos2SigmaM+C*cosSigma*(-1+2*cos2SigmaM*cos2SigmaM)));
+  var lamFunc = lon1 + (lam * 180/pi); //converts lam radius to degrees
+  var lat2a = lat2 * 180/pi; //converts lat2a radius to degrees
+
+  return L.latLng(lamFunc, lat2a);
+
+}
+
+function createGeodesicPolygon(origin, radius, sides) {
+  var latlon = origin; //leaflet equivalent
+  var angle;
+  var new_lonlat, geom_point;
+  var points = [];
+
+  for (var i = 0; i < sides; i++) {
+    angle = (i * 360 / sides);
+    new_lonlat = destinationVincenty(latlon, angle, radius);
+    geom_point = L.latLng(new_lonlat.lng, new_lonlat.lat);
+
+    points.push(geom_point);
+  }
+
+  return L.polygon(points);
+}
+
+
 $(function() {
   $("#alert-image.modal").appendTo("body").modal("show");
+
+  var activateRemarquable = function() {
+    // activation des infos élément remarquables
+    var checked = $("#complements-dialog input[name='remarquable']").is(":checked");
+    $("#dialog-remarquable-infos input").prop('disabled', !checked);
+    $("#dialog-remarquable-infos").toggleClass('inactive', !checked);
+  }
+
+  var bounds;
+  // carte de pointage (dialogue)
+  if ($("#dialog-map").length > 0) {
+    var drawnLayer;
+    var dlg_map = base_map("dialog-map", site.ep_id, 'IGN topo');
+    dlg_map.pm.addControls({
+      position: 'topleft'
+    });
+    dlg_map.on('pm:create', function(evt) {
+      if(drawnLayer) dlg_map.removeLayer(drawnLayer);
+      drawnLayer = evt.layer;
+      var geojson = evt.layer.toGeoJSON();
+      if (evt.shape == 'Circle') {
+        geojson = createGeodesicPolygon(evt.layer.getLatLng(), evt.layer.getRadius(), 20).toGeoJSON();
+      }
+      $("#complements-dialog input[name='geom']").val(JSON.stringify(geojson));
+    });
+
+    $("#collapseMap").on("shown.bs.collapse", function() {
+      dlg_map.invalidateSize();
+      dlg_map.fitBounds(bounds);
+    });
+  }
+
 
   $(".rubrique-collapse")
     .on("show.bs.collapse", load_content)
@@ -86,53 +181,39 @@ $(function() {
       var id = $chkbox.val();
       $chkbox.parents('.choix-container').find('.remarquable-control')
         .toggleClass('checked', $chkbox.is(':checked'));
-  }).on('click', '.coche-remarquable', function() {
-    var $star = $(this);
-    $star.parents('.remarquable-control').toggleClass('remarquable');
-    if ($star.parents('.remarquable-control').hasClass('remarquable')) {
-      var id = $star.parents('.choix-container').find("input[name='caracteristiques[]']").val();
-      $star.parents('.choix-container').find("input[name='remarquable[]']").val(id);
-    } else {
-      $star.parents('.choix-container').find("input[name='remarquable[]']").removeAttr('value');
-    }
-    return false;
   }).on('click', '.remarquable-edit', function() {
     // affichage du sous-formulaire remarquable
     var $cont = $(this).parents('.choix-container');
-    var checkbox = function(name, label, icon) {
-      var val = $cont.find("input[name='" + name + "[]']").val();
-      return '<div class="checkbox"><label><input type="checkbox" data-name="' + name + '" ' + (val ? 'checked' : '') + ' /> <span class="fas fa-'
-        + icon + '"> </span> ' + label + '</label></div>';
-    };
-    var modal = '<div class="modal remarquable-dialog" role="dialog"><div class="modal-dialog"><div class="modal-content">'
-      + '<div class="modal-header"><h4>Elément remarquable : informations complémentaires</h4><button type="button" class="close" data-dismiss="modal">&times;</button></div>'
-      + '<div class="modal-body"><form class="form-horizontal">'
-      + '<p>Cet élément est intéressant d\'un point de vue :</p>'
-      + checkbox('interet_scientifique', 'scientifique', 'flask')
-      + checkbox('interet_pedagogique', 'pédagogique', 'chalkboard-teacher')
-      + checkbox('interet_esthetique', 'esthétique', 'image')
-      + checkbox('interet_historique', 'historique/culturel', 'book')
-      + '<br /><div class="form-group"><label>Commentaires :</label><textarea name="remarquable_info" class="form-control">' + $cont.find("input[name='remarquable_info[]']").val()
-      + '</textarea></div>'
-      + '</form></div><div class="modal-footer"><button type="button" id="button-ok" class="btn btn-default" data-dismiss="modal">OK</button></div>'
-      + '</div></div></div>';
-    var $mymodal = $(modal).appendTo($cont);
+    var $mymodal = $("#complements-dialog");
+    $mymodal.data('qcm-id', $cont.data('qcm-item-id'));
 
-    $mymodal.find('#button-ok').click(function() {
-      var id = $cont.find("input[name='caracteristiques[]']").val();
-      $mymodal.find('input').each(function(i, elt) {
-        var name = $(elt).data('name');
-        var $hiddenField = $cont.find("input[name='" + name + "[]']");
-        if ($(elt).is(':checked')) {
-          $hiddenField.val(id);
-        } else {
-          $hiddenField.removeAttr('value');
-        }
-      });
-      $cont.find("input[name='remarquable_info[]']").val($mymodal.find("[name='remarquable_info']").val());
-      //$mymodal.remove();
-    })
-    $mymodal.modal();
+    $.each($cont.find("input[type='hidden']"), function(i, elt) {
+      var fieldName = $(elt).attr('name').slice(0, -2);
+      var $form_field = $mymodal.find("input[name='" + fieldName + "']");
+      var val = $(elt).val();
+      if ($form_field.prop('type') == 'checkbox') {
+        $form_field.prop('checked', Boolean(val));
+      } else {
+        $form_field.val(val);
+      }
+    });
+
+    $mymodal.find("textarea[name='remarquable_info']").val($cont.find("input[name='remarquable_info[]']").val());
+
+    activateRemarquable();
+
+    if (drawnLayer) dlg_map.removeLayer(drawnLayer);
+    var geom = $("#complements-dialog input[name='geom']").val();
+    if (geom) {
+      drawnLayer = L.geoJSON(JSON.parse(geom));
+      dlg_map.addLayer(drawnLayer);
+    }
+
+    $mymodal.modal("show");
+
+    dlg_map.invalidateSize();
+    dlg_map.fitBounds(bounds);
+
     return false;
   }).on('click', '.photo-remove-button', function() {
     // suppression de photos
@@ -144,6 +225,31 @@ $(function() {
       });
     }
     return false;
+  });
+
+  $("#complements-dialog input[name='remarquable']").change(activateRemarquable);
+
+  $("#complements-dialog #button-ok").click(function() {
+    // fermeture du dialogue et transmission des données
+    var $mymodal = $("#complements-dialog");
+    var id = $mymodal.data('qcm-id');
+    var $cont = $("#choix-container-" + id);
+    $mymodal.find('input').each(function(i, elt) {
+      var $elt = $(elt);
+      var name = $elt.attr('name');
+      var $hiddenField = $cont.find("input[name='" + name + "[]']");
+      if ($elt.attr('type') == 'checkbox') {
+        if ($elt.is(':checked')) {
+          $hiddenField.val(id);
+        } else {
+          $hiddenField.removeAttr('value');
+        }
+      } else {
+        $hiddenField.val($elt.val());
+      }
+
+    });
+    $cont.find("input[name='remarquable_info[]']").val($mymodal.find("[name='remarquable_info']").val());
   });
 
   // TODO : doit-on supprimer le contenu quand ça collapse ?
@@ -163,11 +269,15 @@ $(function() {
     if (map.monosite != 't') {
       $.get(site_url("carto/site_geom/" + site.id), function(data) {
         if (data.features[0].geometry) {
-          var vectLayer = L.geoJSON(data).addTo(map).bringToBack();
-          map.fitBounds(vectLayer.getBounds());
+          var vectLayer = L.geoJSON(data, {pmIgnore: true}).addTo(map).bringToBack();
+          bounds = vectLayer.getBounds();
+          if (dlg_map) {
+            vectLayer.addTo(dlg_map);
+            dlg_map.fitBounds(bounds);
+          }
+          map.fitBounds(bounds);
         }
       });
     }
   }
-
 });

@@ -70,14 +70,15 @@ function qcm_caracteristiques($choices) {
     'interet_pedagogique' => 'b',
     'interet_esthetique' => 'b',
     'interet_historique' => 'b',
-    'remarquable_info' => 't'
+    'remarquable_info' => 't',
+    'geom' => 't',
   ];
 
   $txt = '<div class="qcm form-group row"><div class="col-md-4">';
   $n = 0;
   $nbycol = floor(count($choices) / 3) + 1;
   foreach ($choices as $choice) {
-    $li = '<div class="choix-container">
+    $li = '<div class="choix-container" id="choix-container-' . $choice->id . '" data-qcm-item-id="' . $choice->id . '">
       <div class="form-check"><label class="form-check-label">
         <input type="checkbox" class="form-check-input" name="caracteristiques[]" value="'. $choice->id . '"';
     if ($choice->checked)
@@ -87,8 +88,7 @@ function qcm_caracteristiques($choices) {
       $li .= ' checked';
     if ($choice->remarquable)
       $li .= ' remarquable';
-    $li .= '"><a href="#" class="coche-remarquable" title="Signaler cet élément comme remarquable">&starf;</a>
-      <a href="#" class="remarquable-edit" title="Critères de remarquabilité"><span class="fas fa-edit">
+    $li .= '"><a href="#" class="remarquable-edit" title="Cartographier et compléter"><span class="fas fa-edit">
       </span></a></span></div>';
 
     foreach ($hidden_fields as $hf => $type) {
@@ -96,12 +96,12 @@ function qcm_caracteristiques($choices) {
       if ($choice->remarquable && $choice->$hf) {
         $input .= 'value ="' . $choice->id . '"';
       } elseif ($type == 't') {
-        $input .= 'value ="' . $choice->$hf . '"';
+        $input .= 'value ="' . htmlentities($choice->$hf) . '"';
       }
       $input .= ' />';
       $li .=  $input;
     }
-    //$li .= '<input type="hidden" name="info_remarquable[]" value="' . ($choice->remarquable == 't' ? $choice->id : '') . '" />';
+    $li .= '<input type="hidden" name="remarquable_info[]" value="' . ($choice->remarquable == 't' ? $choice->id : '') . '" />';
 
     if (! is_null($choice->intitule_complement))
       $li .= '<div class="choice-complement"><label for="info_complement[]">' . $choice->intitule_complement
