@@ -1,8 +1,8 @@
 $(function() {
-  var map = base_map('map');
+  var bm = new BaseMap('map');
   var ptlyr = L.circleMarker(undefined, {radius: 7, color: '#b78a31', fillColor: '#b78a31', fillOpacity: 0.5});
-  addVectorLayer(map, 'carto/site_geom/' + site_id, null, function(lyr) {
-    map.fitBounds(lyr.getBounds());
+  bm.addVectorLayer('carto/site_geom/' + site_id, null, function(lyr) {
+    bm.map.fitBounds(lyr.getBounds());
     var geojsonstr = $("input[name=geom]").val();
     if (geojsonstr) {
       var geojson = JSON.parse(geojsonstr.replace(/&quot;/g, '"'));
@@ -10,10 +10,10 @@ $(function() {
     } else {
       ptlyr.setLatLng(lyr.getBounds().getCenter());
     }
-    ptlyr.addTo(map);
+    ptlyr.addTo(bm.map);
   });
 
-  map.on('click', function(evt) {
+  bm.map.on('click', function(evt) {
     ptlyr.setLatLng(evt.latlng);
     var json = ptlyr.toGeoJSON();
     $("input[name=geom]").val(JSON.stringify(json.geometry));

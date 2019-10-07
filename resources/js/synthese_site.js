@@ -1,5 +1,5 @@
 $(function() {
-  var map = base_map('map');
+  var bm = new BaseMap('map');
   $.get(site_url('carto/site_subelements_geom/' + site_id), function(data) {
     if (data.site.geometry == null) {
       $('#map').remove();
@@ -14,10 +14,10 @@ $(function() {
     var afflLayer = L.geoJSON(data.egs, {pointToLayer: function(pt, latlng) {
       return L.circleMarker(latlng, {radius: 5, color: '#3f51b5', fillColor: '#3f51b5', fillOpacity: 0.5});
     }});
-    map.addLayer(siteLayer);
-    map.fitBounds(siteLayer.getBounds());
-    map.addLayer(egLayer);
-    map.addLayer(afflLayer);
+    bm.map.addLayer(siteLayer);
+    bm.map.fitBounds(siteLayer.getBounds());
+    bm.map.addLayer(egLayer);
+    bm.map.addLayer(afflLayer);
   });
 
   $('#map').css({width: '100%'});

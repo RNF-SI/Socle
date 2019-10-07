@@ -3,7 +3,7 @@
   var id_site = <?= $site->id ?>;
   var id_ep = <?= $site->ep_id ?>;
   var type_rubrique = 'EG';
-  var point_coords = <?= $eg->geojson ?>;
+  var point_coords = <?= $eg->geom_bdcharm ?: $eg->geojson ?: 'null' ?>;
 </script>
 <?php if ($editable): ?>
 <p>

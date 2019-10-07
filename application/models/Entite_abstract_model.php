@@ -52,7 +52,7 @@ class Entite_abstract_model extends CI_Model {
       $func = 'st_geomFromGeojson';
     }
     $procgeom = 'st_setsrid(' . $func . '(' . $this->db->escape($s) . '), 4326)';
-    if (substr($this->geometry_format, 0, 4) == 'MULTI') {
+    if (substr($this->geometry_format, 0, 5) == 'MULTI') {
       $procgeom = 'st_multi(' . $procgeom . ')';
     }
 

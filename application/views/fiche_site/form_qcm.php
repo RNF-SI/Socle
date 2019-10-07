@@ -8,7 +8,7 @@ $interets = [
 ];
 
 function checkbox ($name, $label, $icon) {
-  return '<div class="checkbox"><label><input type="checkbox" name="interet_'
+  return '<div class="checkbox"><label><input type="checkbox" class="item-control" name="interet_'
     . $name . '" disabled /> <span class="fas fa-'
     . $icon . '"> </span> ' . $label . '</label></div>';
 }
@@ -50,9 +50,9 @@ function checkbox ($name, $label, $icon) {
           </div>
           <br />
           <div class="form-group">
-            <label>Commentaires :</label><textarea name="remarquable_info" class="form-control"></textarea>
+            <label>Commentaires :</label><textarea name="remarquable_info" class="form-control item-control"></textarea>
           </div>
-          <input type="hidden" name="geom" />
+          <input type="hidden" name="geom" class="item-control" />
         </form>
       </div>
       <div class="modal-footer">
