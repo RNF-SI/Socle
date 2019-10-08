@@ -3,7 +3,7 @@
   var id_site = <?= $site->id ?>;
   var id_ep = <?= $site->ep_id ?>;
   var type_rubrique = 'EG';
-  var point_coords = <?= $eg->geojson ?>;
+  var point_coords = <?= $eg->geom_bdcharm ?: $eg->geojson ?: 'null' ?>;
 </script>
 <?php if ($editable): ?>
 <p>
@@ -16,6 +16,7 @@
 			<span class="fas fa-plus"></span> Créer une nouvelle entité</a>
 	</div>
 </p>
+<?php $this->load->view('fiche_site/form_qcm'); ?>
 <?php endif; ?>
 <h1><?= $eg->intitule ?></h1>
 <p>Pour le site <strong>
@@ -60,6 +61,8 @@
   <a href="<?= site_url('site/ajout_affleurement/' . $eg->id) ?>" class="btn btn-primary">Ajouter et décrire un affleurement</a>
 <?php endif; ?>
 </div>
+
+<div id="rubriques">
 <?php
 
 $this->load->view('fiche_site/base_rubrique', [
@@ -83,6 +86,7 @@ $this->load->view('fiche_site/base_rubrique', [
   'id_rubrique' => 'structures_rocheuses_particulieres']);
 
 ?>
+</div>
 
 <h3>Perméabilité des terrains</h3>
 <p><?= $eg->permeabilite ?><br />

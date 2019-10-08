@@ -52,7 +52,7 @@ class Entite_abstract_model extends CI_Model {
       $func = 'st_geomFromGeojson';
     }
     $procgeom = 'st_setsrid(' . $func . '(' . $this->db->escape($s) . '), 4326)';
-    if (substr($this->geometry_format, 0, 4) == 'MULTI') {
+    if (substr($this->geometry_format, 0, 5) == 'MULTI') {
       $procgeom = 'st_multi(' . $procgeom . ')';
     }
 
@@ -160,7 +160,8 @@ class Entite_abstract_model extends CI_Model {
   // et précise si elles sont sélectionnées
   public function getCaracteristiquesForm($id, $rubrique = NULL) {
     $subquery = $this->db
-      ->select('qcm_id, info_complement, remarquable, interet_esthetique, interet_historique, interet_pedagogique, interet_scientifique, remarquable_info')
+      ->select('qcm_id, info_complement, remarquable, interet_esthetique, interet_historique,
+        interet_pedagogique, interet_scientifique, remarquable_info, geom')
       ->where($this->linkColumnName(), $id)
       ->get_compiled_select($this->qcmLinkTable);
     $this->db->from('qcm')
@@ -230,15 +231,25 @@ class Entite_abstract_model extends CI_Model {
       'interet_esthetique' => 'b',
       'interet_historique' => 'b',
       'remarquable_info' => 't',
-      'info_complement' => 't'
+      'info_complement' => 't',
+      'geom' => 't',
     ];
     $colname = $this->linkColumnName();
+
+    $res = $this->db
+      ->select('id')
+      ->order_by('question, ordre_par_question')
+      ->get_where('qcm', ['rubrique' => $rubrique])->result_array();
+    $corresp_id = array();
+    foreach ($res as $li) {
+      $corresp_id[] = $li['id'];
+    }
 
     $this->db->trans_start();
 
     if (isset($data['caracteristiques'])) {
       $cars = array();
-      foreach ($data['caracteristiques'] as $car) {
+      foreach ($data['caracteristiques'] as $car) { // à retirer ?
         $cars[$car] = array('qcm_id' => $car, $colname => $id, 'remarquable' => FALSE);
       }
       unset($data['caracteristiques']);
@@ -252,9 +263,9 @@ class Entite_abstract_model extends CI_Model {
         unset($data['info_complement_id']);
       }
 
-      $corresp_id = $data['remarquable'];
       foreach ($data['remarquable'] as $numli => $qcm_id) {
-          $cars[$qcm_id]['remarquable'] = !empty($qcm_id);
+        if (!empty($qcm_id))
+          $cars[$qcm_id]['remarquable'] = TRUE;
       }
       unset($data['remarquable']);
 
@@ -262,18 +273,20 @@ class Entite_abstract_model extends CI_Model {
         if (is_array($val) && isset($link_fields[$field])) {
           foreach ($val as $pos => $iid) {
             if (! empty($iid)) {
+              $item_id = $corresp_id[$pos];
+              if (! isset($cars[$item_id])) {
+                $cars[$item_id] = array('qcm_id' => $item_id, $colname => $id, 'remarquable' => FALSE);
+              }
               if ($link_fields[$field] == 'b') {
                 $cars[$iid][$field] = TRUE;
               } else {
-                $cars[$corresp_id[$pos]][$field] = $iid;
+                $cars[$item_id][$field] = $iid;
               }
             }
           }
           unset($data[$field]);
         }
       }
-
-      unset($data['caracteristiques']);
     } else {
       // on s'assure que toutes les infos secondaires sont retirées
       unset($data['remarquable']);
@@ -281,7 +294,6 @@ class Entite_abstract_model extends CI_Model {
         unset($data[$field]);
       }
     }
-
     // complements
     if (isset($data['complements_question'])) {
       $toinsert = array();
@@ -322,7 +334,8 @@ class Entite_abstract_model extends CI_Model {
     if(!empty($data))
       $this->db->where('id', $id)->update($this->tableName, $data);
 
-    if (isset($rubrique)) {
+      // Suppression des items concernés
+      if (isset($rubrique)) {
       $subquery = $this->db->select('id')
         ->where('rubrique', $rubrique)
         ->get_compiled_select('qcm');
@@ -331,7 +344,7 @@ class Entite_abstract_model extends CI_Model {
         ->delete($this->qcmLinkTable);
 
       if (isset($cars)) {
-        // on s'assure que toutes les lignes ont le memes cles
+        // on s'assure que toutes les lignes ont les mêmes clés
         $keys = array();
         foreach ($cars as $li) {
           $keys = array_unique(array_merge($keys, array_keys($li)));
@@ -343,7 +356,6 @@ class Entite_abstract_model extends CI_Model {
             $toinsert[] = array_merge($template, $li);
           }
         }
-
         $this->db->insert_batch($this->qcmLinkTable, $toinsert);
       }
     }

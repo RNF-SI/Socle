@@ -18,7 +18,9 @@ class Carto extends CI_Controller {
 
     foreach ($features as $ft) {
         $ft = (array) $ft;
-        $geom = is_array($ft['geom']) ? $ft['geom'] : json_decode($ft['geom']);
+        $geom = is_array($ft['geom']) ? $ft['geom'] : json_decode($ft['geom'], TRUE);
+        if (isset($geom['geometry']))
+          $geom = $geom['geometry'];
         $ftJson = [
           'type' => 'Feature',
           'geometry' =>  $geom,

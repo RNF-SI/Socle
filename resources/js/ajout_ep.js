@@ -1,5 +1,5 @@
 $(function() {
-  var map = base_map('map', id_ep);
+  var map = new BaseMap('map', {id_ep: id_ep});
 
   var search = /^FR\d{7}$/;
   $("#code_national_ep").on('keyup change', function() {

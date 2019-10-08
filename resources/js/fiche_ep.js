@@ -1,4 +1,4 @@
 $(function() {
-  var map = base_map('map', id_ep);
+  var bm = new BaseMap('map', {id_ep: id_ep});
 
 });

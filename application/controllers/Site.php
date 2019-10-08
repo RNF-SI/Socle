@@ -42,9 +42,16 @@ class Site extends CI_Controller {
     $data['avancement'] = round($taux_adv * 100);
     */
 
-
-    $this->load->view('default/header', ['scripts' => ['js/fiche_projet.js'], 'title' => $site->nom,
-      'path'=>$this->site_model->getPath($id)]);
+    $data_header = [
+      'scripts' => ['js/fiche_projet.js'],
+      'title' => $site->nom,
+      'path'=>$this->site_model->getPath($id),
+    ];
+    if ($data['editable']) {
+      $data_header['scripts'] = array_merge(['lib/leaflet/pm/leaflet.pm.min.js'], $data_header['scripts']);
+      $data_header['styles'] = ['lib/leaflet/pm/leaflet.pm.css'];
+    }
+    $this->load->view('default/header', $data_header);
     $this->load->view('fiche_site/fiche_site', $data);
     $this->load->view('default/footer');
   }
@@ -388,11 +395,19 @@ class Site extends CI_Controller {
     }
     $data['eg'] = $eg;
     $data['site'] = $this->site_model->get($eg->site_id);
-	  $data['editable'] = $this->site_model->is_editable($eg->site_id);
+    $data['editable'] = $this->site_model->is_editable($eg->site_id);
 
-    $this->load->view('default/header', ['scripts' => ['js/fiche_projet.js', 'js/fiche_eg.js'],
+    $data_header = [
+      'scripts' => ['js/fiche_projet.js', 'js/fiche_eg.js'],
       'title' => 'Entité géologique "' . $eg->intitule . '"',
-      'path' => $this->entite_geol_model->getPath($id_eg)]);
+      'path' => $this->entite_geol_model->getPath($id_eg),
+    ];
+    if ($data['editable']) {
+      $data_header['scripts'] = array_merge(['lib/leaflet/pm/leaflet.pm.min.js'], $data_header['scripts']);
+      $data_header['styles'] = ['lib/leaflet/pm/leaflet.pm.css'];
+    }
+
+    $this->load->view('default/header', $data_header);
     $this->load->view('fiche_eg/fiche_eg', $data);
     $this->load->view('default/footer');
   }
@@ -400,7 +415,6 @@ class Site extends CI_Controller {
   // Suppression EG
   public function suppr_entite_geol($id) {
     $this->load->model('entite_geol_model');
-    $this->load->model('affleurement_model');
 
     $eg = $this->entite_geol_model->get($id);
     $id_site = $eg->site_id;
@@ -415,7 +429,7 @@ class Site extends CI_Controller {
 
     $this->session->set_flashdata('message', 'Entité supprimée.');
     $this->session->set_flashdata('message-class', 'success');
-    redirect('site/fiche_site/' . $id_site);
+    redirect('site/fiche_site/' . $id_site . '#Q3-1');
   }
 
   public function soumission_validation($id_ep) {

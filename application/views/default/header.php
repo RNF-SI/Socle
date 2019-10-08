@@ -7,7 +7,7 @@
         <title>SOCLE <?= isset($title) ? ' - '.$title : '' ?></title>
         <link rel="icon" type="image/x-icon" href="<?= base_url('resources/images/icone_RNF.png') ?>" />
 
-        <link rel="stylesheet" href="<?= base_url('resources/lib/bootstrap/css/bootstrap4-cerulean.min.css') ?>">
+        <link rel="stylesheet" href="<?= base_url('resources/lib/bootstrap/css/bootstrap.min.css') ?>">
         <link rel="stylesheet" href="<?= base_url('resources/lib/leaflet/leaflet.css') ?>" />
         <link rel="stylesheet" href="<?= base_url('resources/lib/leaflet/easy-button.css') ?>" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -20,7 +20,7 @@
      <link rel="stylesheet" href="<?php echo base_url("resources/css/common.css") ?>" />
         <script src="<?= base_url('resources/lib/jquery-3.2.1.min.js') ?>"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <script src="<?= base_url('resources/lib/leaflet/leaflet.js') ?>"></script>
         <script src="<?= base_url('resources/lib/leaflet/easy-button.js') ?>"></script>
 
@@ -100,7 +100,7 @@
                 if (isset($path)) {
                   for ($i=0; $i<count($path); $i++) {
                     if ($i+1 == count($path)) {
-                      echo '<span clas="breadcrumb-item">' . $path[$i]['title'] . '</span>';
+                      echo '<span clas="breadcrumb-item">&nbsp;/ ' . $path[$i]['title'] . '</span>';
                     } else {
                       echo '<a class="breadcrumb-item" href="'. site_url($path[$i]['path']) . '">' . $path[$i]['title'] . '</a>';
                     }
