@@ -42,6 +42,10 @@ function liste_caracteristiques($list, $question, $titre=NULL, $suppr_vide=FALSE
     if (is_array($car)) $car = (object) $car;
     $txt .= '<li>' . $car->label . help_tooltip($car);
 
+    if ((isset($car->is_geom) && $car->is_geom) || (isset($car->geom) && $car->geom)) {
+      $txt .= ' <span class="fas fa-map-marked" title="élément cartographié"> </span> ';
+    }
+
     if ($car->remarquable == 't') {
       $txt .= '<span class="coche-remarquable active"> &starf;</span>';
       $item_interets = array();
@@ -49,12 +53,14 @@ function liste_caracteristiques($list, $question, $titre=NULL, $suppr_vide=FALSE
         if (isset($car->$key) && $car->$key == 't')
           $item_interets[] = '<span class="badge badge-secondary fas fa-' . $value[1] .'" title="intérêt ' . $value[0] . '"> </span>';
       }
-      if (count($item_interets) > 0 || $car->remarquable_info) {
-        $txt .= ' ' . implode(' ', $item_interets);
-        if ($car->remarquable_info)
-          $txt .= ' ' . $car->remarquable_info;
-      }
+
+    if (count($item_interets) > 0 || $car->remarquable_info) {
+      $txt .= ' ' . implode(' ', $item_interets);
+      if ($car->remarquable_info)
+        $txt .= ' ' . $car->remarquable_info;
     }
+  }
+
     $txt .=  ($car->info_complement ? ' (' . $car->intitule_complement . '&nbsp;: ' . $car->info_complement . ')' : '')
       . '</li>';
   }

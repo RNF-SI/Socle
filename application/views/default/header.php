@@ -100,7 +100,7 @@
                 if (isset($path)) {
                   for ($i=0; $i<count($path); $i++) {
                     if ($i+1 == count($path)) {
-                      echo '<span clas="breadcrumb-item">' . $path[$i]['title'] . '</span>';
+                      echo '<span clas="breadcrumb-item">&nbsp;/ ' . $path[$i]['title'] . '</span>';
                     } else {
                       echo '<a class="breadcrumb-item" href="'. site_url($path[$i]['path']) . '">' . $path[$i]['title'] . '</a>';
                     }
