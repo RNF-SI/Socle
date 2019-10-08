@@ -30,6 +30,8 @@ function checkbox ($name, $label, $icon) {
           </div>
           <div class="collapse hide" id="collapseMap">
             <div class="card-body">
+              <p>Vous pouvez indiquer sur la carte l'élément en choisissant un des outils à gauche. Vous pouvez au choix
+                cartographier sous forme de point, de ligne, de polygone ou de cercle.</p>
               <div id="dialog-map"></div>
             </div>
           </div>
@@ -56,7 +58,7 @@ function checkbox ($name, $label, $icon) {
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" id="button-ok" class="btn btn-default" data-dismiss="modal">OK</button>
+        <button type="button" id="button-ok" class="btn btn-primary" data-dismiss="modal">OK</button>
       </div>
     </div>
   </div>
