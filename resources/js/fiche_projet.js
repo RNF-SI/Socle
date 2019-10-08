@@ -86,7 +86,11 @@ $(function() {
   // carte de pointage (dialogue)
   if ($("#dialog-map").length > 0) {
     var drawnLayer;
-    var dlg_map = new BaseMap("dialog-map", {id_ep: site.ep_id, currentBaseLayer: 'IGN topo', displayPopup: false});
+    var dlg_map = new BaseMap("dialog-map", {
+      id_ep: typeof id_ep === 'undefined' ? site.ep_id : id_ep,
+      currentBaseLayer: 'IGN topo',
+      displayPopup: false
+    });
     dlg_map.map.pm.addControls({
       position: 'topleft'
     });
@@ -115,40 +119,40 @@ $(function() {
       var id = $chkbox.val();
       $chkbox.parents('.choix-container').find('.remarquable-control')
         .toggleClass('checked', $chkbox.is(':checked'));
-  }).on('click', '.remarquable-edit', function() {
-    // affichage du sous-formulaire complements
-    var $cont = $(this).parents('.choix-container');
-    var $mymodal = $("#complements-dialog");
-    $mymodal.data('qcm-id', $cont.data('qcm-item-id'));
+    }).on('click', '.remarquable-edit', function() {
+      // affichage du sous-formulaire complements
+      var $cont = $(this).parents('.choix-container');
+      var $mymodal = $("#complements-dialog");
+      $mymodal.data('qcm-id', $cont.data('qcm-item-id'));
 
-    $.each($cont.find("input[type='hidden']"), function(i, elt) {
-      var fieldName = $(elt).attr('name').slice(0, -2);
-      var $form_field = $mymodal.find("input[name='" + fieldName + "']");
-      var val = $(elt).val();
-      if ($form_field.prop('type') == 'checkbox') {
-        $form_field.prop('checked', Boolean(val));
-      } else {
-        $form_field.val(val);
+      $.each($cont.find("input[type='hidden']"), function(i, elt) {
+        var fieldName = $(elt).attr('name').slice(0, -2);
+        var $form_field = $mymodal.find("input[name='" + fieldName + "']");
+        var val = $(elt).val();
+        if ($form_field.prop('type') == 'checkbox') {
+          $form_field.prop('checked', Boolean(val));
+        } else {
+          $form_field.val(val);
+        }
+      });
+
+      $mymodal.find("textarea[name='remarquable_info']").val($cont.find("input[name='remarquable_info[]']").val());
+
+      activateRemarquable();
+
+      if (drawnLayer) dlg_map.map.removeLayer(drawnLayer);
+      var geom = $("#complements-dialog input[name='geom']").val();
+      if (geom) {
+        drawnLayer = L.geoJSON(JSON.parse(geom));
+        dlg_map.map.addLayer(drawnLayer);
       }
-    });
 
-    $mymodal.find("textarea[name='remarquable_info']").val($cont.find("input[name='remarquable_info[]']").val());
+      $mymodal.modal("show");
 
-    activateRemarquable();
+      dlg_map.map.invalidateSize();
+      dlg_map.zoomToInit();
 
-    if (drawnLayer) dlg_map.map.removeLayer(drawnLayer);
-    var geom = $("#complements-dialog input[name='geom']").val();
-    if (geom) {
-      drawnLayer = L.geoJSON(JSON.parse(geom));
-      dlg_map.map.addLayer(drawnLayer);
-    }
-
-    $mymodal.modal("show");
-
-    dlg_map.map.invalidateSize();
-    dlg_map.zoomToInit();
-
-    return false;
+      return false;
   }).on('click', '.photo-remove-button', function() {
     // suppression de photos
     var id = $(this).data('photo_id');

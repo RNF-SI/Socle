@@ -101,7 +101,6 @@ function qcm_caracteristiques($choices) {
       $input .= ' />';
       $li .=  $input;
     }
-    $li .= '<input type="hidden" name="remarquable_info[]" value="' . ($choice->remarquable == 't' ? $choice->id : '') . '" />';
 
     if (! is_null($choice->intitule_complement))
       $li .= '<div class="choice-complement"><label for="info_complement[]">' . $choice->intitule_complement

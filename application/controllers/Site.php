@@ -395,11 +395,19 @@ class Site extends CI_Controller {
     }
     $data['eg'] = $eg;
     $data['site'] = $this->site_model->get($eg->site_id);
-	  $data['editable'] = $this->site_model->is_editable($eg->site_id);
+    $data['editable'] = $this->site_model->is_editable($eg->site_id);
 
-    $this->load->view('default/header', ['scripts' => ['js/fiche_projet.js', 'js/fiche_eg.js'],
+    $data_header = [
+      'scripts' => ['js/fiche_projet.js', 'js/fiche_eg.js'],
       'title' => 'Entité géologique "' . $eg->intitule . '"',
-      'path' => $this->entite_geol_model->getPath($id_eg)]);
+      'path' => $this->entite_geol_model->getPath($id_eg),
+    ];
+    if ($data['editable']) {
+      $data_header['scripts'] = array_merge(['lib/leaflet/pm/leaflet.pm.min.js'], $data_header['scripts']);
+      $data_header['styles'] = ['lib/leaflet/pm/leaflet.pm.css'];
+    }
+
+    $this->load->view('default/header', $data_header);
     $this->load->view('fiche_eg/fiche_eg', $data);
     $this->load->view('default/footer');
   }

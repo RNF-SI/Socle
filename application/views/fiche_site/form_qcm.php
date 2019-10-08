@@ -38,7 +38,7 @@ function checkbox ($name, $label, $icon) {
         <form class="form-horizontal">
           <div class="checkbox">
             <label>
-              <input type="checkbox" name="remarquable" />
+              <input type="checkbox" class="item-control" name="remarquable" />
               &starf; Cet élément est remarquable
             </label>
           </div>
