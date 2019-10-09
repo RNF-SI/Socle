@@ -168,6 +168,7 @@ function BaseMap (id, options) {
         + ("0000" + data.carte).slice(-4)
         + 'N.pdf" target="_blank">consulter la notice</a></p>';
       }
+      cont += '<p class="small font-italic">Informations fournies par le <a href="http://infoterre.brgm.fr" target="_blank">BRGM / Infoterre</a>.</p>';
       this1.popup.setLatLng(evt.latlng).setContent(cont).openOn(this1.map);
     });
   });
