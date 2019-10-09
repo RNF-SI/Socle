@@ -202,23 +202,26 @@ $(function() {
 
   // CARTO
   if ($('#map-main').length > 0) {
-    var map = new BaseMap('map-main', {id_ep: site.ep_id, reductible: true});
-
-    if (! map.options.monosite != 't') {
-      var style = {
-        color: 'blue'
-      };
-      map.addVectorLayer(site_url("carto/site_geom/" + site.id), style, function(lyr) {
-        if (data.features[0].geometry) {
-          lyr.setOptions({pmIgnore: true});
-          lyr.bringToBack();
-          var bounds = lyr.getBounds();
-          if (dlg_map) {
-            lyr.addTo(dlg_map.map);
-            dlg_map.map.fitBounds(bounds);
+    var map = new BaseMap('map-main', {
+      id_ep: site.ep_id,
+      reductible: true,
+      addEPCallback: function() {
+        if (map.options.monosite) return;
+        var style = {
+          color: 'blue'
+        };
+        map.addVectorLayer("carto/site_geom/" + site.id, style, function(lyr) {
+          if (lyr.getLayers().length > 0) {
+            lyr.setOptions({pmIgnore: true});
+            lyr.bringToBack();
+            var bounds = lyr.getBounds();
+            if (dlg_map) {
+              lyr.addTo(dlg_map.map);
+              dlg_map.map.fitBounds(bounds);
+            }
           }
-        }
-      }, true);
-    }
+        }, true);
+      }
+    });
   }
 });

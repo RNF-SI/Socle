@@ -12,6 +12,7 @@ function BaseMap (id, options) {
     displayPopup: true,
     reductible: false,
     currentBaseLayer: 'carte géologique',
+    addEPCallback: null, // fonction à lancer une fois la couche EP chargée
   };
   if (options) {
     this.options = Object.assign(this.options, options);
@@ -110,6 +111,9 @@ function BaseMap (id, options) {
       lyr.eachLayer(function(slyr) {
         this1.options.monosite = slyr.feature.properties.monosite;
       });
+      if (typeof this1.options.addEPCallback === "function") {
+        this1.options.addEPCallback(lyr);
+      }
     }, true);
   } else {
     this.zoomToInit();
