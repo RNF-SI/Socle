@@ -1,7 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-
 class Site extends CI_Controller {
 
   public function __construct() {
@@ -140,7 +139,6 @@ class Site extends CI_Controller {
       show_404();
     }
 
-
     $this->load->helper('caracteristiques_helper');
     $this->load->helper('form_helper');
     $this->load->model('qcm_model');
@@ -179,10 +177,6 @@ class Site extends CI_Controller {
     $data['site'] = $model->get($id); // TODO : modifier le nom de variable
 
     $qcms = $model->getCaracteristiquesForm($id, $rubrique);
-
-    if (! $qcms) {
-      show_404();
-    }
 
     $data['site']->caracteristiques = $qcms;
     $data['site']->complements = $model->getComplementsRubrique($id, $rubrique);
