@@ -7,7 +7,7 @@ class Infoterre_model extends CI_Model {
 
   public function get_eg_point($lat, $lng) {
     // Retourne l'entité géologique au point donné
-    $this->db->select('ogc_fid, notation, descr, type_geol, ap_locale, geol_nat, age_deb.label label_age_deb,
+    $this->db->select('ogc_fid, notation, descr AS description, type_geol, ap_locale, geol_nat, age_deb.label label_age_deb,
       age_deb.id AS id_age_deb, age_deb.pix_min pix_min_deb, age_deb.pix_max pix_max_deb,
       age_fin.label label_age_fin,
       age_fin.id AS id_age_fin, age_fin.pix_min pix_min_fin, age_fin.pix_max pix_max_fin,

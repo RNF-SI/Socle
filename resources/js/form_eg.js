@@ -7,7 +7,7 @@ $(function() {
   })
 
   // CARTO
-  var bm = new BaseMap('map', {id_ep: site.ep_id});
+  var bm = new BaseMap('map', {id_ep: site.ep_id, });
 
   var lyr = L.geoJSON(undefined, {pointToLayer: function(jsonPt, latlng) {
     return L.circleMarker(latlng, {radius: 7, color: '#b78a31', fillColor: '#b78a31', fillOpacity: 0.5})
@@ -20,6 +20,7 @@ $(function() {
   }
 
   bm.map.on('click', function(evt) {
+    // auto-remplissage des champs par clic sur la carte
     var json = lyr.toGeoJSON();
     if (json.features.length == 0) {
       json.features.push({geometry: {coordinates: [], type: "MultiPoint"}, type: "Feature"});
@@ -31,6 +32,9 @@ $(function() {
     $("input[name=geom]").val(JSON.stringify(json.features[0].geometry));
 
     bm.getGeolInfo(evt, function(response) {
+      if ('type' in response && response.type == 'FeatureCollection' && response.features.length > 0) {
+        response = response.features[0].properties;
+      }
       $('input#code').val(response.notation);
       if ($('input#intitule').val() == "") {
         $('input#intitule').val(response.description);
