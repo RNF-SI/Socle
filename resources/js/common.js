@@ -52,7 +52,8 @@ function BaseMap (id, options) {
       })
   },
 
-  this.popup = L.popup({maxWidth: 200}),
+  this.popup = L.popup({maxWidth: 300});
+  this.clickedEGLayer = null;
 
   this.id = id;
 
@@ -86,19 +87,7 @@ function BaseMap (id, options) {
     })
   };
 
-  // téléchargement des infos BRGM sur un point cliqué
-  this.getGeolInfo = function(evt, callback) {
-    var url = site_url('carto/featureInfoProxy');
-    var size = this.map.getSize();
-    var params = {
-      BBOX: this.map.getBounds().toBBoxString(),
-      WIDTH: size.x,
-      HEIGHT: size.y,
-      X: Math.round(evt.containerPoint.x),
-      Y: Math.round(evt.containerPoint.y)
-    };
-    $.get(url, params, callback);
-  };
+  this.geolInfoUrl = 'carto/featureInfoProxy';
 
   this.enablePopup = function(enabled) {
     this.options.displayPopup = enabled;
@@ -126,21 +115,68 @@ function BaseMap (id, options) {
     this.zoomToInit();
   }
 
+  // téléchargement des infos BRGM sur un point cliqué
+  this.getGeolInfo = function(evt, callback) {
+    var url = site_url(this.geolInfoUrl);
+    var size = this.map.getSize();
+    var params = {
+      BBOX: this.map.getBounds().toBBoxString(),
+      WIDTH: size.x,
+      HEIGHT: size.y,
+      X: Math.round(evt.containerPoint.x),
+      Y: Math.round(evt.containerPoint.y),
+      lat: evt.latlng.lat,
+      lng: evt.latlng.lng,
+    };
+    $.get(url, params, callback);
+  };
+
   // popup infos géol
   var this1 = this;
   this.map.on("click", function(evt) {
     if (! this1.options.displayPopup)
       return;
-
     if (this1.map.getZoom() < 11) return false;
-    this1.popup.setLatLng(evt.latlng);
+
+    if (this1.clickedEGLayer !== null) {
+      this1.map.removeLayer(this1.clickedEGLayer);
+    }
+
+    this1.geolInfoUrl = 'carto/featureInfo';
     this1.getGeolInfo(evt, function(data) {
-      var cont = '<p><b>Entité géologique :</b><br />' + data.notation + ' : <i>'
+      var cont = '<p><b>Entité géologique :</b><br />';
+      if ('type' in data && data.type == 'FeatureCollection' && data.features.length > 0) {
+        // info polygonale : affichage
+        var prop = data.features[0].properties;
+        cont += prop.notation + ' : <i>'
+          + prop.description + '</i>';
+        if (prop.ap_locale) cont += '<br />(' + prop.ap_locale + ')';
+        cont += '<table class="table"><tbody><tr><td>Ensemble géologique</td><td>' + prop.geol_nat
+          + '</td></tr><tr><td>Type de géologie</td><td>' + prop.type_geol
+          + '</td></tr><tr><td>Lithologie</td><td>' + prop.lithologie
+          + '</td></tr><tr><td>Géochimie</td><td>' + prop.geochimie
+          + '</td></tr><tr><td>Âge des roches</td><td>' + prop.label_age_deb
+          + (prop.id_age_fin ? ' - ' + prop.label_age_fin : '')
+          + '</td></tr></tbody></table>';
+        this1.clickedEGLayer = L.geoJSON(data, {
+          style: function() { return {color: 'red', fillColor: 'red'} },
+        }).addTo(this1.map);
+      } else {
+        // ancienne version (API BRGM)
+        cont += '<p>' + data.notation + ' : <i>'
         + data.description + '</i></p><p><a href="http://ficheinfoterre.brgm.fr/Notices/'
         + ("0000" + data.carte).slice(-4)
         + 'N.pdf" target="_blank">consulter la notice</a></p>';
-      this1.popup.setContent(cont).openOn(this1.map);
+      }
+      this1.popup.setLatLng(evt.latlng).setContent(cont).openOn(this1.map);
     });
+  });
+
+  this.map.on("popupclose", function(evt) {
+    if (evt.popup == this1.popup && this1.clickedEGLayer != null) {
+      this1.map.removeLayer(this1.clickedEGLayer);
+      this1.clickedEGLayer = null;
+    }
   });
 
   // traitement de la mini carte agrandissable
@@ -148,7 +184,9 @@ function BaseMap (id, options) {
     var mapcont = $("#" + this.id);
     var mapParent = mapcont.parent();
     var mapheight;
+    this.options.displayPopup = false;
 
+    var this1 = this;
     var reduceMap = function(map, btn) {
       var mapCenter = map.getCenter();
       mapcont.css({height: mapheight});
@@ -156,6 +194,7 @@ function BaseMap (id, options) {
       map.panTo(mapCenter);
       map.invalidateSize();
       btn.state('magnify');
+      this1.options.displayPopup = false;
     };
 
     var reduceButton = L.easyButton({
@@ -171,6 +210,7 @@ function BaseMap (id, options) {
           mapcont.css({height: '80vh', 'min-height': '300px'});
           map.panTo(mapCenter);
           map.invalidateSize();
+          this1.options.displayPopup = true;
           btn.state('minify')
         }
       }, {
