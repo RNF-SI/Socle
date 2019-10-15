@@ -94,6 +94,10 @@ $(function() {
     dlg_map.map.pm.addControls({
       position: 'topleft'
     });
+    dlg_map.map.pm.setPathOptions({
+      color: 'red',
+      fillColor: 'red'
+    });
     dlg_map.map.on('pm:create', function(evt) {
       if(drawnLayer) dlg_map.map.removeLayer(drawnLayer);
       drawnLayer = evt.layer;
