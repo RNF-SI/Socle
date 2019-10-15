@@ -384,9 +384,6 @@ class Site extends CI_Controller {
     }
 
     $eg->affleurements = $this->affleurement_model->getByEG($id_eg);
-    if ($eg->geom_bdcharm && !$eg->geojson) {
-      $eg->geojson = $eg->geom_bdcharm;
-    }
     $data['eg'] = $eg;
     $data['site'] = $this->site_model->get($eg->site_id);
     $data['editable'] = $this->site_model->is_editable($eg->site_id);

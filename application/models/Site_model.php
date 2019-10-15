@@ -210,11 +210,10 @@ class Site_model extends Entite_abstract_model {
   // retourne tous les éléments géométriques du site
   public function getSubelements_geom($id) {
     $this->db->select('site.id as site_id, site.nom as site_nom, st_asGeoJson(site.geom) AS site_geom,
-      eg.intitule AS eg_nom, eg.id AS eg_id, st_asGeoJson(coalesce(s_fgeol.wkb_geometry, eg.geom)) AS eg_geom,
+      eg.intitule AS eg_nom, eg.id AS eg_id, st_asGeoJson(eg.geom) AS eg_geom,
       affleurement.id AS affleurement_id, affleurement.nom AS affleurement_nom, affleurement.type as affleurement_type,
       st_asGeoJson(affleurement.geom) AS affleurement_geom')
       ->join('entite_geol AS eg', 'eg.site_id=site.id', 'left')
-      ->join('infoterre.s_fgeol', 'eg.s_fgeol_id=s_fgeol.ogc_fid', 'left')
       ->join('affleurement', 'affleurement.eg_id=eg.id', 'left');
     $query = $this->db->get_where('site', ['site.id'=>$id]);
     $data = array();
