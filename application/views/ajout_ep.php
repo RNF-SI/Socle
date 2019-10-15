@@ -2,7 +2,9 @@
 <?= validation_errors('<div class="alert alert-warning">', '</div>') ?>
 
 <form class="form-horizontal" action="<?= site_url(isset($ep) ? 'espace/modification/' . $ep->id : 'espace/creation') ?>" method="POST">
-  <?= form_input('code_national_ep', 'Identifiant MNHN de l\'espace*&nbsp;:', isset($ep) ? $ep->code_national_ep : NULL) ?>
+  <?= form_input('code_national_ep', 'Identifiant MNHN de l\'espace*&nbsp;:<span class="small italic"> (cet identifiant peut être trouvé sur
+  <a href="https://inpn.mnhn.fr/accueil/recherche-de-donnees/espaces-proteges" target="_blank">le site de l\'INPN</a>)</span>', isset($ep) ? $ep->code_national_ep : NULL) ?>
+
   <?= form_input('nom', 'Nom :', isset($ep) ? $ep->nom : '') ?>
   <?= form_select('type', 'type d\'espace :', [
       'RNN' => 'Réserve naturelle nationale',
