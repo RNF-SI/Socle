@@ -7,7 +7,7 @@ $(function() {
   })
 
   // CARTO
-  var bm = new BaseMap('map', {id_ep: site.ep_id, });
+  var bm = new BaseMap('map', {id_ep: site.ep_id, displayPopup: false});
 
   var lyr = L.geoJSON(undefined, {pointToLayer: function(jsonPt, latlng) {
     return L.circleMarker(latlng, {radius: 7, color: '#b78a31', fillColor: '#b78a31', fillOpacity: 0.5})
