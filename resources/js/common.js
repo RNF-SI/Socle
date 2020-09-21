@@ -19,7 +19,7 @@ function BaseMap (id, options) {
   }
 
   this.baseLayers = {
-    'Photos aériennes': L.tileLayer("http://wxs.ign.fr/" + this.ignKey + "/wmts?" +
+    /*'Photos aériennes': L.tileLayer("http://wxs.ign.fr/" + this.ignKey + "/wmts?" +
         "REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0" +
         "&STYLE=normal" +
         "&TILEMATRIXSET=PM" +
@@ -44,6 +44,10 @@ function BaseMap (id, options) {
       attribution: 'IGN-F/Geoportail',
       maxZoom: 18,
       tileSize: 256
+    }),*/
+    'OpenStreetMap' : L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {
+      foo: 'bar',
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
     }),
     'carte géologique': L.tileLayer.wms("http://geoservices.brgm.fr/geologie", {
         layers: "GEOLOGIE",

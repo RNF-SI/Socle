@@ -1,5 +1,5 @@
 $(function() {
-  var bm = new BaseMap('map', {currentBaseLayer: "IGN topo"});
+  var bm = new BaseMap('map', {currentBaseLayer: "OpenStreetMap"});
   bm.map.setView([46, 2], 8);
   $.get(site_url('carto/espaces_all'), function(data) {
     /* utilise le plugin deflate pour montrer des points à la place de polygones
