@@ -88,7 +88,7 @@ $(function() {
     var drawnLayer;
     var dlg_map = new BaseMap("dialog-map", {
       id_ep: typeof id_ep === 'undefined' ? site.ep_id : id_ep,
-      currentBaseLayer: 'IGN topo',
+      currentBaseLayer: 'OpenStreetMap',
       displayPopup: false
     });
     dlg_map.map.pm.addControls({
