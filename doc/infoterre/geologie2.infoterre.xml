@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database name="geologie2" schema="infoterre" type="PostgreSQL - 10.0">
+   <sequences>
+      <sequence increment="1" name="echelle_id_seq" startValue="1"/>
+      <sequence increment="1" name="emprise_cartes_geol_id_seq" startValue="1"/>
+      <sequence increment="1" name="s_fgeol_agg_id_seq" startValue="1"/>
+      <sequence increment="1" name="s_fgeol_ogc_fid_seq" startValue="1"/>
+   </sequences>
+   <tables>
+      <table name="echelle" numRows="304" remarks="" schema="infoterre" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('infoterre.echelle_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="parent_id" foreignKey="fk_echelle_auto" implied="false" onDeleteCascade="false" schema="infoterre" table="echelle"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="label" nullable="false" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="parent" nullable="true" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="parent_id" nullable="true" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="fk_echelle_auto" implied="false" onDeleteCascade="false" schema="infoterre" table="echelle"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="age_deb" nullable="true" remarks="" size="131089" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="age_fin" nullable="true" remarks="" size="131089" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="pix_min" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="pix_max" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="echelle_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="fki_fk_echelle_auto" unique="false">
+            <column ascending="true" name="parent_id"/>
+         </index>
+         <index name="idx_echelle_label" unique="false">
+            <column ascending="true" name="label"/>
+         </index>
+         <index name="unique_echelle_label" unique="true">
+            <column ascending="true" name="label"/>
+         </index>
+      </table>
+      <table name="emprise_cartes_geol" numRows="1059" remarks="" schema="infoterre" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('infoterre.emprise_cartes_geol_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="geom" nullable="false" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="nom" nullable="true" remarks="" size="150" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="numero" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="emprise_cartes_geol_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="emprise_cartes_geol_geom_id" unique="false">
+            <column ascending="true" name="geom"/>
+         </index>
+      </table>
+      <table name="s_fgeol" numRows="993840" remarks="" schema="infoterre" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('infoterre.s_fgeol_ogc_fid_seq'::regclass)" digits="0" id="0" name="ogc_fid" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="s_fgeol_id" foreignKey="fk_eg_s_fgeol" implied="false" onDeleteCascade="false" schema="public" table="entite_geol"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="mi_prinx" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="code" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="code_leg" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="notation" nullable="true" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="descr" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="type_geol" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="ap_locale" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="type_ap" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="geol_nat" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="isopique" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="lithotec" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="emerge" nullable="true" remarks="" size="4" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="sys_deb" nullable="true" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="sys_fin" nullable="true" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="15" name="age_min" nullable="true" remarks="" size="6" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="16" name="age_max" nullable="true" remarks="" size="6" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="17" name="age_absolu" nullable="true" remarks="" size="6" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="18" name="toler_age" nullable="true" remarks="" size="5" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="tech_dat" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="cat_dat" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="age_com" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="lithologie" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="durete" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="epaisseur" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="environmt" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="26" name="c_geodyn" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="27" name="geochimie" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="28" name="litho_com" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="29" name="wkb_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="30" name="age_deb_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="31" name="age_fin_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <primaryKey column="ogc_fid" sequenceNumberInPK="1"/>
+         <index name="s_fgeol_pkey" unique="true">
+            <column ascending="true" name="ogc_fid"/>
+         </index>
+         <index name="s_fgeol_wkb_geometry_geom_idx" unique="false">
+            <column ascending="true" name="wkb_geometry"/>
+         </index>
+      </table>
+      <table name="s_fgeol_agg" numRows="17309" remarks="" schema="infoterre" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="array_agg" nullable="true" remarks="" size="10" type="_int4" typeCode="2003"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="code" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="code_leg" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="notation" nullable="true" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="descr" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="type_geol" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="ap_locale" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="type_ap" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="geol_nat" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="isopique" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="lithotec" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="emerge" nullable="true" remarks="" size="4" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="sys_deb" nullable="true" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="sys_fin" nullable="true" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="14" name="age_min" nullable="true" remarks="" size="6" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="15" name="age_max" nullable="true" remarks="" size="6" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="16" name="age_absolu" nullable="true" remarks="" size="6" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="17" name="toler_age" nullable="true" remarks="" size="5" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="tech_dat" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="cat_dat" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="age_com" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="lithologie" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="durete" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="epaisseur" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="environmt" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="c_geodyn" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="26" name="geochimie" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="27" name="litho_com" nullable="true" remarks="" size="254" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="28" name="geom" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="29" name="age_deb_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="30" name="age_fin_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="true" defaultValue="nextval('infoterre.s_fgeol_agg_id_seq'::regclass)" digits="0" id="31" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="s_fgeol_agg_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="idx_s_f_geol_agg_geom" unique="false">
+            <column ascending="true" name="geom"/>
+         </index>
+      </table>
+   </tables>
+</database>
