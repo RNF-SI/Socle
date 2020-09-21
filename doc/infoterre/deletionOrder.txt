@@ -1,4 +1,0 @@
-s_fgeol_agg
-emprise_cartes_geol
-echelle
-s_fgeol
