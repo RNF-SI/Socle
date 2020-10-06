@@ -54,6 +54,12 @@
       <td><?= $affl->description ?></td>
       <td><?php if ($editable): ?>
         <a href="<?= site_url('site/modification_affleurement/' . $affl->id . '/' . $eg->id) ?>" title="modifier"><span class="fas fa-edit"> </span></a>
+      <?php endif; ?></td>
+      <td><?php if ($editable): ?>
+        <script>
+          var affleurement_id = <?= $affl->id ?>;
+        </script>
+        <a href="#" id="suppression-affleurement" title="supprimer"><span class="fas fa-trash"> </span></a>
       <?php endif; ?></td></tr>
   <?php endforeach; ?>
 </table>

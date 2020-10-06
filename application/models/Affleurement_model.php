@@ -9,4 +9,9 @@ class Affleurement_model extends Entite_abstract_model {
     return $this->getByParent($id_eg, 'eg_id');
   }
 
+  public function delete($id) {
+    $this->db->where('id', $id)
+      ->delete('affleurement');
+  }
+
 }
