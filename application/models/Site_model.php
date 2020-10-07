@@ -367,5 +367,29 @@ class Site_model extends Entite_abstract_model {
     $data['avancement'] = round($taux_adv * 100);
   }
 
+  // suppresion d'un site
+  public function delete($id) {
+    // suppression photos du site
+    $this->db->where('site_id', $id)
+      ->delete('photo');
+    // Sélection des entités geol correspondantes
+    $req = "SELECT *
+    FROM entite_geol
+    WHERE site_id={$id}";
+    $res = $this->db->query($req)->result();
+    //suppression des affleurements et photos associés à ces entités géol
+    foreach ($res as $li) {
+      $id_eg = $li->id;
+      $this->db->where('eg_id', $id_eg)
+        ->delete('affleurement');
+      $this->db->where('eg_id', $id_eg)
+        ->delete('photo');
+    };
+    // suppression des entites geol
+    $this->db->where('site_id', $id)
+      ->delete('entite_geol');
+    //suppression du site
+    parent::delete($id);
+  }
 
 }

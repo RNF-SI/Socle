@@ -249,6 +249,28 @@ class Site extends CI_Controller {
     return $this->creation($id_ep, $id);
   }
 
+  //suppression d'un site
+  public function suppr_site($id) {
+    $this->load->model('site_model');
+    $this->load->model('espace_model');
+
+    $sit = $this->site_model->get($id);
+    $id_ep = $sit->ep_id;
+    $ep = $this->espace_model->get($id_ep);
+
+    if (! $this->site_model->is_editable($id)) {
+      $this->session->set_flashdata('message', 'Vous ne pouvez pas supprimer ce site.');
+      $this->session->set_flashdata('message-class', 'error');
+      redirect('espace/fiche_espace/' . $id_ep);
+    }
+
+    $this->site_model->delete($id);
+
+    $this->session->set_flashdata('message', 'Site supprimé.');
+    $this->session->set_flashdata('message-class', 'success');
+    redirect('espace/fiche_espace/' . $id_ep );
+  }
+
   // passe le site à l'état publié (ajax)
   public function publication($id) {
     $rep = ['success'=>TRUE];

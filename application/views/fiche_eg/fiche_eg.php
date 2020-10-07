@@ -59,7 +59,7 @@
         <script>
           var affleurement_id = <?= $affl->id ?>;
         </script>
-        <a href="#" id="suppression-affleurement" title="supprimer"><span class="fas fa-trash"> </span></a>
+        <a href="#" class="suppression-affleurement" title="supprimer"><span class="fas fa-trash"> </span></a>
       <?php endif; ?></td></tr>
   <?php endforeach; ?>
 </table>

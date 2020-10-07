@@ -15,7 +15,7 @@ $(function() {
     return false;
   });
 
-  $('#suppression-affleurement').click(function() {
+  $('.suppression-affleurement').click(function() {
     if (confirm("Voulez-vous vraiment supprimer cet affleurement ?")) {
       window.location.href = site_url('site/suppr_affleurement/' + affleurement_id);
     }
