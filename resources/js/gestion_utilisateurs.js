@@ -7,7 +7,7 @@ $(function() {
       if (! response.success) {
         message = response.message;
       } else {
-        a_elt.html(response.action == 'activated' ? 'désactiver' : 'activer');
+        a_elt.html(response.action == 'activated' ? '<span title="Actif (désactiver)" class="fas fa-toggle-on"></span>' : '<span title="Inactif (activer)" class="fas fa-toggle-off"></span>');
         a_elt.parents('td').siblings('td.col-active').html(response.action == 'activated' ? 'oui' : 'non');
       }
       $("#messages-global").html(message);
@@ -25,7 +25,7 @@ $(function() {
     return false;
   });
 
-  $('.action-delete').click(function(evt) {
+  $('.action-delete-user').click(function(evt) {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
       var $a_elt = $(this);
       var userid = $a_elt.parents("tr").data('user-id');
@@ -34,6 +34,21 @@ $(function() {
           window.location.reload(true);
         } else {
           window.alert("L'utilisateur n'a pas pu être supprimé.");
+        }
+      });
+      return false;
+    }
+  });
+
+  $('.action-delete-group').click(function(evt) {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer ce groupe ?')) {
+      var $a_elt = $(this);
+      var groupid = $a_elt.parents("tr").data('group-id');
+      $.get(site_url('utilisateurs/group_delete/' + groupid), function(response) {
+        if (response.success) {
+          window.location.reload(true);
+        } else {
+          window.alert("Le groupe n'a pas pu être supprimé.");
         }
       });
       return false;
