@@ -371,12 +371,32 @@ $this->load->view('fiche_site/base_rubrique', [
 <?php else: ?>
   <p>Cliquez sur une entité pour voir le détail.</p>
   <div class="list-group mb-3">
+    <!--
     <?php foreach ($entites_geol as $eg) {
       echo '<a href="' . site_url('site/fiche_entite_geol/' . $eg->id) .'" class="list-group-item">' . $eg->intitule . '</a>';
     } ?>
+
+-->
+    <table class="table">
+    <?php foreach ($entites_geol as $eg): ?>
+      <tr><td><a href="<?= site_url('site/fiche_entite_geol/' . $eg->id) ?>"><?= $eg->intitule ?></a></td>
+        <td><?php if ($editable): ?>
+          <a href="<?= site_url('site/ajout_eg/'.$site->id.'/'.$eg->id) ?>" title="modifier"><span class="fas fa-edit"> </span></a>
+        <?php endif; ?></td>
+        <td><?php if ($editable): ?>
+          <script>
+            var eg_id = <?= $eg->id ?>;
+          </script>
+          <a href="#" class="suppression-eg" title="supprimer"><span class="fas fa-trash"> </span></a>
+        <?php endif; ?></td></tr>
+    <?php endforeach; ?>
+    </table>
   </div>
 <?php endif; ?>
+
+<?php if ($editable): ?>
 <a href="<?= site_url('site/ajout_eg/' . $site->id) ?>" class="btn btn-primary">Ajouter une entité</a>
+<?php endif; ?>
 
 <?php
 $this->load->view('fiche_site/base_rubrique', [
