@@ -41,12 +41,13 @@ class Utilisateurs extends CI_Controller {
     if ($this->input->post()) {
       $this->load->library('form_validation');
       $this->form_validation->set_rules('nom', 'nom', 'required');
+      $this->form_validation->set_rules('prenom', 'prenom', 'required');
       $this->form_validation->set_rules('email', 'email', 'required|valid_email');
       $this->form_validation->set_rules('password', 'mot de passe', 'required|min_length[6]');
       $this->form_validation->set_rules('pwd_confirm', 'confirmation du mot de passe', 'required|matches[password]');
 
       if ($this->form_validation->run()) {
-        $moredata = ['last_name'=>$this->input->post('nom')];
+        $moredata = ['last_name'=>$this->input->post('nom'), 'first_name'=>$this->input->post('prenom'), 'company'=>$this->input->post('employeur'), 'phone'=>$this->input->post('telephone')];
         $res = $this->auth->register($this->input->post('email'), $this->input->post('password'), $this->input->post('email'), $moredata);
         if ($res) {
           // envoi de mail
@@ -290,14 +291,14 @@ class Utilisateurs extends CI_Controller {
 			}
 		}
   }
-  
+
 
   // reset password - final step for forgotten password
 	public function reset_password($code = NULL) {
 		if (!$code)	{
 			show_404();
     }
-    
+
     $this->load->library('form_validation');
 
 		$user = $this->auth->forgotten_password_check($code);
@@ -369,7 +370,7 @@ class Utilisateurs extends CI_Controller {
 			redirect("utilisateurs/forgot_password", 'refresh');
 		}
   }
-  
+
 
   private function _get_csrf_nonce()	{
 		$this->load->helper('string');
