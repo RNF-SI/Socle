@@ -259,8 +259,8 @@ class Site extends CI_Controller {
     $ep = $this->espace_model->get($id_ep);
 
     if (! $this->site_model->is_editable($id)) {
-      $this->session->set_flashdata('message', 'Vous ne pouvez pas supprimer ce site.');
-      $this->session->set_flashdata('message-class', 'error');
+      $this->session->set_flashdata('message', 'Vous n\'avez pas les droits pour supprimer ce site !');
+      $this->session->set_flashdata('message-class', 'danger');
       redirect('espace/fiche_espace/' . $id_ep);
     }
 
@@ -433,8 +433,8 @@ class Site extends CI_Controller {
     $id_site = $eg->site_id;
 
     if (! $this->site_model->is_editable($id_site)) {
-      $this->session->set_flashdata('message', 'Vous ne pouvez pas supprimer cette entité.');
-      $this->session->set_flashdata('message-class', 'error');
+      $this->session->set_flashdata('message', 'Vous n\'avez pas les droits pour supprimer cette entité !');
+      $this->session->set_flashdata('message-class', 'danger');
       redirect('site/fiche_entite_geol/' . $id);
     }
 
@@ -525,7 +525,7 @@ class Site extends CI_Controller {
     $id_site = $eg->site_id;
 
     if (! $this->site_model->is_editable($id_site)) {
-      $this->session->set_flashdata('message', 'Vous devez être connecté pour supprimer cet affleurement !');
+      $this->session->set_flashdata('message', 'Vous n\'avez pas les droits pour supprimer cet affleurement !');
       $this->session->set_flashdata('message-class', 'danger');
       redirect('site/fiche_entite_geol/' . $id_eg);
     }
