@@ -33,6 +33,25 @@ class Utilisateurs extends CI_Controller {
     $this->load->view('default/footer');
   }
 
+  //profil utilisateur
+  public function utilisateur($id) {
+
+    if (!$this->auth->logged_in())
+		{
+			redirect('accueil/index');
+		}
+    $this->load->model('espace_model');
+
+    $data = array();
+    $data['utilisateur'] = $this->auth->user($id)->row();
+    $data['espaces'] = $this->espace_model->getByUser($id);
+    $data['groups'] = $this->auth->get_users_groups($id)->result();
+
+    $this->load->view('default/header');
+    $this->load->view('utilisateurs/profil', $data);
+    $this->load->view('default/footer');
+  }
+
   // formulaire de souscription et traitement
   public function subscribe() {
     $this->load->helper('form_helper');

@@ -24,6 +24,33 @@ class Espace_model extends Entite_abstract_model {
     return $this->entity;
   }
 
+  public function getByGroup($id_group) {
+    $query = $this->db->select('id')
+      ->get_where($this->tableName, ['group_id' => $id_group]);
+    $res = $query->row();
+    return $res;
+  }
+
+  public function getByUser($id_user) {
+    $query = $this->db->select('espace_protege.id, espace_protege.nom')
+      ->from('espace_protege')
+      ->join('users_groups', 'users_groups.group_id=espace_protege.group_id')
+      ->join('users', 'users.id=users_groups.user_id')
+      ->where('users.id',$id_user)
+      ->get();
+    $espaces = array();
+    $res = $query->result();
+    // $us = ['id' => $res[0]['user_id'], 'username' => $res[0]['user_username'], 'espaces' => array()];
+    // foreach ($res as $li) {
+    //     if (!is_null($li['id'])) {
+    //       $espace = array('id' => $li['id'], 'nom'=> $li['nom']);
+    //       $espaces[$espace['id']] = $espace;
+    //     }
+    //   }
+    // $us['espaces'] = $espaces;
+    return $res;
+  }
+
   public function get_monosite_id($id) {
     $query = $this->db->select('site.id, monosite')
       ->join('site', 'site.ep_id=espace_protege.id')

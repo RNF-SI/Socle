@@ -22,6 +22,7 @@
 <table class="table">
   <thead>
     <tr>
+      <th></th>
       <th>Prénom</th>
       <th>Nom</th>
       <th>Email</th>
@@ -35,8 +36,9 @@
   <tbody>
     <?php foreach ($users as $user): ?>
     <tr data-user-id="<?= $user->id ?>">
-      <td><?= $user->first_name ?></td>
-      <td><?= $user->last_name ?></td>
+      <td style="text-align:center;"><a href="<?= site_url('utilisateurs/utilisateur/' . $user->id) ?>"><span class="fas fa-user"></span></a></td>
+      <td><a href="<?= site_url('utilisateurs/utilisateur/' . $user->id) ?>"><?= $user->first_name ?></a></td>
+      <td><a href="<?= site_url('utilisateurs/utilisateur/' . $user->id) ?>"><?= $user->last_name ?></a></td>
       <td><?= $user->email ?></td>
       <td><?= $user->company ?></td>
       <td><?= $user->phone ?></td>
