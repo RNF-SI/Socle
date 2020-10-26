@@ -3,12 +3,16 @@
 <?= isset($message) ? '<div class="alert alert-danger">' . $message . '</div>' : '' ?>
 <form method="POST">
   <div class="form-group">
-    <label for="email">Adresse email :</label>
-    <input type="email" class="form-control" id="email" name="email" value="<?= set_value('email') ?>" />
+    <label for="username">Nom :</label>
+    <input type="text" class="form-control" id="name" name="name" value="<?= set_value('name') ?>" />
   </div>
   <div class="form-group">
-    <label for="username">Nom d'utilisateur :</label>
-    <input type="text" class="form-control" id="username" name="username" value="<?= set_value('username') ?>" />
+    <label for="username">Prénom :</label>
+    <input type="text" class="form-control" id="firstname" name="firstname" value="<?= set_value('firstname') ?>" />
+  </div>
+  <div class="form-group">
+    <label for="email">Adresse email :</label>
+    <input type="email" class="form-control" id="email" name="email" value="<?= set_value('email') ?>" />
   </div>
   <div class="form-group">
     <label for="password">Mot de passe :</label>
@@ -21,6 +25,10 @@
   <div class="form-group">
     <label for="company">Organisme :</label>
     <input type="text" class="form-control" id="company" name="company" value="<?= set_value('company') ?>" />
+  </div>
+  <div class="form-group">
+    <label for="company">Téléphone :</label>
+    <input type="text" class="form-control" id="phone" name="phone" value="<?= set_value('phone') ?>" />
   </div>
   <h3>Privilèges</h3>
   <div class="radio">

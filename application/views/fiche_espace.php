@@ -35,6 +35,12 @@
         <td><?php if ($editable): ?>
           <a href="<?= site_url('site/modification/'. $site->id . '/' . $ep->id) ?>" class="btn btn-default"><span class="fas fa-edit"> </span></a>
         <?php endif; ?></td>
+        <td><?php if ($editable): ?>
+          <script>
+            var site_id = <?= $site->id ?>;
+          </script>
+          <a href="#" class="suppression-site" title="supprimer"><span class="fas fa-trash"> </span></a>
+        <?php endif; ?></td>
       </tr>
     <?php endforeach; ?>
   </table>

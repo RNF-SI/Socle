@@ -8,9 +8,16 @@ $(function() {
     var lyr = L.geoJSON(data).addTo(bm.map);
   });
 
-  $('#button-delete').click(function() {
+  $('.suppression-eg').click(function() {
     if (confirm("Voulez-vous vraiment supprimer cette entité et tous les éléments associés ?")) {
       window.location.href = site_url('site/suppr_entite_geol/' + entite_id);
+    }
+    return false;
+  });
+
+  $('.suppression-affleurement').click(function() {
+    if (confirm("Voulez-vous vraiment supprimer cet affleurement ?")) {
+      window.location.href = site_url('site/suppr_affleurement/' + affleurement_id);
     }
     return false;
   });

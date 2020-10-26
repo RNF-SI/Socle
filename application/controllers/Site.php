@@ -249,6 +249,28 @@ class Site extends CI_Controller {
     return $this->creation($id_ep, $id);
   }
 
+  //suppression d'un site
+  public function suppr_site($id) {
+    $this->load->model('site_model');
+    $this->load->model('espace_model');
+
+    $sit = $this->site_model->get($id);
+    $id_ep = $sit->ep_id;
+    $ep = $this->espace_model->get($id_ep);
+
+    if (! $this->site_model->is_editable($id)) {
+      $this->session->set_flashdata('message', 'Vous n\'avez pas les droits pour supprimer ce site !');
+      $this->session->set_flashdata('message-class', 'danger');
+      redirect('espace/fiche_espace/' . $id_ep);
+    }
+
+    $this->site_model->delete($id);
+
+    $this->session->set_flashdata('message', 'Site supprimé.');
+    $this->session->set_flashdata('message-class', 'success');
+    redirect('espace/fiche_espace/' . $id_ep );
+  }
+
   // passe le site à l'état publié (ajax)
   public function publication($id) {
     $rep = ['success'=>TRUE];
@@ -411,8 +433,8 @@ class Site extends CI_Controller {
     $id_site = $eg->site_id;
 
     if (! $this->site_model->is_editable($id_site)) {
-      $this->session->set_flashdata('message', 'Vous ne pouvez pas supprimer cette entité.');
-      $this->session->set_flashdata('message-class', 'error');
+      $this->session->set_flashdata('message', 'Vous n\'avez pas les droits pour supprimer cette entité !');
+      $this->session->set_flashdata('message-class', 'danger');
       redirect('site/fiche_entite_geol/' . $id);
     }
 
@@ -492,6 +514,28 @@ class Site extends CI_Controller {
     return $this->ajout_affleurement($id_eg, $id_affl);
   }
 
+  // Suppression affleurement
+  public function suppr_affleurement($id) {
+    $this->load->model('affleurement_model');
+    $this->load->model('entite_geol_model');
+
+    $aff = $this->affleurement_model->get($id);
+    $id_eg = $aff->eg_id;
+    $eg = $this->entite_geol_model->get($id_eg);
+    $id_site = $eg->site_id;
+
+    if (! $this->site_model->is_editable($id_site)) {
+      $this->session->set_flashdata('message', 'Vous n\'avez pas les droits pour supprimer cet affleurement !');
+      $this->session->set_flashdata('message-class', 'danger');
+      redirect('site/fiche_entite_geol/' . $id_eg);
+    }
+
+    $this->affleurement_model->delete($id);
+
+    $this->session->set_flashdata('message', 'Affleurement supprimé.');
+    $this->session->set_flashdata('message-class', 'success');
+    redirect('site/fiche_entite_geol/' . $id_eg );
+  }
 
   // Fiche de synthèse d'un EP
   public function resume($id) {

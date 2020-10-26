@@ -26,9 +26,29 @@ class Utilisateurs extends CI_Controller {
 
     $data = array();
     $data['users'] = $this->auth->users()->result();
+    $data['groups'] = $this->auth->groups()->result();
 
     $this->load->view('default/header', ['scripts' => ['js/gestion_utilisateurs.js']]);
     $this->load->view('utilisateurs/liste_utilisateurs', $data);
+    $this->load->view('default/footer');
+  }
+
+  //profil utilisateur
+  public function utilisateur($id) {
+
+    if (!$this->auth->logged_in())
+		{
+			redirect('accueil/index');
+		}
+    $this->load->model('espace_model');
+
+    $data = array();
+    $data['utilisateur'] = $this->auth->user($id)->row();
+    $data['espaces'] = $this->espace_model->getByUser($id);
+    $data['groups'] = $this->auth->get_users_groups($id)->result();
+
+    $this->load->view('default/header');
+    $this->load->view('utilisateurs/profil', $data);
     $this->load->view('default/footer');
   }
 
@@ -41,12 +61,13 @@ class Utilisateurs extends CI_Controller {
     if ($this->input->post()) {
       $this->load->library('form_validation');
       $this->form_validation->set_rules('nom', 'nom', 'required');
+      $this->form_validation->set_rules('prenom', 'prenom', 'required');
       $this->form_validation->set_rules('email', 'email', 'required|valid_email');
       $this->form_validation->set_rules('password', 'mot de passe', 'required|min_length[6]');
       $this->form_validation->set_rules('pwd_confirm', 'confirmation du mot de passe', 'required|matches[password]');
 
       if ($this->form_validation->run()) {
-        $moredata = ['last_name'=>$this->input->post('nom')];
+        $moredata = ['last_name'=>$this->input->post('nom'), 'first_name'=>$this->input->post('prenom'), 'company'=>$this->input->post('employeur'), 'phone'=>$this->input->post('telephone')];
         $res = $this->auth->register($this->input->post('email'), $this->input->post('password'), $this->input->post('email'), $moredata);
         if ($res) {
           // envoi de mail
@@ -123,7 +144,8 @@ class Utilisateurs extends CI_Controller {
     $data_head = array();
     if ($this->input->post()) {
 
-      $this->form_validation->set_rules('username', 'nom d\'utilisateur', 'required');
+      $this->form_validation->set_rules('name', 'nom', 'required');
+      $this->form_validation->set_rules('firstname', 'prenom', 'required');
       $this->form_validation->set_rules('email', 'email', 'required|valid_email|is_unique[users.email]');
       $this->form_validation->set_rules('password', 'mot de passe', 'required|min_length[6]');
       $this->form_validation->set_rules('password_valid', 'validation du mot de passe', 'required|matches[password]');
@@ -137,11 +159,11 @@ class Utilisateurs extends CI_Controller {
           $input['email'],
           $input['password'],
           $input['email'],
-          array('company' => $input['company']),
+          array('company' => $input['company'], 'last_name' => $input['name'], 'first_name' => $input['firstname'], 'phone' => $input['phone']),
           $groups
         );
         if ($res) {
-          $this->session->set_flashdata('message', 'utilisateur créé avec succès');
+          $this->session->set_flashdata('message', 'Utilisateur créé avec succès !');
           $this->session->set_flashdata('message-class', 'success');
           redirect('utilisateurs/gestion');
         } else {
@@ -184,7 +206,7 @@ class Utilisateurs extends CI_Controller {
     $this->output->set_output(json_encode($data));
   }
 
-
+  // création d'un groupe
   public function creation_groupe() {
     $this->check_admin();
 
@@ -193,7 +215,12 @@ class Utilisateurs extends CI_Controller {
     $this->form_validation->set_rules('name', 'nom du groupe', 'required');
     if ($this->input->post() && $this->form_validation->run()) {
       $this->auth->create_group($this->input->post('name'), $this->input->post('description'));
-      redirect('accueil/index');
+      $this->session->set_flashdata('message', 'Groupe créé avec succès !');
+      $this->session->set_flashdata('message-class', 'success');
+      redirect('utilisateurs/gestion');
+    } else {
+      $data_head['message'] = $this->auth->errors();
+      $data_head['message_class'] = 'danger';
     }
 
     $data = array();
@@ -207,6 +234,23 @@ class Utilisateurs extends CI_Controller {
   public function user_delete($id) {
     $this->check_admin();
     $res = $this->auth->delete_user($id);
+    if ($res) {
+      $this->session->set_flashdata('message', 'Utilisateur supprimé avec succès !');
+      $this->session->set_flashdata('message-class', 'success');
+    }
+
+    $this->output->set_content_type('application/json');
+    $this->output->set_output(json_encode(['success'=>$res]));
+  }
+
+  // suppression group pour ajax
+  public function group_delete($id) {
+    $this->check_admin();
+    $res = $this->auth->delete_group($id);
+    if ($res) {
+      $this->session->set_flashdata('message', 'Groupe supprimé avec succès !');
+      $this->session->set_flashdata('message-class', 'success');
+    }
 
     $this->output->set_content_type('application/json');
     $this->output->set_output(json_encode(['success'=>$res]));
@@ -290,14 +334,14 @@ class Utilisateurs extends CI_Controller {
 			}
 		}
   }
-  
+
 
   // reset password - final step for forgotten password
 	public function reset_password($code = NULL) {
 		if (!$code)	{
 			show_404();
     }
-    
+
     $this->load->library('form_validation');
 
 		$user = $this->auth->forgotten_password_check($code);
@@ -369,7 +413,7 @@ class Utilisateurs extends CI_Controller {
 			redirect("utilisateurs/forgot_password", 'refresh');
 		}
   }
-  
+
 
   private function _get_csrf_nonce()	{
 		$this->load->helper('string');

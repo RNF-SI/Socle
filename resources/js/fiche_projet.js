@@ -228,4 +228,12 @@ $(function() {
       }
     });
   }
+
+  $('.suppression-eg').click(function() {
+    if (confirm("Voulez-vous vraiment supprimer cette entité et tous les éléments associés ?")) {
+      window.location.href = site_url('site/suppr_entite_geol/' + eg_id);
+    }
+    return false;
+  });
+
 });

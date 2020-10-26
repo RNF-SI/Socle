@@ -10,7 +10,7 @@
 	<div class="btn-group">
 		<a href="<?= site_url('site/ajout_eg/'.$site->id.'/'.$eg->id) ?>" class="btn btn-primary">
 			<span class="fas fas-edit"></span> Modifier</a>
-    <a href="#" id="button-delete" class="btn btn-primary">
+    <a href="#" class="btn btn-primary suppression-eg">
 			<span class="fas fa-trash"></span> Supprimer</a>
 		<a href="<?= site_url('site/ajout_eg/'.$site->id) ?>" class="btn btn-primary">
 			<span class="fas fa-plus"></span> Créer une nouvelle entité</a>
@@ -54,6 +54,12 @@
       <td><?= $affl->description ?></td>
       <td><?php if ($editable): ?>
         <a href="<?= site_url('site/modification_affleurement/' . $affl->id . '/' . $eg->id) ?>" title="modifier"><span class="fas fa-edit"> </span></a>
+      <?php endif; ?></td>
+      <td><?php if ($editable): ?>
+        <script>
+          var affleurement_id = <?= $affl->id ?>;
+        </script>
+        <a href="#" class="suppression-affleurement" title="supprimer"><span class="fas fa-trash"> </span></a>
       <?php endif; ?></td></tr>
   <?php endforeach; ?>
 </table>
