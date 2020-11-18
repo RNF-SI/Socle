@@ -16,6 +16,9 @@ ultérieurement avec l’ensemble des questionnements Q2.</p>
   Altitude du point le plus bas :  /* $site->altitude_min_ep */&nbsp;m</p>
   <p><?php if ($site->nombre_morcellement == 0): ?>Territoire d'un seul tenant
   <?php else: ?>Territoire constitué de <?= $site->nombre_morcellement; ?> parties disjointes<?php endif; ?></p> -->
+  <p>Le territoire correspond à :
+    <?= liste_caracteristiques($caracteristiques, 'Q1.0') ?>
+  </p>
   <p>Le territoire est situé en :
     <?= liste_caracteristiques($caracteristiques, 'Q1.1') ?>
   </p>
