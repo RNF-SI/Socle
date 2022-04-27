@@ -1,27 +1,136 @@
+:root{
+  --orange-fonce: #c55a11;
+  --orange-clair: #f4b184;
+  --orange-vif: #ed7d31;
+  --bleu-fonce: #0070c0;
+  --bleu-clair: #bdd7ee;
+  --bleu-vif: #0070c0 ;
+}
+
+.color-svg {
+  filter: invert(100%) sepia(0%) saturate(1%) hue-rotate(297deg) brightness(107%) contrast(101%);  /* url pour définir le filtre selon la couleur hex : https://codepen.io/sosuke/pen/Pjoqqp */
+};
+
+body {
+  font-family: "Krub Regular";
+}
 
 h2, h3 {
-  color: #0c8da6;
+  color: var(--orange-fonce);
+}
+
+a {
+  color: var(--bleu-fonce);
+}
+
+a:hover {
+  color: var(--bleu-vif);
 }
 
 .popover {
   max-width: 40em;
 }
 
-header h1 {
-  color: #ca7b3e;
-  font-weight: bold;
+.navbarre {
+  height: 30%;
 }
+
+.header-main {
+  background: url('../../resources/images/header_main_pan.jpg');
+  background-size: 100%;
+  background-position: bottom;
+  height: 600px;
+}
+
+.header-base {
+  background: url('../../resources/images/header_main_pan.jpg');
+  background-size: 100%;
+  height: 180px;
+}
+
+.container_accueil {
+  height: 70%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.message-accueil {
+  /* position: absolute !important; */
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  align-items: center;
+}
+
+.message-accueil p {
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  font-family: "SquarePeg-Regular";
+  font-size: 60px;
+  background: white;
+  color: black;
+  mix-blend-mode: screen;
+  padding-left: 50px;
+  padding-right: 50px;
+  margin-top: 100px;
+  line-height: 70px;
+}
+
+.nav-link {
+  background-color: white;
+  margin-right: 20px;
+}
+
+.navbar-left .nav-item {
+  width: 130px;
+  text-align: center;
+}
+
+header h1 {
+  color: white;
+  font-family: "Krub Bold";
+}
+
+/* .container-fluid h1 {
+  color: var(--bleu-vif);
+  font-weight: bold;
+  font-family: 'SquarePeg-Regular';
+} */
 
 header .subtitle {
   font-size: 120%;
   font-style: italic;
-  color: #ca7b3e;
+  color: white;
 }
 
 #logo {
-  width: 125px;
+  height: 100%;
   position: absolute;
   z-index: 0;
+
+}
+
+#logoRNF {
+  position: absolute;
+  z-index: 100;
+  top: 10px;
+  right: 70px;
+}
+
+#logoRNF img {
+  height: 75px;
+}
+
+.copyright-header {
+  position: absolute;
+  top: 560px;
+  left: 10px;
+  font-family: "SquarePeg-Regular";
+  color: white;
+  font-size: 160%;
 }
 
 .block-title {
@@ -37,10 +146,20 @@ header .subtitle {
   text-align: center;
   font-size: 95%;
   margin-top: 20px;
-  margin-right: 10px;
-  margin-left: 10px;
   padding-top: 20px;
-  border-top: 1px solid #a4b1c8;
+  background-color: var(--bleu-fonce);
+  height: 100px;
+}
+
+#footer a {
+  background-color: white;
+  padding: 10px;
+}
+
+#copyright {
+  text-align: center;
+  color: white;
+  font-style: italic;
 }
 
 .thumbnail {
@@ -77,6 +196,12 @@ li::marker {
   font-size: 80%;
   color: black;
 }
+
+.home-image-caption:hover {
+  color: black;
+  font-weight: bold;
+}
+
 
 .home-gallerie-item img {
   width: 100%;
@@ -222,7 +347,19 @@ li.qcm-patrimonial {
   min-height: 500px;
   width: 100%;
   margin: 10px;
-  border: 1px solid gray;
+  /* border: 1px solid gray; */
+}
+
+#mapprincipale{
+  min-height: 600px;
+  width: 100%;
+  /* margin: 10px; */
+  margin-top: -120px;
+  /* border: 1px solid gray; */
+}
+
+.texte_intro {
+  text-align: center;
 }
 
 #map-container .leaflet-container {
@@ -292,4 +429,254 @@ table#table-liens img {
   border: 3px solid red;
   background: #ff000017;
   position: absolute;
+}
+
+@font-face {
+  font-family: 'SquarePeg-Regular';
+  src: url('../../resources/fonts/SquarePeg-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'VarelaRound-Regular';
+  src: url('../../resources/fonts/VarelaRound-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Krub Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Krub Regular'), url('../../resources/fonts/Krub-Regular.ttf') ;
+  }
+  
+
+  @font-face {
+  font-family: 'Krub Italic';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Krub Italic'), url('../../resources/fonts/Krub-Italic.ttf') ;
+  }
+  
+
+  @font-face {
+  font-family: 'Krub Bold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Krub Bold'), url('../../resources/fonts/Krub-Bold.ttf') ;
+  }
+  
+
+  @font-face {
+  font-family: 'Krub Bold Italic';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Krub Bold Italic'), url('../../resources/fonts/Krub-BoldItalic.ttf') ;
+  }
+  
+
+  @font-face {
+  font-family: 'Krub ExtraLight Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Krub ExtraLight Regular'), url('../../resources/fonts/Krub-ExtraLight.ttf') ;
+  }
+  
+
+  @font-face {
+  font-family: 'Krub Light Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Krub Light Regular'), url('../../resources/fonts/Krub-Light.ttf') ;
+  }
+  
+
+  @font-face {
+  font-family: 'Krub Medium Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Krub Medium Regular'), url('../../resources/fonts/Krub-Medium.ttf') ;
+  }
+  
+
+  @font-face {
+  font-family: 'Krub SemiBold Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Krub SemiBold Regular'), url('../../resources/fonts/Krub-SemiBold.ttf') ;
+  }
+  
+
+  @font-face {
+  font-family: 'Krub ExtraLight Italic';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Krub ExtraLight Italic'), url('../../resources/fonts/Krub-ExtraLightItalic.ttf') ;
+  }
+  
+
+  @font-face {
+  font-family: 'Krub Light Italic';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Krub Light Italic'), url('../../resources/fonts/Krub-LightItalic.ttf') ;
+  }
+  
+
+  @font-face {
+  font-family: 'Krub Medium Italic';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Krub Medium Italic'), url('../../resources/fonts/Krub-MediumItalic.ttf') ;
+  }
+  
+
+  @font-face {
+  font-family: 'Krub SemiBold Italic';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Krub SemiBold Italic'), url('../../resources/fonts/Krub-SemiBoldItalic.ttf') ;
+  }
+
+  .img-box {
+    position: relative;
+    width: 100%;
+  }
+  
+  .img-box img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  
+  .img-box:hover > .overlay {
+    opacity: 0.8;
+    cursor: pointer;  
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 20%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: white;
+  }
+  
+  .text {
+    color: #ca7b3e;
+    font-size: 20px;
+    font-family: "Krub SemiBold Italic";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  /* .bg-light {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(white), color-stop(60%, #e9ecef), to(#e3e7eb));
+    background-image: linear-gradient(0.25turn, white, var(--orange-vif));
+    background-repeat: no-repeat;
+  } */
+  
+  /* .navbar-light .navbar-nav .nav-link .navbar-right {
+    color: white;
+  } */
+
+  /* #carousel {
+    width: 500px;
+  } */
+
+  .card.card-carousel {
+    border: 0;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    border-radius: 6px ;
+    color: rgba(0,0,0,.87);
+    background: #fff;
+    width: 100%;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.card.card-carousel img{
+    border-radius: 6px;
+}
+
+
+
+.carousel-indicators {
+    position: absolute;
+    right: 0;
+    bottom: 10px;
+    left: 0;
+    z-index: 15;
+    display: flex;
+    justify-content: center;
+    padding-left: 0;
+    margin-right: 15%;
+    margin-left: 15%;
+    list-style: none;
+}
+
+.carousel .carousel-indicators {
+    bottom: 5px;
+}
+
+.carousel .carousel-indicators li {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    text-indent: -999px;
+    cursor: pointer;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.12), 0 1px 5px 0 rgba(0,0,0,.2);
+    border-radius: 2px;
+}
+
+.carousel .carousel-indicators .active{
+    margin: 11px 10px; 
+} 
+
+.carousel .carousel-indicators li {
+    margin: 11px 10px;
+}
+
+.carousel .carousel-indicators .active {
+    margin-top: 10px;
+    transform: scale(1.5);
+    box-shadow: 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12), 0 2px 4px -1px rgba(0,0,0,.2);
+}
+
+.carousel-inner {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-item {
+    position: relative;
+    display: none;
+    align-items: center;
+    width: 100% !important;
+    transition: transform .6s ease;
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+.carousel-item.active {
+    display: block;
+}
+
+.carousel .carousel-caption {
+    padding-bottom: 45px;
+}
+
+.carousel h4 {
+  color: white;
 }
